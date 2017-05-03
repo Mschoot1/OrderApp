@@ -1,7 +1,9 @@
-package com.example.marni.orderapp;
+package com.example.marni.orderapp.Presentation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.marni.orderapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
