@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.marni.orderapp.R;
 
-public class MainActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
