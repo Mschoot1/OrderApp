@@ -38,7 +38,7 @@ public class InformationAllergiesListviewAdapter extends ArrayAdapter<Allergy> {
 
             allergyinformation.setText(allergy.getInformationtext());
 
-            String imageName = "@mipmap/"+String.valueOf(allergy.getImageid());
+            String imageName = "@mipmap/"+String.valueOf(allergy.getImage_url());
             int imageId = getContext().getResources().getIdentifier(imageName, null, getContext().getPackageName());
             imageView.setImageResource(imageId);
 

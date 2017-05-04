@@ -5,16 +5,16 @@ package com.example.marni.orderapp.Domain;
  */
 
 public class Allergy {
-    private String imageid;
+    private String image_url;
     private String informationtext;
 
-            public Allergy(String imageid, String informationtext){
-                this.imageid = imageid;
+            public Allergy(String image_url, String informationtext){
+                this.image_url = image_url;
                 this.informationtext = informationtext;
             }
 
-            public String getImageid(){
-                return imageid;
+            public String getImage_url(){
+                return image_url;
             }
 
             public String getInformationtext(){
@@ -22,7 +22,7 @@ public class Allergy {
             }
 
             public void setImage(String imageid){
-                this.imageid = imageid;
+                this.image_url = imageid;
             }
 
             public void setInformationtext(String informationtext){
