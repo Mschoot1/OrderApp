@@ -41,7 +41,7 @@
 
 
     <EditText
-        android:layout_width="280dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:id="@+id/editTextEmailaddress"
         android:textSize="20sp"
@@ -61,7 +61,7 @@
         android:layout_alignStart="@+id/editTextEmailaddress" />
 
     <EditText
-        android:layout_width="280dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:id="@+id/editTextPassword"
         android:textSize="20sp"
