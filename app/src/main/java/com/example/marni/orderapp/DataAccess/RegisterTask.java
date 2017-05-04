@@ -53,7 +53,7 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.setRequestProperty("email", email);
             httpConnection.setRequestProperty("password", password);
 
-            //httpConnection.connect();
+            httpConnection.connect();
 
             responseCode = httpConnection.getResponseCode();
             response = (responseCode == HttpURLConnection.HTTP_OK);
