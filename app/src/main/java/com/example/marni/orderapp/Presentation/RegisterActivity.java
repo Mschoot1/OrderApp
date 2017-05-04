@@ -1,5 +1,6 @@
 package com.example.marni.orderapp.Presentation;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -46,5 +47,11 @@ public class RegisterActivity extends AppCompatActivity implements
     @Override
     public void successful(Boolean successful) {
 
+        if(successful){
+
+            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+
+            startActivity(intent);
+        }
     }
 }
