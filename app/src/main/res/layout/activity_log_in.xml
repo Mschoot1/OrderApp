@@ -1,18 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.marni.orderapp.Presentation.LogInActivity">
 
+    <ImageView
+        android:src="@mipmap/rsz_3logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="@string/company_image"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/sign_in"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:paddingBottom="25dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
+        android:id="@+id/textViewSignIn" />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/emailaddress"
+        android:id="@+id/textViewEmailaddress"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_below="@+id/textViewSignIn"
+        android:layout_alignLeft="@+id/editTextEmailaddress"
+        android:layout_alignStart="@+id/editTextEmailaddress" />
+
+
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextEmailaddress"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewEmailaddress"
+        android:layout_centerHorizontal="true"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        android:id="@+id/textViewPassword"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_below="@+id/editTextEmailaddress"
+        android:layout_alignLeft="@+id/editTextEmailaddress"
+        android:layout_alignStart="@+id/editTextEmailaddress" />
+
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextPassword"
+        android:textSize="20sp"
+        android:layout_below="@+id/textViewPassword"
+        android:layout_alignLeft="@+id/textViewPassword"
+        android:layout_alignStart="@+id/textViewPassword"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/editTextPassword"
+        android:layout_alignLeft="@+id/textViewSignIn"
+        android:layout_alignStart="@+id/textViewSignIn" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp"
+        android:padding="18dp"
+        android:text="@string/no_account_yet_register_here"
+        android:textColor="#000"/>
+
+</RelativeLayout>
