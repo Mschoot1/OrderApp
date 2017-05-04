@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.marni.orderapp.OrderApp.OrderHistoryActivity">
+    tools:context="com.example.marni.orderapp.Presentation.OrderHistoryActivity">
 
     <ListView
         android:id="@+id/listViewOrders"
@@ -21,7 +21,7 @@
         android:layout_marginBottom="35dp"
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
-        android:src="@mipmap/plus_math_26"
+        android:src="@mipmap/plus"
         app:elevation="4dp"
         app:fabSize="normal" />
 

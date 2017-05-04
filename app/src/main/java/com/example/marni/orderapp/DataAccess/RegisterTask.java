@@ -1,12 +1,11 @@
-package com.example.marni.orderapp.OrderApp;
+package com.example.marni.orderapp.DataAccess;
 
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,21 +17,24 @@ import static android.content.ContentValues.TAG;
  * Created by marni on 4-5-2017.
  */
 
-class LoginTask extends AsyncTask<String, Void, String> {
+@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+public class RegisterTask extends AsyncTask<String, Void, Boolean> {
 
     private SuccessListener listener;
 
-    LoginTask(SuccessListener listener) {
+    public RegisterTask(SuccessListener listener) {
 
         this.listener = listener;
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected Boolean doInBackground(String... params) {
 
         int responseCode;
         String MovieUrl = params[0];
-        String response = "";
+        String email = params[1];
+        String password = params[2];
+        Boolean response;
 
         Log.i(TAG, "doInBackground - " + MovieUrl);
         try {
@@ -48,15 +50,13 @@ class LoginTask extends AsyncTask<String, Void, String> {
             httpConnection.setInstanceFollowRedirects(true);
             httpConnection.setRequestMethod("POST");
 
+            httpConnection.setRequestProperty("email", email);
+            httpConnection.setRequestProperty("password", password);
+
             httpConnection.connect();
 
             responseCode = httpConnection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-
-                listener.successful(true);
-            } else {
-                listener.successful(false);
-            }
+            response = (responseCode == HttpURLConnection.HTTP_OK);
         } catch (MalformedURLException e) {
             Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
@@ -68,7 +68,12 @@ class LoginTask extends AsyncTask<String, Void, String> {
         return response;
     }
 
-    interface SuccessListener {
+    protected void onPostExecute(Boolean response) {
+
+        listener.successful(response);
+    }
+
+    public interface SuccessListener {
         void successful(Boolean successful);
     }
 }
