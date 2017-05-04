@@ -8,4 +8,8 @@
     <string name="emailadress">Emailadress:</string>
     <string name="confirmpassword">confirmPassword:</string>
     <string name="title_activity_some">SomeActivity</string>
+    <string name="title_activity_payment_successful" />
+    <string name="payment_successful">Payment successful</string>
+    <string name="checkmark">Checkmark</string>
+    <string name="green_bar">Green bar</string>
 </resources>
