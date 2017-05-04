@@ -1,5 +1,7 @@
 package com.example.marni.orderapp.Presentation;
 
+import com.example.marni.orderapp.Domain.Allergy;
+
 import java.util.ArrayList;
 
 /**

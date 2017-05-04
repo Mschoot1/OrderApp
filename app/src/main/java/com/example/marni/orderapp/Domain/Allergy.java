@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.Presentation;
+package com.example.marni.orderapp.Domain;
 
 /**
  * Created by Wallaard on 4-5-2017.

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;

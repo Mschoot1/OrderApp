@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
