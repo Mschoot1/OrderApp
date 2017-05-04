@@ -78,7 +78,7 @@
         android:layout_below="@+id/passwordTextview"
         android:layout_alignLeft="@+id/passwordTextview"
         android:layout_alignStart="@+id/passwordTextview"
-        android:inputType=""/>
+        android:inputType="textPassword"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -99,6 +99,7 @@
         android:layout_below="@+id/confirmPasswordTextview"
         android:layout_alignLeft="@+id/confirmPasswordTextview"
         android:layout_alignStart="@+id/confirmPasswordTextview"
+        android:inputType="textPassword"
         />
 
 </RelativeLayout>
