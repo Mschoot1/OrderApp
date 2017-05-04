@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".OrderApp.RegisterActivity" />
-        <activity android:name=".OrderApp.OrderHistoryActivity"></activity>
+        <activity android:name=".OrderApp.OrderHistoryActivity" />
     </application>
 
 </manifest>

@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.example.marni.orderapp.R;
 
 public class LogInActivity extends AppCompatActivity implements
-        TextView.OnClickListener {
+        TextView.OnClickListener,
+        LoginTask.SuccessListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class LogInActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-
+                login("");
             }
         });
 
@@ -39,5 +40,23 @@ public class LogInActivity extends AppCompatActivity implements
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
 
         startActivity(intent);
+    }
+
+    void login(String ApiUrl) {
+
+        LoginTask task = new LoginTask(this);
+        String[] urls = new String[] {ApiUrl};
+        task.execute(urls);
+    }
+
+    @Override
+    public void successful(Boolean successful) {
+
+        if (successful) {
+
+            Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
+
+            startActivity(intent);
+        }
     }
 }

@@ -7,4 +7,5 @@
     <string name="no_account_yet_register_here">No account yet? Register here</string>
     <string name="emailadress">Emailadress:</string>
     <string name="confirmpassword">confirmPassword:</string>
+    <string name="title_activity_some">SomeActivity</string>
 </resources>
