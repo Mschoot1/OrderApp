@@ -25,12 +25,12 @@ public class AllergiesListviewAdapter extends ArrayAdapter<Allergy> {
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
             LayoutInflater allergyinflator = LayoutInflater.from(getContext());
-            View customView = allergyinflator.inflate(R.layout.custom_listview_information_allergies,parent,false);
+            View customView = allergyinflator.inflate(R.layout.listview_item_allergies,parent,false);
 
             Allergy allergy = getItem(position);
 
             if(convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_listview_information_allergies, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_item_allergies, parent, false);
             }
 
             TextView allergyinformation = (TextView) convertView.findViewById(R.id.information_allergies_text);

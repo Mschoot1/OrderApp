@@ -24,7 +24,7 @@ public class AllergiesActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.information_allergies);
+        setContentView(R.layout.activity_allergies);
 
         aAllergyList = allergiesGenerator.getAllergies();
 
