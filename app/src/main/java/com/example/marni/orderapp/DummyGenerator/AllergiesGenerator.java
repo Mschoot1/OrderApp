@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.Presentation;
+package com.example.marni.orderapp.DummyGenerator;
 
 import com.example.marni.orderapp.Domain.Allergy;
 

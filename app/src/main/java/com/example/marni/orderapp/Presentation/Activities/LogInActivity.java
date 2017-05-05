@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.Presentation;
+package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
 import android.os.Build;

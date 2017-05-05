@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.Presentation;
+package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,8 +17,8 @@ import java.util.ArrayList;
  * Created by Wallaard on 4-5-2017.
  */
 
-public class InformationAllergiesListviewAdapter extends ArrayAdapter<Allergy> {
-        public InformationAllergiesListviewAdapter(Context context,ArrayList<Allergy> allergies){
+public class AllergiesListviewAdapter extends ArrayAdapter<Allergy> {
+        public AllergiesListviewAdapter(Context context, ArrayList<Allergy> allergies){
             super(context,0,allergies);
         }
 
