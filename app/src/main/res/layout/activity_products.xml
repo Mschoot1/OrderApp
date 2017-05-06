@@ -6,11 +6,15 @@
     tools:context="com.example.marni.orderapp.Presentation.Activities.ProductsActivity"
     android:orientation="vertical">
 
-    <ListView
+    <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/black"
-        android:dividerHeight="2dp" />
+        android:clipToPadding="false"
+        android:drawSelectorOnTop="true"
+        android:padding="0dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:fastScrollEnabled="true"
+        android:overScrollMode="never" />
 
 </LinearLayout>

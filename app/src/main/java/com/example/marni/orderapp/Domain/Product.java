@@ -9,10 +9,7 @@ public class Product {
     private double price;
     private int size;
     private double alcohol_percentage;
-
-    public Product(String name) {
-        this.name = name;
-    }
+    private String category;
 
     public String getName() {
         return name;
@@ -44,5 +41,13 @@ public class Product {
 
     public void setAlcohol_percentage(double alcohol_percentage) {
         this.alcohol_percentage = alcohol_percentage;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -1,15 +1,19 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -17,33 +21,68 @@ import java.util.ArrayList;
  * Created by Wallaard on 4-5-2017.
  */
 
-public class AllergiesListviewAdapter extends ArrayAdapter<Allergy> {
-        public AllergiesListviewAdapter(Context context, ArrayList<Allergy> allergies){
-            super(context,0,allergies);
+public class AllergiesListviewAdapter extends BaseAdapter {
+
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private ArrayList<Allergy> allergies;
+
+    public AllergiesListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Allergy> allergies) {
+
+        this.context = context;
+        this.layoutInflater = layoutInflater;
+        this.allergies = allergies;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        final ViewHolder viewHolder;
+
+        if (convertView == null) {
+
+            convertView = layoutInflater.inflate(R.layout.listview_item_allergies, parent, false);
+
+            viewHolder = new ViewHolder();
+            viewHolder.textViewInformation = (TextView) convertView.findViewById(R.id.textViewAllergyTitle);
+            viewHolder.imageViewAllergyIcon = (ImageView) convertView.findViewById(R.id.imageViewAllergyIcon);
+
+            convertView.setTag(viewHolder);
+        } else {
+
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            LayoutInflater allergyinflator = LayoutInflater.from(getContext());
-            View customView = allergyinflator.inflate(R.layout.listview_item_allergies,parent,false);
+        Allergy allergy = allergies.get(position);
 
-            Allergy allergy = getItem(position);
+        viewHolder.textViewInformation.setText(allergy.getInformationtext());
 
-            if(convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_item_allergies, parent, false);
-            }
+        String imageName = "@mipmap/" + String.valueOf(allergy.getImage_url());
+        int imageId = context.getResources().getIdentifier(imageName, null, context.getPackageName());
+        viewHolder.imageViewAllergyIcon.setImageResource(imageId);
 
-            TextView allergyinformation = (TextView) convertView.findViewById(R.id.information_allergies_text);
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.allergies_icon);
+        return convertView;
+    }
 
-            allergyinformation.setText(allergy.getInformationtext());
-
-            String imageName = "@mipmap/"+String.valueOf(allergy.getImage_url());
-            int imageId = getContext().getResources().getIdentifier(imageName, null, getContext().getPackageName());
-            imageView.setImageResource(imageId);
-
-            return convertView;
-        }
+    private static class ViewHolder {
+        TextView textViewInformation;
+        ImageView imageViewAllergyIcon;
+    }
 }
 
 

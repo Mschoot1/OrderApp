@@ -22,6 +22,10 @@
     <string name="product_price">Price</string>
     <string name="product_size">Size</string>
     <string name="product_alcoholpercentage">Alcohol percentage</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="information_allergy_symbol">Information allergy symbol</string>
+    <string name="description">description</string>
 
     <string-array name="product_quantity">
         <item>1</item>
