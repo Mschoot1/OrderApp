@@ -9,17 +9,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.marni.orderapp.DataAccess.LoginTask;
 import com.example.marni.orderapp.R;
 
+import static com.example.marni.orderapp.Presentation.Activities.RegisterActivity.isValidEmail;
+
 public class LogInActivity extends AppCompatActivity implements
         LoginTask.SuccessListener {
+
+    private EditText editTextEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        EditText editText = (EditText) findViewById(R.id.editTextEmailaddress);
 
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
 
@@ -28,7 +35,15 @@ public class LogInActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                //login("https://mysql-test-p4.herokuapp.com/customers");
+                editTextEmail = (EditText) findViewById(R.id.emailTextfield);
+
+                if (isValidEmail(editTextEmail.getText().toString())) {
+
+                    //login("https://mysql-test-p4.herokuapp.com/login?");
+                } else {
+
+                    Toast.makeText(LogInActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -49,11 +64,11 @@ public class LogInActivity extends AppCompatActivity implements
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     void login(String ApiUrl) {
 
-        EditText editTextEmailaddress = (EditText) findViewById(R.id.editTextEmailaddress);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmailaddress);
         EditText editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         LoginTask task = new LoginTask(this);
-        String[] urls = new String[]{ApiUrl, editTextEmailaddress.getText().toString(), editTextPassword.getText().toString()};
+        String[] urls = new String[]{ApiUrl, editTextEmail.getText().toString(), editTextPassword.getText().toString()};
         task.execute(urls);
     }
 

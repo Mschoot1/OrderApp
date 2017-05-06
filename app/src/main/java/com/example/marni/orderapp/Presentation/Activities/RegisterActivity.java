@@ -5,15 +5,24 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.marni.orderapp.DataAccess.RegisterTask;
 import com.example.marni.orderapp.R;
 
 public class RegisterActivity extends AppCompatActivity implements
         RegisterTask.SuccessListener {
+
+    private final String TAG = getClass().getSimpleName();
+
+    private EditText editTextEmail;
+    private EditText editTextPasswordOne;
+    private EditText editTextPasswordTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +37,23 @@ public class RegisterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                register("https://mysql-test-p4.herokuapp.com/customers");
+                editTextEmail = (EditText) findViewById(R.id.emailTextfield);
+                editTextPasswordOne = (EditText) findViewById(R.id.firstPasswordTextfield);
+                editTextPasswordTwo = (EditText) findViewById(R.id.secondPasswordTextfield);
+
+                if (isValidEmail(editTextEmail.getText().toString())) {
+
+                    if (editTextPasswordOne.getText().toString().equals(editTextPasswordTwo.getText().toString())) {
+
+                        register("https://mysql-test-p4.herokuapp.com/customers");
+                    } else {
+
+                        Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+
+                    Toast.makeText(RegisterActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -36,22 +61,27 @@ public class RegisterActivity extends AppCompatActivity implements
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     void register(String ApiUrl) {
 
-        EditText editTextEmailaddress = (EditText) findViewById(R.id.emailTextfield);
-        EditText editTextPassword = (EditText) findViewById(R.id.firstPasswordTextfield);
-
         RegisterTask task = new RegisterTask(this);
-        String[] urls = new String[]{ApiUrl, editTextEmailaddress.getText().toString(), editTextPassword.getText().toString()};
+        String[] urls = new String[]{ApiUrl, editTextEmail.getText().toString(), editTextPasswordOne.getText().toString()};
         task.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
 
+        Log.i(TAG, successful.toString());
         if(successful){
 
             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
 
             startActivity(intent);
+        } else {
+
+            Toast.makeText(this, "Registration failed.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }

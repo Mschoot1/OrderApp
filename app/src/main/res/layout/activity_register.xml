@@ -7,16 +7,6 @@
     tools:context="com.example.marni.orderapp.Presentation.Activities.RegisterActivity">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/registerButton"
-        android:nestedScrollingEnabled="false"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp" />
-
     <ImageView
         android:src="@mipmap/rsz_3logo"
         android:layout_width="150dp"
@@ -30,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="@string/register"
         android:textAlignment="center"
         android:textSize="32sp"
         android:paddingBottom="25dp"
@@ -42,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="@dimen/textsize"
         android:text="@string/emailaddress"
         android:id="@+id/emailTextview"
         android:textColor="#000000"
@@ -53,7 +43,7 @@
     <EditText
         android:id="@+id/emailTextfield"
         android:layout_width="320dp"
-        android:textSize="20sp"
+        android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:layout_below="@+id/emailTextview"
@@ -62,8 +52,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Confirm password"
+        android:textSize="@dimen/textsize"
+        android:text="@string/password"
         android:id="@+id/passwordTextview"
         android:layout_below="@+id/emailTextfield"
         android:layout_alignLeft="@+id/emailTextfield"
@@ -73,7 +63,7 @@
     <EditText
         android:id="@+id/firstPasswordTextfield"
         android:layout_width="320dp"
-        android:textSize="20sp"
+        android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordTextview"
         android:layout_alignLeft="@+id/passwordTextview"
@@ -83,8 +73,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Confirm password:"
+        android:textSize="@dimen/textsize"
+        android:text="@string/confirm_password"
         android:id="@+id/confirmPasswordTextview"
         android:layout_below="@+id/firstPasswordTextfield"
         android:layout_alignLeft="@+id/firstPasswordTextfield"
@@ -93,14 +83,21 @@
 
     <EditText
         android:layout_width="320dp"
-        android:textSize="20sp"
+        android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
         android:id="@+id/secondPasswordTextfield"
         android:layout_below="@+id/confirmPasswordTextview"
         android:layout_alignLeft="@+id/confirmPasswordTextview"
         android:layout_alignStart="@+id/confirmPasswordTextview"
-        android:inputType="textPassword"
-        />
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:layout_below="@+id/secondPasswordTextfield"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
 
