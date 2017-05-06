@@ -26,6 +26,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="information_allergy_symbol">Information allergy symbol</string>
     <string name="description">description</string>
+    <string name="total">Total</string>
 
     <string-array name="product_quantity">
         <item>1</item>

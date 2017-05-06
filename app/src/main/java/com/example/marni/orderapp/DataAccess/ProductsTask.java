@@ -112,7 +112,8 @@ public class ProductsTask extends AsyncTask<String, Void, String> {
                 String productname = product.getString("productname");
 
                 // Create new SpotifyItem object
-                Product p = new Product(productname);
+                Product p = new Product();
+                p.setName(productname);
 
                 Log.d(TAG, "onPostExecute: " + idx + " " + productname);
                 //
