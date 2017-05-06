@@ -12,6 +12,20 @@
     <string name="payment_successful">Payment successful</string>
     <string name="checkmark">Checkmark</string>
     <string name="green_bar">Green bar</string>
-    <string name="register">Register</string>
-    <string name="confirm_password">Confirm password:</string>
+
+    <!--Order history-->
+    <string name="listview_header_placeholder">category header</string>
+    <string name="listview_item_placeholder">Row item</string>
+
+    <!--Product -->
+    <string name="product_name">Name</string>
+    <string name="product_price">Price</string>
+    <string name="product_size">Size</string>
+    <string name="product_alcoholpercentage">Alcohol percentage</string>
+
+    <string-array name="product_quantity">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
