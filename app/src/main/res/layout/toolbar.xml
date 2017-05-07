@@ -12,6 +12,17 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Balance $14.00"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#000"/>
+
+    </android.support.v7.widget.Toolbar>
+
 
 </android.support.design.widget.AppBarLayout>

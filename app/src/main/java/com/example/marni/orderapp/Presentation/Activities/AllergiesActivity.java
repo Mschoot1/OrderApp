@@ -39,6 +39,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        // hide title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -49,6 +52,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
 
         ArrayList<Allergy> allergies = allergiesGenerator.getAllergies();
+
+        // set current menu item checked
+        navigationView.setCheckedItem(R.id.nav_allergy_information);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
         BaseAdapter allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);

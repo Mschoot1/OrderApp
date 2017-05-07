@@ -14,16 +14,21 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-public class ProductsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ProductsActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        TotalFromAssortment.OnTotalChanged {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -34,6 +39,9 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_products);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        // hide title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,30 +54,29 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         ArrayList<Product> products = new ArrayList<>();
 
+        // set current menu item checked
+        navigationView.setCheckedItem(R.id.nav_assortment);
+
         // dummy data
         Product product;
-
-        product = new Product();
-        product.setName("Cola");
-        product.setCategory("Non Alcoholic");
-        product.setPrice(2.0);
-        product.setSize(300);
-
         for (int i = 0; i < 10; i++) {
 
+            product = new Product();
+            product.setName("Cola");
+            product.setCategory("Non Alcoholic");
+            product.setPrice(2.0);
+            product.setSize(300);
             products.add(product);
         }
 
-        product = new Product();
-        product.setName("Wine");
-        product.setCategory("Alcoholic");
-        product.setPrice(3.5);
-        product.setAlcohol_percentage(12.0);
-        product.setSize(150);
-        products.add(product);
-
         for (int i = 0; i < 10; i++) {
 
+            product = new Product();
+            product.setName("Wine");
+            product.setCategory("Alcoholic");
+            product.setPrice(3.5);
+            product.setAlcohol_percentage(12.0);
+            product.setSize(150);
             products.add(product);
         }
         // end
@@ -79,7 +86,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        ProductsListviewAdapter productsAdapter = new ProductsListviewAdapter(getLayoutInflater(), products);
+        ProductsListviewAdapter productsAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
         stickyList.setAdapter(productsAdapter);
         productsAdapter.notifyDataSetChanged();
@@ -156,6 +163,15 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onTotalChanged(Double priceTotal) {
+
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
+        TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
+        textViewTotal.setText("Total: € " + formatter.format(priceTotal));
     }
 }
 

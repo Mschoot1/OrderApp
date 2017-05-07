@@ -118,9 +118,7 @@
             <Spinner
                 android:id="@+id/listViewProducts_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:entries="@array/product_quantity">
-            </Spinner>
+                android:layout_height="30dp"/>
 
                 <LinearLayout
                     android:layout_weight="1"

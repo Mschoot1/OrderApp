@@ -38,9 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:padding="10dp"
+            android:padding="16dp"
             android:text="@string/total"
-            android:textSize="@dimen/textsize" />
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

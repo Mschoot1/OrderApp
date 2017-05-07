@@ -34,6 +34,7 @@
     <string name="Assortment">Assortment</string>
 
     <string-array name="product_quantity">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
