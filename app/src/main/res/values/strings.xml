@@ -27,10 +27,28 @@
     <string name="information_allergy_symbol">Information allergy symbol</string>
     <string name="description">description</string>
     <string name="total">Total</string>
+    <string name="menu">menu</string>
+    <string name="order_history">Order history</string>
+    <string name="top_up">Top Up</string>
+    <string name="my_order">My Order</string>
+    <string name="Assortment">Assortment</string>
 
     <string-array name="product_quantity">
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="allergy_information">Allergy Information</string>
+    <string name="information_allergies">Information Allergies</string>
+
 </resources>
