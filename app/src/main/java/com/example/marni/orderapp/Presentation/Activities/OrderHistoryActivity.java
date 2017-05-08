@@ -12,8 +12,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
+import com.example.marni.orderapp.Domain.Order;
+import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.R;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +47,26 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_order_history);
+
+        // listview
+        ArrayList<Order> orders = new ArrayList<>();
+
+        Order order = new Order();
+        order.setDateTime("8-5-2017 12:53");
+        order.setOrderId(1);
+        order.setStatus("Paid");
+        order.setTotalPrice(14.00);
+
+        for (int i = 0; i < 10; i++) {
+
+            orders.add(order);
+        }
+
+        ListView listView = (ListView) findViewById(R.id.listViewOrders);
+
+        BaseAdapter ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
+
+        listView.setAdapter(ordersAdapter);
     }
     @Override
     public void onBackPressed() {
