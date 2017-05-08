@@ -23,7 +23,6 @@ import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -48,7 +47,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged listener;
 
-    private SparseIntArray sparseIntArray = new SparseIntArray();
+    private static SparseIntArray sparseIntArray = new SparseIntArray();
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, TotalFromAssortment.OnTotalChanged listener) {
@@ -118,7 +117,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             Log.i(TAG, "Geen viewHolder meegekregen. Nieuwe maken. " + position);
 
-            convertView = layoutInflater.inflate(R.layout.new_listview_item_product, null);
+            convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
 
             viewHolder = new ViewHolder();
 
@@ -140,7 +139,6 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
-        double d = 4.0;
 
         final Product product = products.get(position);
 

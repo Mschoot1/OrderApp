@@ -22,21 +22,22 @@
         <ListView
             android:id="@+id/listViewOrders"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_include"
+            android:layout_above="@+id/fab"
+            android:divider="@android:color/black"
+            android:dividerHeight="2dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="17dp"
-            android:layout_marginEnd="17dp"
-            android:layout_marginRight="17dp"
             android:src="@mipmap/plus"
             app:elevation="4dp"
-            app:fabSize="normal" />
+            app:fabSize="normal"
+            android:layout_margin="17dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
