@@ -82,6 +82,9 @@ public class AllergiesListviewAdapter extends BaseAdapter {
         int imageId = context.getResources().getIdentifier(imageName, null, context.getPackageName());
         viewHolder.imageViewAllergyIcon.setImageResource(imageId);
 
+        Log.i(TAG, "Image url: " + imageName );
+        Log.i(TAG, "Image id: " + imageId );
+
         return convertView;
     }
 
