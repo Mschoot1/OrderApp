@@ -1,16 +1,18 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,7 +21,6 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.R;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -47,6 +48,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged listener;
 
+    private SparseIntArray sparseIntArray = new SparseIntArray();
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, TotalFromAssortment.OnTotalChanged listener) {
 
@@ -60,7 +63,33 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
         for (int i = 0; i < products.size(); i++) {
 
+            //
             allProducts.add(new ArrayList<Product>());
+
+            // random icon generation
+            ArrayList<Integer> allergies = new ArrayList<>();
+
+            int iconCount = (int) (Math.random() * 3 + 0);
+
+            for (int j = 0; j < iconCount; j++) {
+
+                int iconId = getRandomIconId();
+
+                for (int k = 0; k < allergies.size(); k++) {
+
+                    if (allergies.get(k) == iconId) {
+
+                        iconId = getRandomIconId();
+                    }
+                }
+
+                Log.i(TAG, iconId + "");
+
+                allergies.add(iconId);
+            }
+
+            products.get(i).setAllergies(allergies);
+            //
         }
 
         Log.i(TAG, allProducts.size() + "");
@@ -89,7 +118,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             Log.i(TAG, "Geen viewHolder meegekregen. Nieuwe maken. " + position);
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_products, null);
+            convertView = layoutInflater.inflate(R.layout.new_listview_item_product, null);
 
             viewHolder = new ViewHolder();
 
@@ -99,6 +128,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             viewHolder.textViewAlcohol = (TextView) convertView.findViewById(R.id.listViewProducts_product_alcoholpercentage);
 
             viewHolder.spinnerAmount = (Spinner) convertView.findViewById(R.id.listViewProducts_spinner);
+
+            viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.iconHolder);
 
             convertView.setTag(viewHolder);
         } else {
@@ -116,16 +147,21 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         viewHolder.textViewName.setText(product.getName());
         viewHolder.textViewPrice.setText("€ " + formatter.format(product.getPrice()));
         viewHolder.textViewSize.setText(product.getSize() + " ml");
-        viewHolder.textViewAlcohol.setText(product.getAlcohol_percentage() + "%");
+        viewHolder.textViewAlcohol.setText(product.getAlcohol_percentage() + "% Alc.");
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 R.array.product_quantity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinnerAmount.setAdapter(adapter);
+
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position2, long id) {
+
+                Log.i(TAG, "Spinner value: " + Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+
+                sparseIntArray.put(position, Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
 
                 ArrayList<Product> specificProducts = new ArrayList<>();
 
@@ -151,17 +187,42 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             }
         });
 
+        Log.i(TAG, "Size = " + sparseIntArray.size());
+
+        //loop a sparseIntArray
+        for (int i = 0; i < sparseIntArray.size(); i++) {
+
+            if (position == sparseIntArray.keyAt(i)) {
+
+                viewHolder.spinnerAmount.setSelection(sparseIntArray.valueAt(i));
+            }
+        }
+
+        viewHolder.linearLayout.removeAllViews();
+
+        for (Object iconId : product.getAllergies()) {
+
+            ImageView imageView = new ImageView(context);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(63, 63);
+
+            imageView.setLayoutParams(lp);
+            imageView.setImageResource((int) iconId);
+
+            viewHolder.linearLayout.addView(imageView);
+        }
+
         return convertView;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private int[] getSectionIndices() {
         ArrayList<Integer> sectionIndices = new ArrayList<>();
-        String category = products.get(0).getCategory();
+        int categoryId = products.get(0).getCategoryId();
         sectionIndices.add(0);
         for (int i = 1; i < products.size(); i++) {
-            if (!Objects.equals(products.get(i).getCategory(), category)) {
-                category = products.get(i).getCategory();
+            if (products.get(i).getCategoryId() != categoryId) {
+                categoryId = products.get(i).getCategoryId();
                 sectionIndices.add(i);
             }
         }
@@ -240,10 +301,49 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         TextView textViewAlcohol;
 
         Spinner spinnerAmount;
+
+        LinearLayout linearLayout;
     }
 
     private class HeaderViewHolder {
         TextView textViewCategoryTitle;
+    }
+
+    private int getRandomIconId() {
+
+        int i = (int) (Math.random() * 13 + 1);
+
+        switch (i) {
+
+            case 1:
+                return R.mipmap.celery_icon;
+            case 2:
+                return R.mipmap.cereals_containing_gluten_icon;
+            case 3:
+                return R.mipmap.crustaceans_icon;
+            case 4:
+                return R.mipmap.eggs_icon;
+            case 5:
+                return R.mipmap.fish_icon;
+            case 6:
+                return R.mipmap.milk_icon;
+            case 7:
+                return R.mipmap.lupin_icon;
+            case 8:
+                return R.mipmap.molluscs_icon;
+            case 9:
+                return R.mipmap.mustard_icon;
+            case 10:
+                return R.mipmap.nuts_icon;
+            case 11:
+                return R.mipmap.peanuts_icon;
+            case 12:
+                return R.mipmap.soya_icon;
+            case 13:
+                return R.mipmap.sulphur_dioxide_icon;
+            default:
+                return 0;
+        }
     }
 }
 

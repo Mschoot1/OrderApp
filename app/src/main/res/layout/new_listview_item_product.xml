@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/listViewProducts_productname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:padding="@dimen/paddingProduct"
+        android:text="Beer"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/listViewProducts_product_alcoholpercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/listViewProducts_productname"
+        android:layout_alignStart="@+id/listViewProducts_productname"
+        android:layout_below="@+id/listViewProducts_productname"
+        android:padding="@dimen/paddingProduct"
+        android:text="5% Alc."
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/listViewProducts_productsize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/listViewProducts_productname"
+        android:layout_toRightOf="@+id/listViewProducts_productname"
+        android:padding="@dimen/paddingProduct"
+        android:text="250ml"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/listViewProducts_productprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/listViewProducts_spinner"
+        android:layout_toStartOf="@+id/listViewProducts_spinner"
+        android:padding="@dimen/paddingProduct"
+        android:text="$2.00"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <Spinner
+        android:id="@+id/listViewProducts_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:entries="@array/product_quantity"
+        android:padding="@dimen/paddingProduct" />
+
+    <LinearLayout
+        android:id="@+id/iconHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/listViewProducts_product_alcoholpercentage"
+        android:layout_alignEnd="@+id/listViewProducts_spinner"
+        android:layout_alignRight="@+id/listViewProducts_spinner"
+        android:orientation="horizontal"
+        android:padding="@dimen/paddingProduct"/>
+
+</RelativeLayout>

@@ -59,43 +59,42 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
-
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
-        getCategory();
-//        // dummy data
-//        Product product;
-//
-//        for (int i = 0; i < 10; i++) {
-//
-//            product = new Product();
-//            product.setName("Cola");
-//            product.setCategory("Non Alcoholic");
-//            product.setPrice(2.0);
-//            product.setSize(300);
-//            products.add(product);
-//        }
-//
-//        for (int i = 0; i < 10; i++) {
-//
-//            product = new Product();
-//            product.setName("Wine");
-//            product.setCategory("Alcoholic");
-//            product.setPrice(3.5);
-//            product.setAlcohol_percentage(12.0);
-//            product.setSize(150);
-//            products.add(product);
-//        }
-//        // end
+        // dummy data
+        Product product;
+
+        for (int i = 0; i < 10; i++) {
+
+            product = new Product();
+            product.setName("Cola");
+            product.setCategory("Non Alcoholic");
+            product.setCategoryid(0);
+            product.setPrice(2.0);
+            product.setSize(300);
+            products.add(product);
+        }
+
+        for (int i = 0; i < 10; i++) {
+
+            product = new Product();
+            product.setName("Wine");
+            product.setCategory("Alcoholic");
+            product.setCategoryid(1);
+            product.setPrice(3.5);
+            product.setAlcohol_percentage(12.0);
+            product.setSize(150);
+            products.add(product);
+        }
+        // end
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

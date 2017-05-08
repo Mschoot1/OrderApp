@@ -1,5 +1,7 @@
 package com.example.marni.orderapp.Domain;
 
+import java.util.ArrayList;
+
 /**
  * Created by MarcdenUil on 5-5-2017.
  */
@@ -10,6 +12,7 @@ public class Product {
     private int size;
     private double alcohol_percentage;
     private String category;
+    private ArrayList allergies;
     private int categoryid;
 
     public String getName() {
@@ -52,11 +55,19 @@ public class Product {
         this.category = category;
     }
 
-    public int getCategoryid() {
+    public int getCategoryId() {
         return categoryid;
     }
 
     public void setCategoryid(int categoryid) {
         this.categoryid = categoryid;
+    }
+
+    public ArrayList getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(ArrayList allergies) {
+        this.allergies = allergies;
     }
 }
