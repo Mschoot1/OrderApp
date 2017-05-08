@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -21,6 +23,7 @@ import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,12 +56,18 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
 
         Order order = new Order();
         order.setDateTime("8-5-2017 12:53");
-        order.setOrderId(1);
-        order.setStatus("Paid");
+        order.setStatus("Open");
+        order.setOrderId(11);
         order.setTotalPrice(14.00);
+        orders.add(order);
 
         for (int i = 0; i < 10; i++) {
 
+            order = new Order();
+            order.setDateTime("8-5-2017 12:53");
+            order.setStatus("Paid");
+            order.setTotalPrice(14.00);
+            order.setOrderId(10 - i);
             orders.add(order);
         }
 
@@ -67,6 +76,17 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
         BaseAdapter ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
 
         listView.setAdapter(ordersAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public void onBackPressed() {

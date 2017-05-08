@@ -26,8 +26,6 @@ public class LogInActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        EditText editText = (EditText) findViewById(R.id.editTextEmailaddress);
-
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
 
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +37,7 @@ public class LogInActivity extends AppCompatActivity implements
 
                 if (isValidEmail(editTextEmail.getText().toString())) {
 
-                    //login("https://mysql-test-p4.herokuapp.com/login?");
+                    login("https://mysql-test-p4.herokuapp.com/login");
                 } else {
 
                     Toast.makeText(LogInActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
@@ -80,6 +78,9 @@ public class LogInActivity extends AppCompatActivity implements
             Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
 
             startActivity(intent);
+        } else {
+
+            Toast.makeText(this, "Login failed, please try again.", Toast.LENGTH_SHORT).show();
         }
     }
 }

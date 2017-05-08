@@ -56,12 +56,17 @@ public class LoginTask extends AsyncTask<String, Void, String> {
             httpConnection.connect();
 
             responseCode = httpConnection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
 
-                listener.successful(true);
-            } else {
-                listener.successful(false);
+            switch (responseCode) {
+
+                case 200:
+                    listener.successful(true);
+                    break;
+                case 401:
+                    listener.successful(false);
+                    break;
             }
+
         } catch (MalformedURLException e) {
             Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;

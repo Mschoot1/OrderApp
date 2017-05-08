@@ -40,6 +40,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_allergies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+        
+        // hide title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

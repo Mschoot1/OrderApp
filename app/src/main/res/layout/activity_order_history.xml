@@ -23,10 +23,12 @@
             android:id="@+id/listViewOrders"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar_include"
-            android:layout_above="@+id/fab"
             android:divider="@android:color/black"
-            android:dividerHeight="2dp"/>
+            android:dividerHeight="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/toolbar_include" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -37,7 +39,8 @@
             app:fabSize="normal"
             android:layout_margin="17dp"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 

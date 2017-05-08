@@ -1,11 +1,16 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.Domain.Allergy;
@@ -14,6 +19,8 @@ import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import static android.R.color.holo_green_light;
 
 /**
  * Created by marni on 8-5-2017.
@@ -47,6 +54,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
         return position;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -57,6 +65,8 @@ public class OrdersListviewAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.listview_item_order, parent, false);
 
             viewHolder = new ViewHolder();
+            viewHolder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutOrder);
+
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
             viewHolder.textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
             viewHolder.textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
@@ -72,6 +82,13 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
+        viewHolder.relativeLayout.setBackgroundColor(0);
+
+        if (order.getStatus().equals("Open")) {
+
+            viewHolder.relativeLayout.setBackgroundColor(context.getColor(holo_green_light));
+        }
+
         viewHolder.textViewDateTime.setText(order.getDateTime());
         viewHolder.textViewOrderId.setText(order.getOrderId() + "");
         viewHolder.textViewStatus.setText(order.getStatus());
@@ -81,6 +98,8 @@ public class OrdersListviewAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
+
+        RelativeLayout relativeLayout;
 
         TextView textViewOrderId;
         TextView textViewStatus;

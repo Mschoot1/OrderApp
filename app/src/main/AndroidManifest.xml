@@ -22,6 +22,12 @@
         <activity android:name=".Presentation.Activities.RegisterActivity" />
         <activity android:name=".Presentation.Activities.OrderHistoryActivity" />
         <activity android:name=".Presentation.Activities.AllergiesActivity" />
+        <activity android:name=".Presentation.Activities.OrderDetailActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Presentation.Activities.OrderHistoryActivity" />
+        </activity>
     </application>
 
 </manifest>

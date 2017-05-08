@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textViewOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:padding="@dimen/paddingProduct"
+        android:text="11"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/textViewDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:padding="@dimen/paddingProduct"
+        android:text="8-5-2017 15:32"
+        android:textSize="@dimen/textsizeProduct"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
