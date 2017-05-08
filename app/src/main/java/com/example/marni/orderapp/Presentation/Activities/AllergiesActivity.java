@@ -26,11 +26,13 @@ import java.util.ArrayList;
  * Created by Wallaard on 4-5-2017.
  */
 
-public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AllergiesGenerator.OnRandomUserAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
-    private AllergiesGenerator allergiesGenerator = new AllergiesGenerator();
+    private BaseAdapter allergiesAdapter;
+
+    private ArrayList<Allergy> allergies = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +40,6 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_allergies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-
-        // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,13 +50,10 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ArrayList<Allergy> allergies = allergiesGenerator.getAllergies();
-
-        // set current menu item checked
-        navigationView.setCheckedItem(R.id.nav_allergy_information);
+        getAllergies();
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
-        BaseAdapter allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);
+        allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);
         listViewAllergies.setAdapter(allergiesAdapter);
     }
 
@@ -132,5 +128,21 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRandomUserAvailable(Allergy allergy) {
+        allergies.add(allergy);
+        Log.i(TAG, "Size: " + allergies.size());
+        allergiesAdapter.notifyDataSetChanged();
+    }
+
+    public void getAllergies() {
+
+        String[] urls = new String[] { "http://10.0.2.2:3000/" };
+
+        // Connect and pass self for callback
+        AllergiesGenerator getRandomUser = new AllergiesGenerator(this);
+        getRandomUser.execute(urls);
     }
 }
