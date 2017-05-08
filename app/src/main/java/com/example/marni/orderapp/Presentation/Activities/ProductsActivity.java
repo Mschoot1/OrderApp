@@ -17,6 +17,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.DataAccess.CategoriesTask;
+import com.example.marni.orderapp.DataAccess.ProductsTask;
+import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.R;
@@ -28,9 +31,13 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TotalFromAssortment.OnTotalChanged {
+        TotalFromAssortment.OnTotalChanged, CategoriesTask.OnCategoryAvailable, ProductsTask.OnProductAvailable {
 
     private final String TAG = getClass().getSimpleName();
+
+    private ArrayList<Category> categories = new ArrayList<>();
+    private ArrayList<Product> products = new ArrayList<>();
+    private ProductsListviewAdapter mAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -52,44 +59,46 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ArrayList<Product> products = new ArrayList<>();
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
-        // dummy data
-        Product product;
-        for (int i = 0; i < 10; i++) {
-
-            product = new Product();
-            product.setName("Cola");
-            product.setCategory("Non Alcoholic");
-            product.setPrice(2.0);
-            product.setSize(300);
-            products.add(product);
-        }
-
-        for (int i = 0; i < 10; i++) {
-
-            product = new Product();
-            product.setName("Wine");
-            product.setCategory("Alcoholic");
-            product.setPrice(3.5);
-            product.setAlcohol_percentage(12.0);
-            product.setSize(150);
-            products.add(product);
-        }
-        // end
+        getCategory();
+//        // dummy data
+//        Product product;
+//
+//        for (int i = 0; i < 10; i++) {
+//
+//            product = new Product();
+//            product.setName("Cola");
+//            product.setCategory("Non Alcoholic");
+//            product.setPrice(2.0);
+//            product.setSize(300);
+//            products.add(product);
+//        }
+//
+//        for (int i = 0; i < 10; i++) {
+//
+//            product = new Product();
+//            product.setName("Wine");
+//            product.setCategory("Alcoholic");
+//            product.setPrice(3.5);
+//            product.setAlcohol_percentage(12.0);
+//            product.setSize(150);
+//            products.add(product);
+//        }
+//        // end
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        ProductsListviewAdapter productsAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
-        stickyList.setAdapter(productsAdapter);
-        productsAdapter.notifyDataSetChanged();
+
+        stickyList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -172,6 +181,40 @@ public class ProductsActivity extends AppCompatActivity implements
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         textViewTotal.setText("Total: € " + formatter.format(priceTotal));
+    }
+
+    public void getCategory(){
+        String[] urls = new String[] { "https://androidtestapi.herokuapp.com/api/v1/categories"};
+
+        CategoriesTask getCategory = new CategoriesTask(this);
+        getCategory.execute(urls);
+    }
+
+    public void onCategoryAvailable(Category category){
+        categories.clear();
+        categories.add(category);
+
+        for (Category c : categories) {
+
+            getProduct(c.getId());
+
+        }
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void getProduct(int id){
+        String[] urls = new String[] { "https://androidtestapi.herokuapp.com/api/v1/products/category/" + id};
+
+        ProductsTask getProduct = new ProductsTask(this);
+        getProduct.execute(urls);
+    }
+
+    public void onProductAvailable(Product product){
+        products.clear();
+        products.add(product);
+
+        mAdapter.notifyDataSetChanged();
     }
 }
 

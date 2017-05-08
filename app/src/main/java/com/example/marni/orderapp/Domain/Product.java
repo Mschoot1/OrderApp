@@ -10,6 +10,7 @@ public class Product {
     private int size;
     private double alcohol_percentage;
     private String category;
+    private int categoryid;
 
     public String getName() {
         return name;
@@ -49,5 +50,13 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(int categoryid) {
+        this.categoryid = categoryid;
     }
 }
