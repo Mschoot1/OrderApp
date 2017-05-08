@@ -24,7 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar_include"
-            android:layout_above="@+id/fab" />
+            android:layout_above="@+id/fab"
+            android:divider="@android:color/black"
+            android:dividerHeight="2dp"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
