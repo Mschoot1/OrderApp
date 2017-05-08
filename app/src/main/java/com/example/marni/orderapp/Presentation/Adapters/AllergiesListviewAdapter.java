@@ -90,5 +90,6 @@ public class AllergiesListviewAdapter extends BaseAdapter {
         ImageView imageViewAllergyIcon;
     }
 }
+//
 
 
