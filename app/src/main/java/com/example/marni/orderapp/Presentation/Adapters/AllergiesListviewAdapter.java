@@ -2,6 +2,7 @@ package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.Domain.Allergy;
+import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
 import com.example.marni.orderapp.R;
 
 import org.w3c.dom.Text;
@@ -23,11 +25,15 @@ import java.util.ArrayList;
 
 public class AllergiesListviewAdapter extends BaseAdapter {
 
+    private final String TAG = getClass().getSimpleName();
+
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<Allergy> allergies;
 
     public AllergiesListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Allergy> allergies) {
+
+        Log.i(TAG, "Size: " + allergies.size());
 
         this.context = context;
         this.layoutInflater = layoutInflater;
@@ -36,17 +42,17 @@ public class AllergiesListviewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return allergies.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return allergies.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
