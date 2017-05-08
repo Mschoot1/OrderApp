@@ -1,6 +1,7 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +13,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.marni.orderapp.R;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = getClass().getSimpleName();
+    private RadioButton button1, button2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,9 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
+
+        button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
+        button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
 
     }
 
@@ -115,5 +124,26 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return true;
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.topup_radiobutton1:
+                if (checked)
+                    Toast.makeText(this, "button 1 selected", Toast.LENGTH_SHORT).show();
+
+                    button2.setChecked(false);
+                    break;
+            case R.id.topup_radiobutton2:
+                if (checked)
+                    Toast.makeText(this, "button 2 selected", Toast.LENGTH_SHORT).show();
+
+                    button1.setChecked(false);
+                    break;
+        }
     }
 }
