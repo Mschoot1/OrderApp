@@ -119,8 +119,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
                 startActivity(intent);
                 break;
             case R.id.nav_top_up:
-//                intent = new Intent(getApplicationContext(), TopUpActivity.class);
-//                startActivity(intent);
+                intent = new Intent(getApplicationContext(), TopUpActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_allergy_information:
                 intent = new Intent(getApplicationContext(), AllergiesActivity.class);

@@ -48,7 +48,6 @@
     </string-array>
 
     <string-array name="TopUpAmount">
-        <item></item>
         <item>5</item>
         <item>10</item>
         <item>25</item>
@@ -60,5 +59,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="allergy_information">Allergy Information</string>
     <string name="information_allergies">Information Allergies</string>
+
+    <!--Top up -->
+
+    <string name="topup_name">Top up</string>
+    <string name="topup_newbalance">New balance</string>
+    <string name="topup_concurrency">€</string>
+    <string name="topup_hint_value">value</string>
+    <string name="topup_topayment">To payment</string>
 
 </resources>
