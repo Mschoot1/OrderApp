@@ -87,7 +87,6 @@ public class AllergiesListviewAdapter extends BaseAdapter {
 
         return convertView;
     }
-    //
 
     private static class ViewHolder {
         TextView textViewInformation;
