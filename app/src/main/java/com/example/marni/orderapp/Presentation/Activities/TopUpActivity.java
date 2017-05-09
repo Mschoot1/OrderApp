@@ -22,10 +22,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
+import com.example.marni.orderapp.DataAccess.BalanceTask;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.R;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance {
+        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
@@ -58,7 +60,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
 
-        current_balance = 14;
+        getBalance();
+
         calculateBalance = new CalculateBalance(this, this);
 
         button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
@@ -66,7 +69,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
-        textview_balance.setText("$ " + current_balance);
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
 
         edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
@@ -235,6 +237,13 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    public void getBalance(){
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+
+        BalanceTask getBalance = new BalanceTask(this);
+        getBalance.execute(urls);
+    }
+
     @Override
     public void onBalanceChanged(double newBalance) {
         textview_newbalance.setText("" + newBalance);
@@ -247,5 +256,10 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     public void addBalance(double balance){
         calculateBalance.newBalance(current_balance, balance);
+    }
+
+    public void onBalanceAvailable(Balance bal){
+        current_balance = bal.getBalance();
+        textview_balance.setText("$ " + current_balance);
     }
 }
