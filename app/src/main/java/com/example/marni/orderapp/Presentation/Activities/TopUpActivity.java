@@ -1,7 +1,6 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,16 +13,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
+import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
 import com.example.marni.orderapp.R;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
+    private TextView textview_balance, textview_newbalance;
+    private EditText edittext_value;
+    private double current_balance;
+    private CalculateBalance calculateBalance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,19 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
 
+        calculateBalance = new CalculateBalance();
+
+
         button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
+
+        current_balance = 14;
+
+        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+        textview_balance.setText("$ " + current_balance);
+        textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
+
+        edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
 
     }
 
@@ -134,15 +149,19 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         switch(view.getId()) {
             case R.id.topup_radiobutton1:
                 if (checked)
-                    Toast.makeText(this, "button 1 selected", Toast.LENGTH_SHORT).show();
-
                     button2.setChecked(false);
+
+                    String balance_added = edittext_value.getText().toString();
+                    Double added_balance = Double.parseDouble(balance_added);
+                    Double newBalance = calculateBalance.newBalance(current_balance, added_balance);
+
+                    textview_newbalance.setText("" + newBalance);
+
                     break;
             case R.id.topup_radiobutton2:
                 if (checked)
-                    Toast.makeText(this, "button 2 selected", Toast.LENGTH_SHORT).show();
-
                     button1.setChecked(false);
+
                     break;
         }
     }

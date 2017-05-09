@@ -51,7 +51,8 @@
                     android:gravity="center_vertical"
                     android:layout_marginLeft="60dp"
                     android:layout_marginStart="60dp"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:onClick="onRadioButtonClicked"
+                    android:checked="true"/>
 
                 <TextView
                     android:id="@+id/topup_currency"
@@ -68,7 +69,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="100dp"
                     android:layout_marginEnd="100dp"
-                    android:hint="@string/topup_hint_value"/>
+                    android:hint="@string/topup_hint_value"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
             <LinearLayout

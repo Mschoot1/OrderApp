@@ -60,6 +60,7 @@
     <string name="allergy_information">Allergy Information</string>
     <string name="information_allergies">Information Allergies</string>
 
+
     <!--Top up -->
 
     <string name="topup_name">Top up</string>
@@ -67,5 +68,7 @@
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>
     <string name="topup_topayment">To payment</string>
+
+
 
 </resources>

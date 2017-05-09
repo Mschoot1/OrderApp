@@ -15,9 +15,9 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
+            android:id="@+id/toolbar_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$14.00"
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"
             android:textColor="#000"/>
