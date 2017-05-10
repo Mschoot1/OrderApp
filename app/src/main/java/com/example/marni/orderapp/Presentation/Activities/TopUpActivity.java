@@ -9,18 +9,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
+import com.example.marni.orderapp.DataAccess.BalanceTask;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.R;
 
-public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
@@ -28,6 +35,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private EditText edittext_value;
     private double current_balance;
     private CalculateBalance calculateBalance;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +60,79 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
 
-        calculateBalance = new CalculateBalance();
+        getBalance();
 
+        calculateBalance = new CalculateBalance(this, this);
 
         button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
+        button1.setChecked(true);
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
 
-        current_balance = 14;
-
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
-        textview_balance.setText("$ " + current_balance);
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
 
         edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
+
+        spinner = (Spinner)findViewById(R.id.topup_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(button2.isChecked()) {
+                    switch (position) {
+                        case 0:
+                            addBalance(5);
+                            break;
+                        case 1:
+                            addBalance(10);
+                            break;
+                        case 2:
+                            addBalance(25);
+                            break;
+                        case 3:
+                            addBalance(50);
+                            break;
+                        case 4:
+                            addBalance(100);
+                            break;
+                    }
+
+                }
+            }
+
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+
+
+        edittext_value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    if(button1.isChecked()){
+                        Double added_balance = Double.parseDouble(edittext_value.getText().toString());
+                        addBalance(added_balance);
+                    }
+                } catch (Exception e){
+                    Log.i(TAG, "Empty value");
+                    calculateBalance.resetBalance();
+                }
+            }
+        });
+
 
     }
 
@@ -142,7 +210,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
@@ -150,19 +217,49 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             case R.id.topup_radiobutton1:
                 if (checked)
                     button2.setChecked(false);
-
-                    String balance_added = edittext_value.getText().toString();
-                    Double added_balance = Double.parseDouble(balance_added);
-                    Double newBalance = calculateBalance.newBalance(current_balance, added_balance);
-
-                    textview_newbalance.setText("" + newBalance);
+                    calculateBalance.resetBalance();
+                    edittext_value.setEnabled(true);
 
                     break;
             case R.id.topup_radiobutton2:
                 if (checked)
                     button1.setChecked(false);
+                    calculateBalance.resetBalance();
+                    edittext_value.setText("");
+                    edittext_value.setEnabled(false);
+                    spinner.setFocusable(true);
+
+                    String balance = spinner.getSelectedItem().toString();
+                    Double addbalance = Double.parseDouble(balance);
+                    addBalance(addbalance);
 
                     break;
         }
+    }
+
+    public void getBalance(){
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+
+        BalanceTask getBalance = new BalanceTask(this);
+        getBalance.execute(urls);
+    }
+
+    @Override
+    public void onBalanceChanged(double newBalance) {
+        textview_newbalance.setText("" + newBalance);
+    }
+
+    @Override
+    public void onResetBalance(double balance) {
+        textview_newbalance.setText("");
+    }
+
+    public void addBalance(double balance){
+        calculateBalance.newBalance(current_balance, balance);
+    }
+
+    public void onBalanceAvailable(Balance bal){
+        current_balance = bal.getBalance();
+        textview_balance.setText("$ " + current_balance);
     }
 }
