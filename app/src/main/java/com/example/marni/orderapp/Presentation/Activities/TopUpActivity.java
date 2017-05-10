@@ -24,12 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
-import com.example.marni.orderapp.DataAccess.BalanceTask;
+import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Balance.BalancePostTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.R;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceTask.OnBalanceAvailable {
+        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable, BalancePostTask.SuccessListener {
 
     private final String TAG = getClass().getSimpleName();
     public final static  String TOPUP_EXTRA = "topup_extra";
@@ -77,9 +78,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             @Override
             public void onClick(View v) {
                 if(calculateBalance.getAdded_balance() != 0){
-                    Intent intent = new Intent(getApplicationContext(), TopUpConfirmation.class);
-                    intent.putExtra(TOPUP_EXTRA, calculateBalance.getAdded_balance());
-                    startActivity(intent);
+                    postBalance("https://mysql-test-p4.herokuapp.com/topup");
                 } else {
                     Toast.makeText(TopUpActivity.this, "No amount selected", Toast.LENGTH_SHORT).show();
                 }
@@ -258,7 +257,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void getBalance(){
         String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
 
-        BalanceTask getBalance = new BalanceTask(this);
+        BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
 
@@ -280,5 +279,24 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void onBalanceAvailable(Balance bal){
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + current_balance);
+    }
+
+    public void postBalance(String ApiUrl){
+        BalancePostTask task = new BalancePostTask(this);
+        String[] urls = new String[]{ApiUrl, Double.toString(calculateBalance.getAdded_balance()), "topup", "284"};
+        task.execute(urls);
+    }
+
+    @Override
+    public void successful(Boolean successful) {
+
+        Log.i(TAG, successful.toString());
+        if(successful){
+
+            Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
+        } else {
+
+            Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

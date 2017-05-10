@@ -16,7 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.marni.orderapp.DataAccess.BalanceTask;
+import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AllergiesGenerator.OnRandomUserAvailable, BalanceTask.OnBalanceAvailable {
+        AllergiesGenerator.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -161,7 +161,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     public void getBalance(){
         String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
 
-        BalanceTask getBalance = new BalanceTask(this);
+        BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
 

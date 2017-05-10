@@ -1,9 +1,5 @@
 package com.example.marni.orderapp.BusinessLogic;
 
-import android.content.Context;
-
-import com.example.marni.orderapp.DataAccess.BalanceTask;
-
 /**
  * Created by marcu on 5/9/2017.
  */

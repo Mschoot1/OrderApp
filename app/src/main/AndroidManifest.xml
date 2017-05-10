@@ -28,7 +28,6 @@
                 android:value=".Presentation.Activities.OrderHistoryActivity" />
         </activity>
         <activity android:name=".Presentation.Activities.TopUpActivity" />
-        <activity android:name=".Presentation.Activities.TopUpConfirmation"></activity>
     </application>
 
 </manifest>

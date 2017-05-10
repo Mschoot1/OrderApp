@@ -1,8 +1,9 @@
-package com.example.marni.orderapp.DataAccess;
+package com.example.marni.orderapp.DataAccess.Balance;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.marni.orderapp.DataAccess.ProductsTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Product;
 
@@ -23,13 +24,13 @@ import java.net.URLConnection;
  * Created by MarcdenUil on 9-5-2017.
  */
 
-public class BalanceTask extends AsyncTask<String, Void, String> {
+public class BalanceGetTask extends AsyncTask<String, Void, String> {
 
     private OnBalanceAvailable listener = null;
 
     private static final String TAG = ProductsTask.class.getSimpleName();
 
-    public BalanceTask(OnBalanceAvailable listener){
+    public BalanceGetTask(OnBalanceAvailable listener){
         this.listener = listener;
     }
 
