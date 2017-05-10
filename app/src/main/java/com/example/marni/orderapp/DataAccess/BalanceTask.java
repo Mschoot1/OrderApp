@@ -38,14 +38,14 @@ public class BalanceTask extends AsyncTask<String, Void, String> {
         InputStream inputStream = null;
         int responsCode = -1;
         // De URL die we via de .execute() meegeleverd krijgen
-        String personUrl = params[0];
+        String balanceUrl = params[0];
         // Het resultaat dat we gaan retourneren
         String response = "";
 
-        Log.i(TAG, "doInBackground - " + personUrl);
+        Log.i(TAG, "doInBackground - " + balanceUrl);
         try {
             // Maak een URL object
-            URL url = new URL(personUrl);
+            URL url = new URL(balanceUrl);
             // Open een connection op de URL
             URLConnection urlConnection = url.openConnection();
 

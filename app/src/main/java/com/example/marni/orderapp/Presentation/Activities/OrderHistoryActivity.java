@@ -16,8 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.marni.orderapp.DataAccess.BalanceTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.R;
@@ -26,13 +29,15 @@ import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersTask.OnOrderAvailable {
+        OrdersTask.OnOrderAvailable, BalanceTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     public static final String ORDER = "ORDER";
 
     private BaseAdapter ordersAdapter;
+    private double current_balance;
+    private TextView textview_balance;
 
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -57,6 +62,10 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_order_history);
+
+        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+
+        getBalance();
 
         // listview
 
@@ -175,5 +184,17 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         orders.add(order);
         ordersAdapter.notifyDataSetChanged();
+    }
+
+    public void getBalance(){
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+
+        BalanceTask getBalance = new BalanceTask(this);
+        getBalance.execute(urls);
+    }
+
+    public void onBalanceAvailable(Balance bal){
+        current_balance = bal.getBalance();
+        textview_balance.setText("€ " + current_balance);
     }
 }

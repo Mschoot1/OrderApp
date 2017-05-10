@@ -112,13 +112,15 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="150dp">
 
-                <EditText
+                <TextView
                     android:id="@+id/topup_edittext_newbalance"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:hint="@string/topup_newbalance"
                     android:enabled="false"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
                     android:layout_marginLeft="100dp"
                     android:layout_marginRight="100dp" />
             </LinearLayout>
