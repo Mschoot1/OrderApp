@@ -14,30 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize" />
 
-    <TextView
-        android:id="@+id/textViewOrderId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_include"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:padding="@dimen/paddingProduct"
-        android:text="11"
-        android:textSize="@dimen/textsizeProduct" />
-
-    <TextView
-        android:id="@+id/textViewDateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/toolbar_include"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:padding="@dimen/paddingProduct"
-        android:text="8-5-2017 15:32"
-        android:textSize="@dimen/textsizeProduct" />
-
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
@@ -54,11 +30,49 @@
         android:scrollbarStyle="outsideOverlay" />
 
     <TextView
+        android:id="@+id/textViewOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_include"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:padding="@dimen/paddingProduct"
+        android:text="11"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_include"
+        android:layout_toEndOf="@+id/textViewOrderId"
+        android:layout_toRightOf="@+id/textViewOrderId"
+        android:padding="@dimen/paddingProduct"
+        android:text="Paid"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
+        android:id="@+id/textViewDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/toolbar_include"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:padding="@dimen/paddingProduct"
+        android:text="8-5-2017 15:32"
+        android:textSize="@dimen/textsizeProduct" />
+
+    <TextView
         android:id="@+id/textViewTotal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:padding="16dp"
         android:text="@string/total"
         android:textSize="18sp" />

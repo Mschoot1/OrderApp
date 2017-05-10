@@ -17,17 +17,24 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.R;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class OrderHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class OrderHistoryActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        OrdersTask.OnOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
+
+    public static final String ORDER = "ORDER";
+
+    private BaseAdapter ordersAdapter;
+
+    private ArrayList<Order> orders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +59,17 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
         navigationView.setCheckedItem(R.id.nav_order_history);
 
         // listview
-        ArrayList<Order> orders = new ArrayList<>();
 
-        Order order = new Order();
-        order.setDateTime("8-5-2017 12:53");
-        order.setStatus("Open");
-        order.setOrderId(11);
-        order.setTotalPrice(14.00);
-        orders.add(order);
-
-        for (int i = 0; i < 10; i++) {
-
-            order = new Order();
-            order.setDateTime("8-5-2017 12:53");
-            order.setStatus("Paid");
-            order.setTotalPrice(14.00);
-            order.setOrderId(10 - i);
-            orders.add(order);
-        }
+//        Order order = new Order();
+//        order.setDateTime("8-5-2017 12:53");
+//        order.setStatus("Open");
+//        order.setOrderId(11);
+//        order.setTotalPrice(14.00);
+//        orders.add(order);
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
-        BaseAdapter ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
+        ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
 
         listView.setAdapter(ordersAdapter);
 
@@ -84,10 +80,14 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
 
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
 
+                intent.putExtra(ORDER, orders.get(position));
                 startActivity(intent);
             }
         });
+
+        getOrders("https://randomuser.me/api/?results=5");
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,5 +159,21 @@ public class OrderHistoryActivity extends AppCompatActivity implements Navigatio
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getOrders(String ApiUrl) {
+
+        OrdersTask task = new OrdersTask(this);
+        String[] urls = new String[]{ApiUrl};
+        task.execute(urls);
+    }
+
+    @Override
+    public void onOrderAvailable(Order order) {
+
+        Log.i(TAG, "OrderId returned: " + order.getOrderId());
+
+        orders.add(order);
+        ordersAdapter.notifyDataSetChanged();
     }
 }

@@ -1,19 +1,30 @@
 package com.example.marni.orderapp.Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by MarcdenUil on 5-5-2017.
  */
 
-public class Product {
+public class Product implements Serializable {
+
+    private int productId;
     private String name;
     private double price;
     private int size;
     private double alcohol_percentage;
-    private String category;
-    private ArrayList allergies;
-    private int categoryid;
+    private ArrayList<Allergy> allergies = new ArrayList<>();
+    private int categoryId;
+    private int quantity;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
 
     public String getName() {
         return name;
@@ -47,20 +58,12 @@ public class Product {
         this.alcohol_percentage = alcohol_percentage;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public int getCategoryId() {
-        return categoryid;
+        return categoryId;
     }
 
-    public void setCategoryid(int categoryid) {
-        this.categoryid = categoryid;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public ArrayList getAllergies() {
@@ -69,5 +72,13 @@ public class Product {
 
     public void setAllergies(ArrayList allergies) {
         this.allergies = allergies;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

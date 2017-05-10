@@ -1,12 +1,13 @@
 package com.example.marni.orderapp.Domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by marni on 8-5-2017.
  */
 
-public class Order {
+public class Order implements Serializable {
 
     private int orderId;
     private String Status;

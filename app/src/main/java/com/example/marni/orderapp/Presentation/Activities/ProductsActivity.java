@@ -35,8 +35,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
     private final String TAG = getClass().getSimpleName();
 
-    private ArrayList<Category> categories = new ArrayList<>();
     private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -62,42 +62,18 @@ public class ProductsActivity extends AppCompatActivity implements
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
-        // dummy data
-        Product product;
-
-        for (int i = 0; i < 10; i++) {
-
-            product = new Product();
-            product.setName("Cola");
-            product.setCategory("Non Alcoholic");
-            product.setCategoryid(0);
-            product.setPrice(2.0);
-            product.setSize(300);
-            products.add(product);
-        }
-
-        for (int i = 0; i < 10; i++) {
-
-            product = new Product();
-            product.setName("Wine");
-            product.setCategory("Alcoholic");
-            product.setCategoryid(1);
-            product.setPrice(3.5);
-            product.setAlcohol_percentage(12.0);
-            product.setSize(150);
-            products.add(product);
-        }
-        // end
-
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, categories, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+
+        getCategories("");
+        getProducts("");
     }
 
     @Override
@@ -115,25 +91,6 @@ public class ProductsActivity extends AppCompatActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
-//
-//            case R.id.action_favorite:
-//                // User chose the "Favorite" action, mark the current item
-//                // as a favorite...
-//                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -182,37 +139,32 @@ public class ProductsActivity extends AppCompatActivity implements
         textViewTotal.setText("Total: € " + formatter.format(priceTotal));
     }
 
-    public void getCategory(){
-        String[] urls = new String[] { "https://androidtestapi.herokuapp.com/api/v1/categories"};
+    public void getCategories(String ApiUrl) {
 
-        CategoriesTask getCategory = new CategoriesTask(this);
-        getCategory.execute(urls);
+        CategoriesTask task = new CategoriesTask(this);
+        String[] urls = new String[]{ApiUrl};
+        task.execute(urls);
     }
 
+    @Override
     public void onCategoryAvailable(Category category){
-        categories.clear();
+
         categories.add(category);
-
-        for (Category c : categories) {
-
-            getProduct(c.getId());
-
-        }
-
         mAdapter.notifyDataSetChanged();
     }
 
-    public void getProduct(int id){
-        String[] urls = new String[] { "https://androidtestapi.herokuapp.com/api/v1/products/category/" + id};
+    public void getProducts(String ApiUrl) {
 
-        ProductsTask getProduct = new ProductsTask(this);
-        getProduct.execute(urls);
+        ProductsTask task = new ProductsTask(this);
+        String[] urls = new String[]{ApiUrl};
+        task.execute(urls);
     }
 
-    public void onProductAvailable(Product product){
-        products.clear();
-        products.add(product);
+    @Override
+    public void onProductAvailable(Product product) {
 
+        products.add(product);
+//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 }

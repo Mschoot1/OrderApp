@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.R;
 
@@ -40,58 +40,23 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     private LayoutInflater layoutInflater;
 
     private ArrayList<Product> products;
+    private ArrayList<Category> categories;
     private int[] sectionIndices;
     private String[] sectionTitles;
 
-    private ArrayList<ArrayList<Product>> allProducts = new ArrayList<>();
-
     private TotalFromAssortment.OnTotalChanged listener;
 
-    private static SparseIntArray sparseIntArray = new SparseIntArray();
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, TotalFromAssortment.OnTotalChanged listener) {
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, ArrayList<Category> categories, TotalFromAssortment.OnTotalChanged listener) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
+        this.categories = categories;
         sectionIndices = getSectionIndices();
         sectionTitles = getSectionTitles();
 
         this.listener = listener;
-
-        for (int i = 0; i < products.size(); i++) {
-
-            //
-            allProducts.add(new ArrayList<Product>());
-
-            // random icon generation
-            ArrayList<Integer> allergies = new ArrayList<>();
-
-            int iconCount = (int) (Math.random() * 3 + 0);
-
-            for (int j = 0; j < iconCount; j++) {
-
-                int iconId = getRandomIconId();
-
-                for (int k = 0; k < allergies.size(); k++) {
-
-                    if (allergies.get(k) == iconId) {
-
-                        iconId = getRandomIconId();
-                    }
-                }
-
-                Log.i(TAG, iconId + "");
-
-                allergies.add(iconId);
-            }
-
-            products.get(i).setAllergies(allergies);
-            //
-        }
-
-        Log.i(TAG, allProducts.size() + "");
     }
 
     @Override
@@ -113,9 +78,11 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
         final ViewHolder viewHolder;
 
-        if (convertView == null) {
+        final Product product = products.get(position);
 
-            Log.i(TAG, "Geen viewHolder meegekregen. Nieuwe maken. " + position);
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
+        if (convertView == null) {
 
             convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
 
@@ -133,14 +100,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             convertView.setTag(viewHolder);
         } else {
 
-            Log.i(TAG, "ViewHolder hergebruiken. " + position);
-
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-        DecimalFormat formatter = new DecimalFormat("#0.00");
-
-        final Product product = products.get(position);
 
         viewHolder.textViewName.setText(product.getName());
         viewHolder.textViewPrice.setText("€ " + formatter.format(product.getPrice()));
@@ -151,30 +112,14 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                 R.array.product_quantity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinnerAmount.setAdapter(adapter);
-
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position2, long id) {
 
-                Log.i(TAG, "Spinner value: " + Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+                Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                sparseIntArray.put(position, Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
-
-                ArrayList<Product> specificProducts = new ArrayList<>();
-
-                int spinnerValue = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
-
-                for (int i = 0; i < spinnerValue; i++) {
-
-                    specificProducts.add(product);
-                }
-
-                Log.i(TAG, specificProducts.size() + "");
-
-                allProducts.set(position, specificProducts);
-
-                TotalFromAssortment tfa = new TotalFromAssortment(allProducts);
+                product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+                TotalFromAssortment tfa = new TotalFromAssortment(products);
 
                 listener.onTotalChanged(tfa.getPriceTotal());
             }
@@ -185,16 +130,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             }
         });
 
-        Log.i(TAG, "Size = " + sparseIntArray.size());
-
-        //loop a sparseIntArray
-        for (int i = 0; i < sparseIntArray.size(); i++) {
-
-            if (position == sparseIntArray.keyAt(i)) {
-
-                viewHolder.spinnerAmount.setSelection(sparseIntArray.valueAt(i));
-            }
-        }
+        viewHolder.spinnerAmount.setSelection(product.getQuantity());
 
         viewHolder.linearLayout.removeAllViews();
 
@@ -213,28 +149,37 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         return convertView;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private int[] getSectionIndices() {
         ArrayList<Integer> sectionIndices = new ArrayList<>();
-        int categoryId = products.get(0).getCategoryId();
-        sectionIndices.add(0);
-        for (int i = 1; i < products.size(); i++) {
-            if (products.get(i).getCategoryId() != categoryId) {
-                categoryId = products.get(i).getCategoryId();
-                sectionIndices.add(i);
+        if (products.size() > 1) {
+
+
+            int categoryId = products.get(0).getCategoryId();
+            sectionIndices.add(0);
+            for (int i = 1; i < products.size(); i++) {
+                if (products.get(i).getCategoryId() != categoryId) {
+                    categoryId = products.get(i).getCategoryId();
+                    sectionIndices.add(i);
+                }
             }
+            int[] sections = new int[sectionIndices.size()];
+            for (int i = 0; i < sectionIndices.size(); i++) {
+                sections[i] = sectionIndices.get(i);
+
+            }
+
+            return sections;
+        } else {
+
+            return new int[0];
         }
-        int[] sections = new int[sectionIndices.size()];
-        for (int i = 0; i < sectionIndices.size(); i++) {
-            sections[i] = sectionIndices.get(i);
-        }
-        return sections;
     }
 
     private String[] getSectionTitles() {
         String[] titles = new String[sectionIndices.length];
         for (int i = 0; i < sectionIndices.length; i++) {
-            titles[i] = products.get(sectionIndices[i]).getCategory();
+
+            titles[i] = "sectionIndice: " + sectionIndices[i];
         }
         return titles;
     }
@@ -270,6 +215,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
+
         HeaderViewHolder holder;
 
         if (convertView == null) {
@@ -281,18 +227,25 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        String headerTitle = products.get(position).getCategory();
-        holder.textViewCategoryTitle.setText(headerTitle);
+        Product product = products.get(position);
+
+        for(Category category : categories) {
+
+            if(product.getCategoryId() == category.getCategoryId()) {
+
+                holder.textViewCategoryTitle.setText(category.getCategoryName());
+            }
+        }
 
         return convertView;
     }
 
     @Override
     public long getHeaderId(int position) {
-        return products.get(position).getCategory().charAt(0);
+        return products.get(position).getCategoryId();
     }
 
-    private static class ViewHolder {
+    private class ViewHolder {
         TextView textViewName;
         TextView textViewPrice;
         TextView textViewSize;
@@ -304,6 +257,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     }
 
     private class HeaderViewHolder {
+
         TextView textViewCategoryTitle;
     }
 
@@ -343,7 +297,33 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                 return 0;
         }
     }
+
+    public void getAllergyIcons(Product product) {
+
+        for (int i = 0; i < products.size(); i++) {
+
+            // random icon generation
+            ArrayList<Integer> allergies = new ArrayList<>();
+
+            int iconCount = (int) (Math.random() * 3 + 0);
+
+            for (int j = 0; j < iconCount; j++) {
+
+                int iconId = getRandomIconId();
+
+                for (int k = 0; k < allergies.size(); k++) {
+
+                    if (allergies.get(k) == iconId) {
+
+                        iconId = getRandomIconId();
+                    }
+                }
+
+                allergies.add(iconId);
+            }
+
+            products.get(i).setAllergies(allergies);
+            //
+        }
+    }
 }
-
-
-

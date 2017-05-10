@@ -29,7 +29,7 @@ public class ProductsTask extends AsyncTask<String, Void, String> {
 
     private static final String TAG = ProductsTask.class.getSimpleName();
 
-    public ProductsTask(OnProductAvailable listener){
+    public ProductsTask(OnProductAvailable listener) {
         this.listener = listener;
     }
 
@@ -43,41 +43,42 @@ public class ProductsTask extends AsyncTask<String, Void, String> {
         String response = "";
 
         Log.i(TAG, "doInBackground - " + personUrl);
-        try {
-            // Maak een URL object
-            URL url = new URL(personUrl);
-            // Open een connection op de URL
-            URLConnection urlConnection = url.openConnection();
+//        try {
+//            // Maak een URL object
+//            URL url = new URL(personUrl);
+//            // Open een connection op de URL
+//            URLConnection urlConnection = url.openConnection();
+//
+//            if (!(urlConnection instanceof HttpURLConnection)) {
+//                return null;
+//            }
+//
+//            // Initialiseer een HTTP connectie
+//            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+//            httpConnection.setAllowUserInteraction(false);
+//            httpConnection.setInstanceFollowRedirects(true);
+//            httpConnection.setRequestMethod("GET");
+//
+//            // Voer het request uit via de HTTP connectie op de URL
+//            httpConnection.connect();
+//
+//            // Kijk of het gelukt is door de response code te checken
+//            responsCode = httpConnection.getResponseCode();
+//            if (responsCode == HttpURLConnection.HTTP_OK) {
+//                inputStream = httpConnection.getInputStream();
+//                response = getStringFromInputStream(inputStream);
+//                // Log.i(TAG, "doInBackground response = " + response);
+//            } else {
+//                Log.e(TAG, "Error, invalid response");
+//            }
 
-            if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
-            }
-
-            // Initialiseer een HTTP connectie
-            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
-            httpConnection.setRequestMethod("GET");
-
-            // Voer het request uit via de HTTP connectie op de URL
-            httpConnection.connect();
-
-            // Kijk of het gelukt is door de response code te checken
-            responsCode = httpConnection.getResponseCode();
-            if (responsCode == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConnection.getInputStream();
-                response = getStringFromInputStream(inputStream);
-                // Log.i(TAG, "doInBackground response = " + response);
-            } else {
-                Log.e(TAG, "Error, invalid response");
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
-        } catch (IOException e) {
-            Log.e("TAG", "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
-        }
+        response = "{\"results\":[{\"productId\":1,\"name\":\"Beer\",\"price\":2,\"size\":330,\"alcohol\":5,\"categoryId\":0,\"quantity\":0},{\"productId\":2,\"name\":\"Wine\",\"price\":3.5,\"size\":150,\"alcohol\":12,\"categoryId\":0,\"quantity\":0},{\"productId\":3,\"name\":\"Cider\",\"price\":3,\"size\":250,\"alcohol\":4.5,\"categoryId\":0,\"quantity\":0},{\"productId\":4,\"name\":\"Whiskey\",\"price\":4,\"size\":50,\"alcohol\":40,\"categoryId\":0,\"quantity\":0},{\"productId\":5,\"name\":\"Cola\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":6,\"name\":\"Fanta\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":7,\"name\":\"Sprite\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0},{\"productId\":8,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"categoryId\":1,\"quantity\":0}]}";
+//        } catch (MalformedURLException e) {
+//            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+//            return null;
+//        } catch (IOException e) {
+//            Log.e("TAG", "doInBackground IOException " + e.getLocalizedMessage());
+//            return null;
 
         // Hier eindigt deze methode.
         // Het resultaat gaat naar de onPostExecute methode.
@@ -88,43 +89,41 @@ public class ProductsTask extends AsyncTask<String, Void, String> {
 
         Log.i(TAG, "onPostExecute " + response);
 
-        // Check of er een response is
-        if(response == null || response == "") {
+        if (response == null || response == "") {
             Log.e(TAG, "onPostExecute kreeg een lege response!");
             return;
         }
 
-        // Het resultaat is in ons geval een stuk tekst in JSON formaat.
-        // Daar moeten we de info die we willen tonen uit filteren (parsen).
-        // Dat kan met een JSONObject.
-        JSONArray products;
-
         try {
-            // Top level json object
-            products = new JSONArray(response);
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-            // Get all products and start looping
-            for (int idx = 0; idx < products.length(); idx++) {
-                // array level objects and get user
-                JSONObject product = products.getJSONObject(idx);
+            Log.i(TAG, "results.length(): " + jsonArray.length());
 
-                Integer id = product.getInt("id");
-                String productname = product.getString("productname");
-                Integer categoryid = product.getInt("categoryid");
+            for (int idx = 0; idx < jsonArray.length(); idx++) {
+                JSONObject product = jsonArray.getJSONObject(idx);
 
-                // Create new SpotifyItem object
+                Integer productId = product.getInt("productId");
+                String name = product.getString("name");
+                Double price = product.getDouble("price");
+                int size = product.getInt("size");
+                Double alcohol = product.getDouble("alcohol");
+                int categoryId = product.getInt("categoryId");
+                int quantity = product.getInt("quantity");
+
                 Product p = new Product();
-                p.setName(productname);
-                p.setCategoryid(categoryid);
+                p.setProductId(productId);
+                p.setName(name);
+                p.setPrice(price);
+                p.setSize(size);
+                p.setAlcohol_percentage(alcohol);
+                p.setCategoryId(categoryId);
+                p.setQuantity(quantity);
 
-                Log.d(TAG, "onPostExecute: " + idx + " " + productname);
-                //
-                // call back with new person data
-                //
                 listener.onProductAvailable(p);
 
             }
-        } catch( JSONException ex) {
+        } catch (JSONException ex) {
             Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
         }
     }

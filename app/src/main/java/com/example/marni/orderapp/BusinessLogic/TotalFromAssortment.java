@@ -10,23 +10,21 @@ import java.util.ArrayList;
 
 public class TotalFromAssortment {
 
-    private ArrayList<ArrayList<Product>> products;
+    private ArrayList<Product> products;
 
     private double priceTotal = 0;
 
-    public TotalFromAssortment(ArrayList<ArrayList<Product>> products) {
+    public TotalFromAssortment(ArrayList<Product> products) {
 
         this.products = products;
     }
 
     public Double getPriceTotal() {
 
-        for (ArrayList<Product> specificProducts : products) {
 
-            for (Product product : specificProducts) {
+        for (Product product : products) {
 
-                priceTotal += product.getPrice();
-            }
+            priceTotal += product.getQuantity()*product.getPrice();
         }
 
         return priceTotal;

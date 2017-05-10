@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/listview_header_placeholder"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
         android:textStyle="bold"
