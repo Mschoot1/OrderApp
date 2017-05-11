@@ -81,7 +81,6 @@ public class BalancePostTask extends AsyncTask<String, Void, Boolean> {
     }
 
     protected void onPostExecute(Boolean response) {
-
         listener.successful(response);
     }
 

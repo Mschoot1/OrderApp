@@ -20,6 +20,7 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
@@ -37,7 +38,7 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable, ProductsPutTask.SuccessListener {
+        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable, ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -169,11 +170,16 @@ public class ProductsActivity extends AppCompatActivity implements
 
     @Override
     public void onMethodAvailable(String method, Product product, Order order){
-        if(method.equals("put")){
-
-            String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/edit", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
-            ProductsPutTask putProduct = new ProductsPutTask(this);
-            putProduct.execute(urls);
+        switch (method){
+            case "put":
+                String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/edit", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
+                ProductsPutTask putProduct = new ProductsPutTask(this);
+                putProduct.execute(urls);
+                break;
+            case "post":
+                String[] urls2 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/add", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
+                ProductsPostTask postProduct = new ProductsPostTask(this);
+                postProduct.execute(urls2);
         }
     }
 

@@ -13,18 +13,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-
 /**
- * Created by marcu on 5/10/2017.
+ * Created by MarcdenUil on 11-5-2017.
  */
 
-public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
+public class ProductsPostTask extends AsyncTask<String, Void, Boolean> {
 
     private final String TAG = getClass().getSimpleName();
 
     private SuccessListener listener;
 
-    public ProductsPutTask(SuccessListener listener){
+    public ProductsPostTask(SuccessListener listener){
         this.listener = listener;
     }
 
@@ -50,7 +49,7 @@ public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            httpConnection.setRequestMethod("PUT");
+            httpConnection.setRequestMethod("POST");
 
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("order_id", params[1]);
@@ -88,4 +87,5 @@ public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
     public interface SuccessListener {
         void successful(Boolean successful);
     }
+
 }
