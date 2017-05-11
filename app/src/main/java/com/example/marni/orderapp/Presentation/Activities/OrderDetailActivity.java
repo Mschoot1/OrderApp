@@ -53,13 +53,12 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         assert order != null;
         textViewOrderId.setText(order.getOrderId() + "");
-        switch (order.getStatus()) {
-            case 0:
-                textViewStatus.setText(getResources().getString(R.string.open));
-                break;
-            default:
-                textViewStatus.setText(getResources().getString(R.string.paid));
-        }        textViewDateTime.setText(order.getTimestamp());
+        if (order.getStatus() == 0) {
+            textViewStatus.setText(getResources().getString(R.string.open));
+        } else {
+            textViewStatus.setText(getResources().getString(R.string.paid));
+        }
+        textViewDateTime.setText(order.getTimestamp());
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

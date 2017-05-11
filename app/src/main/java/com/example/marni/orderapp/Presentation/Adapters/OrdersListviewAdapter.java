@@ -91,12 +91,10 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
         viewHolder.textViewOrderId.setText(order.getOrderId() + "");
-        switch (order.getStatus()) {
-            case 0:
-                viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
-                break;
-            default:
-                viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
+        if (order.getStatus() == 0) {
+            viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
+        } else {
+            viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
         }
         viewHolder.textViewTotalPrice.setText("$" + formatter.format(order.getPriceTotal()));
 

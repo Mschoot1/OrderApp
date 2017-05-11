@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.R;
@@ -111,9 +112,15 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
+                int spinnerValue = (int) viewHolder.spinnerAmount.getSelectedItem();
 
-                product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+                Log.i(TAG, "Spinner clicked. Value: " + spinnerValue);
+
+                String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/products/284?id=&quantity=", product.getProductId() + "", spinnerValue + ""};
+                ProductsPutTask task = new ProductsPutTask();
+                task.execute(urls);
+
+                product.setQuantity(spinnerValue);
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
 
                 listener.onTotalChanged(tfa.getPriceTotal());
