@@ -46,7 +46,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged listener;
 
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener) {
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;

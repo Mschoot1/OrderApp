@@ -35,7 +35,7 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable {
+        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -72,14 +72,25 @@ public class ProductsActivity extends AppCompatActivity implements
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance();
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
+    }
+    private void getCurrentOrder(String apiUrl) {
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, true, this);
+        OrdersTask task = new OrdersTask(this);
+        String[] urls = new String[]{apiUrl};
+        task.execute(urls);
+    }
+
+    @Override
+    public void onOrderAvailable(Order order) {
+
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -147,6 +158,7 @@ public class ProductsActivity extends AppCompatActivity implements
         getBalance.execute(urls);
     }
 
+    @Override
     public void onBalanceAvailable(Balance bal) {
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + current_balance);

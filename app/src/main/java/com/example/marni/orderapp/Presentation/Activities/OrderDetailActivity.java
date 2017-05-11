@@ -109,7 +109,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, currentOrder, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
