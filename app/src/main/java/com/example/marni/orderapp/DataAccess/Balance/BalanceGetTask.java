@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.marni.orderapp.DataAccess.ProductsTask;
 import com.example.marni.orderapp.Domain.Balance;
-import com.example.marni.orderapp.Domain.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +27,7 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
 
     private OnBalanceAvailable listener = null;
 
-    private static final String TAG = ProductsTask.class.getSimpleName();
+    private final String TAG = getClass().getSimpleName();
 
     public BalanceGetTask(OnBalanceAvailable listener){
         this.listener = listener;
@@ -76,7 +75,7 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
             Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
         } catch (IOException e) {
-            Log.e("TAG", "doInBackground IOException " + e.getLocalizedMessage());
+            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
 

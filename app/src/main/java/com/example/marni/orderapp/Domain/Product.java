@@ -17,6 +17,7 @@ public class Product implements Serializable {
     private ArrayList<Allergy> allergies = new ArrayList<>();
     private int categoryId;
     private int quantity;
+    private String categoryName;
 
     public int getProductId() {
         return productId;
@@ -80,5 +81,13 @@ public class Product implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

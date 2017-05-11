@@ -33,7 +33,10 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TotalFromAssortment.OnTotalChanged, CategoriesTask.OnCategoryAvailable, ProductsTask.OnProductAvailable {
+        TotalFromAssortment.OnTotalChanged,
+        CategoriesTask.OnCategoryAvailable,
+        ProductsTask.OnProductAvailable,
+        BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -67,9 +70,11 @@ public class ProductsActivity extends AppCompatActivity implements
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
-        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance();
+        getCategories("");
+        getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -80,9 +85,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-
-        getCategories("");
-        getProducts("");
     }
 
     @Override
@@ -150,13 +152,13 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getCategories(String ApiUrl) {
 
-        CategoriesTask task = new CategoriesTask(this);
         String[] urls = new String[]{ApiUrl};
+        CategoriesTask task = new CategoriesTask(this);
         task.execute(urls);
     }
 
     @Override
-    public void onCategoryAvailable(Category category){
+    public void onCategoryAvailable(Category category) {
 
         categories.add(category);
         mAdapter.notifyDataSetChanged();
@@ -164,8 +166,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getProducts(String ApiUrl) {
 
-        ProductsTask task = new ProductsTask(this);
         String[] urls = new String[]{ApiUrl};
+        ProductsTask task = new ProductsTask(this);
         task.execute(urls);
     }
 
@@ -173,18 +175,18 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-//        mAdapter.getAllergyIcons(product);
+        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 
-    public void getBalance(){
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+    public void getBalance() {
 
+        String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/balance/284"};
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Balance bal){
+    public void onBalanceAvailable(Balance bal) {
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + current_balance);
     }
