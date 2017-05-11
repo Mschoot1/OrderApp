@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
@@ -28,15 +29,19 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class OrderDetailActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable {
+        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
+
+    private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
 
     private double current_balance;
     private TextView textview_balance;
+
+    private Order order;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -50,7 +55,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         Bundle bundle = getIntent().getExtras();
 
-        Order order = (Order) bundle.get(ORDER);
+        order = (Order) bundle.get(ORDER);
 
         TextView textViewOrderId = (TextView) findViewById(R.id.textViewOrderId);
         TextView textViewStatus = (TextView) findViewById(R.id.textViewStatus);
@@ -80,20 +85,34 @@ public class OrderDetailActivity extends AppCompatActivity implements
         }
         textViewDateTime.setText(order.getTimestamp());
 
-        StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
+        stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
-
-        stickyList.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
-
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+    }
+
+    private void getCurrentOrder(String apiUrl) {
+
+        OrdersTask task = new OrdersTask(this);
+        String[] urls = new String[]{apiUrl};
+        task.execute(urls);
+    }
+
+    @Override
+    public void onOrderAvailable(Order order) {
+
+        Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
+
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, currentOrder, this);
+
+        stickyList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void getBalance(String ApiUrl) {

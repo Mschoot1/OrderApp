@@ -18,6 +18,7 @@ public class Product implements Serializable {
     private int categoryId;
     private int quantity;
     private String categoryName;
+    private int orderId;
 
     public int getProductId() {
         return productId;
@@ -89,5 +90,13 @@ public class Product implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

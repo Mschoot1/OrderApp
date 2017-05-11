@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
@@ -39,6 +41,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     private ArrayList<Product> products = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
+    private StickyListHeadersListView stickyList;
 
     private double current_balance;
     private TextView textview_balance;
@@ -71,12 +74,12 @@ public class ProductsActivity extends AppCompatActivity implements
         getBalance();
         getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
-        StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
+        stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, true, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

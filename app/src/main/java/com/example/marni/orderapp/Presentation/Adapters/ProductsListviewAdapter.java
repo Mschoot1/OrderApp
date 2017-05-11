@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -40,16 +41,17 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     private LayoutInflater layoutInflater;
     private CalculateQuantity calculateQuantity;
 
+    private Boolean currentOrder;
     private ArrayList<Product> products;
 
     private TotalFromAssortment.OnTotalChanged listener;
 
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, TotalFromAssortment.OnTotalChanged listener) {
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;
-
         this.products = products;
+        this.currentOrder = currentOrder;
 
         this.listener = listener;
     }
@@ -112,32 +114,43 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinnerAmount.setAdapter(adapter);
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
-        viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (currentOrder) {
 
-                Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
+            Log.i(TAG, "Current order.");
 
-                calculateQuantity = new CalculateQuantity();
+            viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
-                Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
+                    Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                Log.i(TAG, "Methode: " + result);
+                    calculateQuantity = new CalculateQuantity();
 
-                product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
-                TotalFromAssortment tfa = new TotalFromAssortment(products);
+                    Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                listener.onTotalChanged(tfa.getPriceTotal());
-            }
+                    String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                    Log.i(TAG, "Methode: " + result);
 
-            }
-        });
+                    product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+                    TotalFromAssortment tfa = new TotalFromAssortment(products);
+
+                    listener.onTotalChanged(tfa.getPriceTotal());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        } else {
+
+            Log.i(TAG, "Old order.");
+
+            viewHolder.spinnerAmount.setEnabled(false);
+        }
 
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

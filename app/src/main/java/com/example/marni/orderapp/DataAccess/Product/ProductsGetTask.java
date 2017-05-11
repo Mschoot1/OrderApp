@@ -103,6 +103,8 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
             for (int idx = 0; idx < jsonArray.length(); idx++) {
                 JSONObject product = jsonArray.getJSONObject(idx);
 
+                Product p = new Product();
+
                 Integer id = product.getInt("id");
                 String name = product.getString("name");
                 Double price = product.getDouble("price");
@@ -112,7 +114,11 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 String categoryName = product.getString("category_name");
                 int quantity = product.getInt("quantity");
 
-                Product p = new Product();
+                if(product.has("order_id")) {
+                    int orderId = product.getInt("order_id");
+                    p.setOrderId(orderId);
+                }
+
                 p.setProductId(id);
                 p.setName(name);
                 p.setPrice(price);

@@ -13,7 +13,6 @@ public class Order implements Serializable {
     private int Status;
     private String timestamp;
     private double price_total;
-    private ArrayList<Product> products;
 
     public int getOrderId() {
         return orderId;
@@ -45,13 +44,5 @@ public class Order implements Serializable {
 
     public void setPriceTotal(double price_total) {
         this.price_total = price_total;
-    }
-
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
     }
 }
