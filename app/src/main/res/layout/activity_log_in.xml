@@ -36,13 +36,13 @@
         android:textSize="@dimen/textsize"
         android:textColor="#000"
         android:layout_below="@+id/textViewSignIn"
-        android:layout_alignLeft="@+id/editTextEmailaddress"
-        android:layout_alignStart="@+id/editTextEmailaddress" />
+        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_alignStart="@+id/login_editTextEmailaddress" />
 
     <EditText
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextEmailaddress"
+        android:id="@+id/login_editTextEmailaddress"
         android:textSize="@dimen/textsize"
         android:layout_below="@+id/textViewEmailaddress"
         android:layout_centerHorizontal="true"
@@ -55,14 +55,14 @@
         android:id="@+id/textViewPassword"
         android:textSize="@dimen/textsize"
         android:textColor="#000"
-        android:layout_below="@+id/editTextEmailaddress"
-        android:layout_alignLeft="@+id/editTextEmailaddress"
-        android:layout_alignStart="@+id/editTextEmailaddress" />
+        android:layout_below="@+id/login_editTextEmailaddress"
+        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_alignStart="@+id/login_editTextEmailaddress" />
 
     <EditText
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextPassword"
+        android:id="@+id/login_editTextPassword"
         android:textSize="@dimen/textsize"
         android:layout_below="@+id/textViewPassword"
         android:layout_alignLeft="@+id/textViewPassword"
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sign_in"
         android:layout_marginTop="12dp"
-        android:layout_below="@+id/editTextPassword"
+        android:layout_below="@+id/login_editTextPassword"
         android:layout_alignLeft="@+id/textViewSignIn"
         android:layout_alignStart="@+id/textViewSignIn" />
 

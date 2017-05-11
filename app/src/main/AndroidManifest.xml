@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Presentation.Activities.ProductsActivity">
+        <activity android:name=".Presentation.Activities.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +28,7 @@
                 android:value=".Presentation.Activities.OrderHistoryActivity" />
         </activity>
         <activity android:name=".Presentation.Activities.TopUpActivity" />
+        <activity android:name=".Presentation.Activities.ProductsActivity"/>
     </application>
 
 </manifest>
