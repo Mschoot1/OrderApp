@@ -68,7 +68,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
+        getBalance();
         getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
@@ -137,9 +137,9 @@ public class ProductsActivity extends AppCompatActivity implements
         mAdapter.notifyDataSetChanged();
     }
 
-    public void getBalance(String ApiUrl) {
+    public void getBalance() {
 
-        String[] urls = new String[]{ApiUrl};
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }

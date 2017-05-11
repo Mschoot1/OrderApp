@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
@@ -37,6 +37,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private Context context;
     private LayoutInflater layoutInflater;
+    private CalculateQuantity calculateQuantity;
 
     private ArrayList<Product> products;
 
@@ -110,14 +111,21 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         viewHolder.spinnerAmount.setAdapter(adapter);
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                int spinnerValue = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
+                Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                Log.i(TAG, "Spinner clicked. Value: " + spinnerValue);
+                calculateQuantity = new CalculateQuantity();
 
-                product.setQuantity(spinnerValue);
+                Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
+
+                String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
+
+                Log.i(TAG, "Methode: " + result);
+
+                product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
 
                 listener.onTotalChanged(tfa.getPriceTotal());
