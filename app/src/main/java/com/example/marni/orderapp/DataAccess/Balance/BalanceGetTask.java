@@ -1,8 +1,9 @@
-package com.example.marni.orderapp.DataAccess;
+package com.example.marni.orderapp.DataAccess.Balance;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.marni.orderapp.DataAccess.ProductsTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Product;
 
@@ -23,13 +24,13 @@ import java.net.URLConnection;
  * Created by MarcdenUil on 9-5-2017.
  */
 
-public class BalanceTask extends AsyncTask<String, Void, String> {
+public class BalanceGetTask extends AsyncTask<String, Void, String> {
 
     private OnBalanceAvailable listener = null;
 
     private static final String TAG = ProductsTask.class.getSimpleName();
 
-    public BalanceTask(OnBalanceAvailable listener){
+    public BalanceGetTask(OnBalanceAvailable listener){
         this.listener = listener;
     }
 
@@ -38,14 +39,14 @@ public class BalanceTask extends AsyncTask<String, Void, String> {
         InputStream inputStream = null;
         int responsCode = -1;
         // De URL die we via de .execute() meegeleverd krijgen
-        String personUrl = params[0];
+        String balanceUrl = params[0];
         // Het resultaat dat we gaan retourneren
         String response = "";
 
-        Log.i(TAG, "doInBackground - " + personUrl);
+        Log.i(TAG, "doInBackground - " + balanceUrl);
         try {
             // Maak een URL object
-            URL url = new URL(personUrl);
+            URL url = new URL(balanceUrl);
             // Open een connection op de URL
             URLConnection urlConnection = url.openConnection();
 

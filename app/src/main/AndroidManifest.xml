@@ -27,7 +27,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presentation.Activities.OrderHistoryActivity" />
         </activity>
-        <activity android:name=".Presentation.Activities.TopUpActivity"/>
+        <activity android:name=".Presentation.Activities.TopUpActivity" />
     </application>
 
 </manifest>

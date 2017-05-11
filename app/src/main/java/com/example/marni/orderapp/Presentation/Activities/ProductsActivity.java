@@ -17,8 +17,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.CategoriesTask;
 import com.example.marni.orderapp.DataAccess.ProductsTask;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
@@ -38,6 +40,9 @@ public class ProductsActivity extends AppCompatActivity implements
     private ArrayList<Product> products = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
+
+    private double current_balance;
+    private TextView textview_balance;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -62,6 +67,9 @@ public class ProductsActivity extends AppCompatActivity implements
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
+        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+
+        getBalance();
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -142,8 +150,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getCategories(String ApiUrl) {
 
-        Log.i(TAG, "getcategories called.");
-
         CategoriesTask task = new CategoriesTask(this);
         String[] urls = new String[]{ApiUrl};
         task.execute(urls);
@@ -167,8 +173,20 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-        mAdapter.getAllergyIcons(product);
+//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void getBalance(){
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+
+        BalanceGetTask getBalance = new BalanceGetTask(this);
+        getBalance.execute(urls);
+    }
+
+    public void onBalanceAvailable(Balance bal){
+        current_balance = bal.getBalance();
+        textview_balance.setText("€ " + current_balance);
     }
 }
 

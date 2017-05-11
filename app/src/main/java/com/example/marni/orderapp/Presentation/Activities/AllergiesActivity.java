@@ -14,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.Domain.Allergy;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
 import com.example.marni.orderapp.R;
@@ -26,11 +29,14 @@ import java.util.ArrayList;
  * Created by Wallaard on 4-5-2017.
  */
 
-public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AllergiesGenerator.OnRandomUserAvailable {
+public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        AllergiesGenerator.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     private BaseAdapter allergiesAdapter;
+    private TextView textview_balance;
+    private double current_balance;
 
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
@@ -54,6 +60,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
 
         getAllergies();
+        getBalance();
+
+        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
         allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);
@@ -142,10 +151,22 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
     public void getAllergies() {
 
-        String[] urls = new String[] { "http://10.0.2.2:3000/" };
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/allergie" };
 
         // Connect and pass self for callback
         AllergiesGenerator getRandomUser = new AllergiesGenerator(this);
         getRandomUser.execute(urls);
+    }
+
+    public void getBalance(){
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+
+        BalanceGetTask getBalance = new BalanceGetTask(this);
+        getBalance.execute(urls);
+    }
+
+    public void onBalanceAvailable(Balance bal){
+        current_balance = bal.getBalance();
+        textview_balance.setText("€ " + current_balance);
     }
 }
