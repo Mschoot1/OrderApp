@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.Domain.Category;
+import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.R;
@@ -47,6 +48,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
         this.context = context;
         this.layoutInflater = layoutInflater;
+
         this.products = products;
 
         this.listener = listener;
