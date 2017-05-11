@@ -40,7 +40,7 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
         String response = "";
 
         Log.i(TAG, "doInBackground - " + personUrl);
-        try {
+//        try {
 
 //            URL url = new URL(personUrl);
 //            URLConnection urlConnection = url.openConnection();
@@ -64,10 +64,12 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
 //                Log.e(TAG, "Error, invalid response");
 //            }
 
-            // dummy data
-            response = getDummyData().toString();
-            Log.i(TAG, "Response: " + response);
-            //
+        // dummy data
+
+        response = "{\"results\":[{\"id\":4,\"status\":1,\"timestamp\":\"2017-05-10T20:23:22.000Z\",\"price_total\":10,\"customer_id\":284},{\"id\":14,\"status\":1,\"timestamp\":\"2017-05-10T22:23:34.000Z\",\"price_total\":30,\"customer_id\":284},{\"id\":24,\"status\":0,\"timestamp\":\"2017-05-10T20:24:33.000Z\",\"price_total\":13,\"customer_id\":284}]}";
+
+        Log.i(TAG, "Response: " + response);
+        //
 
 //        } catch (MalformedURLException e) {
 //            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
@@ -75,9 +77,9 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
 //        } catch (IOException e) {
 //            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
 //            return null;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         return response;
     }
@@ -100,16 +102,16 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
             for (int idx = 0; idx < jsonArray.length(); idx++) {
                 JSONObject order = jsonArray.getJSONObject(idx);
 
-                Integer orderId = order.getInt("orderId");
-                String status = order.getString("status");
-                String dateTime = order.getString("dateTime");
-                Double totalPrice = order.getDouble("totalPrice");
+                int id = order.getInt("id");
+                int status = order.getInt("status");
+                String timestamp = order.getString("timestamp");
+                Double price_total = order.getDouble("price_total");
 
                 Order o = new Order();
-                o.setOrderId(orderId);
+                o.setOrderId(id);
                 o.setStatus(status);
-                o.setDateTime(dateTime);
-                o.setTotalPrice(totalPrice);
+                o.setTimestamp(timestamp);
+                o.setPriceTotal(price_total);
 
                 listener.onOrderAvailable(o);
             }
@@ -148,29 +150,5 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
 
     public interface OnOrderAvailable {
         void onOrderAvailable(Order order);
-    }
-
-    private JSONObject getDummyData() throws JSONException {
-
-        Log.i(TAG, "getDummyData() called.");
-
-        JSONObject results = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-
-        results.put("results", jsonArray);
-
-        for (int i = 0; i < 10; i++) {
-
-            JSONObject jsonObject;
-            jsonObject = new JSONObject();
-            jsonObject.put("orderId", i);
-            jsonObject.put("status", "Paid");
-            jsonObject.put("dateTime", "8-5-2017 18:56");
-            jsonObject.put("totalPrice", 10.00);
-
-            jsonArray.put(jsonObject);
-        }
-
-        return results;
     }
 }

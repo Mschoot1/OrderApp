@@ -43,43 +43,44 @@ public class ProductsTask extends AsyncTask<String, Void, String> {
 
 //        Log.i(TAG, "doInBackground - " + productsUrl);
 
-        try {
-            // Maak een URL object
-            URL url = new URL(productsUrl);
-            // Open een connection op de URL
-            URLConnection urlConnection = url.openConnection();
+        Log.i(TAG, "doInBackground - " + productsUrl);
+//        try {
+//            // Maak een URL object
+//            URL url = new URL(productsUrl);
+//            // Open een connection op de URL
+//            URLConnection urlConnection = url.openConnection();
+//
+//            if (!(urlConnection instanceof HttpURLConnection)) {
+//                return null;
+//            }
+//
+//            // Initialiseer een HTTP connectie
+//            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+//            httpConnection.setAllowUserInteraction(false);
+//            httpConnection.setInstanceFollowRedirects(true);
+//            httpConnection.setRequestMethod("GET");
+//
+//            // Voer het request uit via de HTTP connectie op de URL
+//            httpConnection.connect();
+//
+//            // Kijk of het gelukt is door de response code te checken
+//            responsCode = httpConnection.getResponseCode();
+//            if (responsCode == HttpURLConnection.HTTP_OK) {
+//                inputStream = httpConnection.getInputStream();
+//                response = getStringFromInputStream(inputStream);
+//                // Log.i(TAG, "doInBackground response = " + response);
+//            } else {
+//                Log.e(TAG, "Error, invalid response");
+//            }
+//        } catch (MalformedURLException e) {
+//            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+//            return null;
+//        } catch (IOException e) {
+//            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+//            return null;
+//        }
 
-            if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
-            }
-
-            // Initialiseer een HTTP connectie
-            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
-            httpConnection.setRequestMethod("GET");
-
-            // Voer het request uit via de HTTP connectie op de URL
-            httpConnection.connect();
-
-            // Kijk of het gelukt is door de response code te checken
-            responsCode = httpConnection.getResponseCode();
-            if (responsCode == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConnection.getInputStream();
-                response = getStringFromInputStream(inputStream);
-                // Log.i(TAG, "doInBackground response = " + response);
-            } else {
-                Log.e(TAG, "Error, invalid response");
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
-        } catch (IOException e) {
-            Log.e("TAG", "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
-        }
-
-//        response = "{\"results\":[{\"id\":14,\"name\":\"Beer\",\"price\":2,\"size\":330,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":14,\"name\":\"Beer\",\"price\":2,\"size\":330,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":3},{\"id\":34,\"name\":\"Wine\",\"price\":3.5,\"size\":150,\"alcohol\":12,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":44,\"name\":\"Cider\",\"price\":3,\"size\":250,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":54,\"name\":\"Whiskey\",\"price\":4,\"size\":50,\"alcohol\":40,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":6},{\"id\":64,\"name\":\"Cola\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":4},{\"id\":74,\"name\":\"Fanta\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0},{\"id\":84,\"name\":\"Sprite\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0},{\"id\":94,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0}]}";
+        response = "{\"results\":[{\"id\":14,\"name\":\"Beer\",\"price\":2,\"size\":330,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":14,\"name\":\"Beer\",\"price\":2,\"size\":330,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":3},{\"id\":34,\"name\":\"Wine\",\"price\":3.5,\"size\":150,\"alcohol\":12,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":44,\"name\":\"Cider\",\"price\":3,\"size\":250,\"alcohol\":5,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":2},{\"id\":54,\"name\":\"Whiskey\",\"price\":4,\"size\":50,\"alcohol\":40,\"category_id\":1,\"category_name\":\"Alcoholic beverage\",\"quantity\":6},{\"id\":64,\"name\":\"Cola\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":4},{\"id\":74,\"name\":\"Fanta\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0},{\"id\":84,\"name\":\"Sprite\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0},{\"id\":94,\"name\":\"Water\",\"price\":1.5,\"size\":250,\"alcohol\":0,\"category_id\":2,\"category_name\":\"Non-alcoholic beverage\",\"quantity\":0}]}";
 
         Log.i(TAG, "response: " + response);
 

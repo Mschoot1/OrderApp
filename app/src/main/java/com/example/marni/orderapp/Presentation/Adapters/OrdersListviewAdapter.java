@@ -84,15 +84,21 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
         viewHolder.relativeLayout.setBackgroundColor(0);
 
-        if (order.getStatus().equals("Open")) {
+        if (order.getStatus() == 0) {
 
             viewHolder.relativeLayout.setBackgroundColor(context.getColor(holo_green_light));
         }
 
-        viewHolder.textViewDateTime.setText(order.getDateTime());
+        viewHolder.textViewDateTime.setText(order.getTimestamp());
         viewHolder.textViewOrderId.setText(order.getOrderId() + "");
-        viewHolder.textViewStatus.setText(order.getStatus());
-        viewHolder.textViewTotalPrice.setText("$" + formatter.format(order.getTotalPrice()));
+        switch (order.getStatus()) {
+            case 0:
+                viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
+                break;
+            default:
+                viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
+        }
+        viewHolder.textViewTotalPrice.setText("$" + formatter.format(order.getPriceTotal()));
 
         return convertView;
     }

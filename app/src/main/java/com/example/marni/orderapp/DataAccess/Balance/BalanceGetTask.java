@@ -43,44 +43,47 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
         String response = "";
 
         Log.i(TAG, "doInBackground - " + balanceUrl);
-        try {
-            // Maak een URL object
-            URL url = new URL(balanceUrl);
-            // Open een connection op de URL
-            URLConnection urlConnection = url.openConnection();
-
-            if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
-            }
-
-            // Initialiseer een HTTP connectie
-            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
-            httpConnection.setRequestMethod("GET");
-
-            // Voer het request uit via de HTTP connectie op de URL
-            httpConnection.connect();
-
-            // Kijk of het gelukt is door de response code te checken
-            responsCode = httpConnection.getResponseCode();
-            if (responsCode == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConnection.getInputStream();
-                response = getStringFromInputStream(inputStream);
-                // Log.i(TAG, "doInBackground response = " + response);
-            } else {
-                Log.e(TAG, "Error, invalid response");
-            }
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
-        } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
-        }
+//        try {
+//            // Maak een URL object
+//            URL url = new URL(balanceUrl);
+//            // Open een connection op de URL
+//            URLConnection urlConnection = url.openConnection();
+//
+//            if (!(urlConnection instanceof HttpURLConnection)) {
+//                return null;
+//            }
+//
+//            // Initialiseer een HTTP connectie
+//            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+//            httpConnection.setAllowUserInteraction(false);
+//            httpConnection.setInstanceFollowRedirects(true);
+//            httpConnection.setRequestMethod("GET");
+//
+//            // Voer het request uit via de HTTP connectie op de URL
+//            httpConnection.connect();
+//
+//            // Kijk of het gelukt is door de response code te checken
+//            responsCode = httpConnection.getResponseCode();
+//            if (responsCode == HttpURLConnection.HTTP_OK) {
+//                inputStream = httpConnection.getInputStream();
+//                response = getStringFromInputStream(inputStream);
+//                // Log.i(TAG, "doInBackground response = " + response);
+//            } else {
+//                Log.e(TAG, "Error, invalid response");
+//            }
+//        } catch (MalformedURLException e) {
+//            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+//            return null;
+//        } catch (IOException e) {
+//            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+//            return null;
+//        }
 
         // Hier eindigt deze methode.
         // Het resultaat gaat naar de onPostExecute methode.
+
+        response = "[{\"balance\":231}]";
+
         return response;
     }
 

@@ -36,16 +36,14 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     private LayoutInflater layoutInflater;
 
     private ArrayList<Product> products;
-    private ArrayList<Category> categories;
 
     private TotalFromAssortment.OnTotalChanged listener;
 
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, ArrayList<Category> categories, TotalFromAssortment.OnTotalChanged listener) {
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, TotalFromAssortment.OnTotalChanged listener) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
-        this.categories = categories;
 
         this.listener = listener;
     }
@@ -171,13 +169,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
         Product product = products.get(position);
 
-        for(Category category : categories) {
-
-            if(product.getCategoryId() == category.getCategoryId()) {
-
-                holder.textViewCategoryTitle.setText(category.getCategoryName());
-            }
-        }
+        holder.textViewCategoryTitle.setText(product.getCategoryName());
 
         return convertView;
     }
@@ -253,7 +245,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                 allergies.add(iconId);
             }
 
-            products.get(i).setAllergies(allergies);
+            product.setAllergies(allergies);
             //
         }
     }

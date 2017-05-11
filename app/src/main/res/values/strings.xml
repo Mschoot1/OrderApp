@@ -32,6 +32,8 @@
     <string name="top_up">Top Up</string>
     <string name="my_order">My Order</string>
     <string name="Assortment">Assortment</string>
+    <string name="open">Open</string>
+    <string name="paid">Paid</string>
 
     <string-array name="product_quantity">
         <item>0</item>

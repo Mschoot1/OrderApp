@@ -67,15 +67,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         getBalance();
 
-        // listview
-
-//        Order order = new Order();
-//        order.setDateTime("8-5-2017 12:53");
-//        order.setStatus("Open");
-//        order.setOrderId(11);
-//        order.setTotalPrice(14.00);
-//        orders.add(order);
-
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
         ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
@@ -117,15 +108,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
-//
-//            case R.id.action_favorite:
-//                // User chose the "Favorite" action, mark the current item
-//                // as a favorite...
-//                return true;
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class Order implements Serializable {
 
     private int orderId;
-    private String Status;
-    private String dateTime;
-    private double totalPrice;
+    private int Status;
+    private String timestamp;
+    private double price_total;
     private ArrayList<Product> products;
 
     public int getOrderId() {
@@ -23,28 +23,28 @@ public class Order implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         Status = status;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public double getPriceTotal() {
+        return price_total;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setPriceTotal(double price_total) {
+        this.price_total = price_total;
     }
 
     public ArrayList<Product> getProducts() {

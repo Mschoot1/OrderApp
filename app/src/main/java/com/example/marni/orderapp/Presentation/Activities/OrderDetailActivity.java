@@ -5,12 +5,12 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.CategoriesTask;
+import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.ProductsTask;
+import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -26,13 +26,15 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class OrderDetailActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsTask.OnProductAvailable, CategoriesTask.OnCategoryAvailable {
+        ProductsTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Category> categories = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
+
+    private double current_balance;
+    private TextView textview_balance;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -52,8 +54,13 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         assert order != null;
         textViewOrderId.setText(order.getOrderId() + "");
-        textViewStatus.setText(order.getStatus());
-        textViewDateTime.setText(order.getDateTime());
+        switch (order.getStatus()) {
+            case 0:
+                textViewStatus.setText(getResources().getString(R.string.open));
+                break;
+            default:
+                textViewStatus.setText(getResources().getString(R.string.paid));
+        }        textViewDateTime.setText(order.getTimestamp());
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,20 +70,27 @@ public class OrderDetailActivity extends AppCompatActivity implements
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, categories, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
-        getCategories("");
-        getProducts("");
+        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
+
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
+        getProducts("https://mysql-test-p4.herokuapp.com/products/284");
     }
 
-    public void getCategories(String ApiUrl) {
+    public void getBalance(String ApiUrl) {
 
-        CategoriesTask task = new CategoriesTask(this);
         String[] urls = new String[]{ApiUrl};
-        task.execute(urls);
+        BalanceGetTask getBalance = new BalanceGetTask(this);
+        getBalance.execute(urls);
+    }
+
+    public void onBalanceAvailable(Balance bal) {
+        current_balance = bal.getBalance();
+        textview_balance.setText("€ " + current_balance);
     }
 
     public void getProducts(String ApiUrl) {
@@ -87,25 +101,18 @@ public class OrderDetailActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onProductAvailable(Product product) {
+
+        products.add(product);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onTotalChanged(Double priceTotal) {
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         textViewTotal.setText("Total: € " + formatter.format(priceTotal));
-    }
-
-    @Override
-    public void onCategoryAvailable(Category category) {
-
-        categories.add(category);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onProductAvailable(Product product) {
-
-        products.add(product);
-        mAdapter.notifyDataSetChanged();
     }
 }

@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.CategoriesTask;
 import com.example.marni.orderapp.DataAccess.ProductsTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Category;
@@ -34,14 +33,12 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
-        CategoriesTask.OnCategoryAvailable,
         ProductsTask.OnProductAvailable,
         BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Category> categories = new ArrayList<>();
     private ProductsListviewAdapter mAdapter;
 
     private double current_balance;
@@ -72,8 +69,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance();
-        getCategories("");
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
@@ -81,7 +77,7 @@ public class ProductsActivity extends AppCompatActivity implements
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, categories, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -150,20 +146,6 @@ public class ProductsActivity extends AppCompatActivity implements
         textViewTotal.setText("Total: € " + formatter.format(priceTotal));
     }
 
-    public void getCategories(String ApiUrl) {
-
-        String[] urls = new String[]{ApiUrl};
-        CategoriesTask task = new CategoriesTask(this);
-        task.execute(urls);
-    }
-
-    @Override
-    public void onCategoryAvailable(Category category) {
-
-        categories.add(category);
-        mAdapter.notifyDataSetChanged();
-    }
-
     public void getProducts(String ApiUrl) {
 
         String[] urls = new String[]{ApiUrl};
@@ -179,9 +161,9 @@ public class ProductsActivity extends AppCompatActivity implements
         mAdapter.notifyDataSetChanged();
     }
 
-    public void getBalance() {
+    public void getBalance(String ApiUrl) {
 
-        String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/balance/284"};
+        String[] urls = new String[]{ApiUrl};
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
