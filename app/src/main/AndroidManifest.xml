@@ -15,11 +15,14 @@
         <activity android:name=".Presentation.Activities.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Presentation.Activities.RegisterActivity" />
+        <activity android:name=".Presentation.Activities.RegisterActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Presentation.Activities.LogInActivity" />
+        </activity>
         <activity android:name=".Presentation.Activities.OrderHistoryActivity" />
         <activity android:name=".Presentation.Activities.AllergiesActivity" />
         <activity android:name=".Presentation.Activities.OrderDetailActivity">
@@ -28,7 +31,7 @@
                 android:value=".Presentation.Activities.OrderHistoryActivity" />
         </activity>
         <activity android:name=".Presentation.Activities.TopUpActivity" />
-        <activity android:name=".Presentation.Activities.ProductsActivity"/>
+        <activity android:name=".Presentation.Activities.ProductsActivity" />
     </application>
 
 </manifest>

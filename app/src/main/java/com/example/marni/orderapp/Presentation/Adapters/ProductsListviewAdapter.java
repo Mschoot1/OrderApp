@@ -1,6 +1,7 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
+import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
@@ -108,17 +110,12 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         viewHolder.spinnerAmount.setAdapter(adapter);
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                int spinnerValue = (int) viewHolder.spinnerAmount.getSelectedItem();
+                int spinnerValue = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
 
                 Log.i(TAG, "Spinner clicked. Value: " + spinnerValue);
-
-                String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/products/284?id=&quantity=", product.getProductId() + "", spinnerValue + ""};
-                ProductsPutTask task = new ProductsPutTask();
-                task.execute(urls);
 
                 product.setQuantity(spinnerValue);
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
@@ -132,6 +129,14 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             }
         });
 
+        viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, AllergiesActivity.class);
+                context.startActivity(intent);
+            }
+        });
         viewHolder.linearLayout.removeAllViews();
 
         for (Object iconId : product.getAllergies()) {

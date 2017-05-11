@@ -23,6 +23,7 @@ import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
+import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
@@ -122,30 +123,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
 
-        Intent intent;
-
-        switch (id) {
-            case R.id.nav_assortment:
-                intent = new Intent(getApplicationContext(), ProductsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_my_order:
-//                intent = new Intent(getApplicationContext(), OrderActivity.class);
-//                startActivity(intent);
-                break;
-            case R.id.nav_order_history:
-                intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_top_up:
-                intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_allergy_information:
-                intent = new Intent(getApplicationContext(), AllergiesActivity.class);
-                startActivity(intent);
-                break;
-        }
+        new DrawerMenu(getApplicationContext(), id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

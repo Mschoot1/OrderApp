@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:orientation="horizontal"
-    android:weightSum="1">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/imageViewAllergyIcon"
@@ -16,9 +15,10 @@
         android:id="@+id/textViewAllergyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="21dp"
         android:text="@string/information_allergy_symbol"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imageViewAllergyIcon"
+        android:layout_toEndOf="@+id/imageViewAllergyIcon" />
 
-</LinearLayout>
+</RelativeLayout>

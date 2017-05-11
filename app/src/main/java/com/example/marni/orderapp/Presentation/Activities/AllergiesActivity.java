@@ -1,6 +1,5 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +20,7 @@ import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
+import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
@@ -89,14 +89,6 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                return true;
-//
-//            case R.id.action_favorite:
-//                // User chose the "Favorite" action, mark the current item
-//                // as a favorite...
-//                return true;
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -112,30 +104,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
         int id = item.getItemId();
 
-        Intent intent;
-
-        switch (id) {
-            case R.id.nav_assortment:
-                intent = new Intent(getApplicationContext(), ProductsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_my_order:
-//                intent = new Intent(getApplicationContext(), OrderActivity.class);
-//                startActivity(intent);
-                break;
-            case R.id.nav_order_history:
-                intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_top_up:
-                intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_allergy_information:
-                intent = new Intent(getApplicationContext(), AllergiesActivity.class);
-                startActivity(intent);
-                break;
-        }
+        new DrawerMenu(getApplicationContext(), id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

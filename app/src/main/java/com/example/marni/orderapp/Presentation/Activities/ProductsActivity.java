@@ -1,6 +1,5 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -22,6 +21,7 @@ import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
+import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
@@ -106,30 +106,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
 
-        Intent intent;
-
-        switch (id) {
-            case R.id.nav_assortment:
-                intent = new Intent(getApplicationContext(), ProductsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_my_order:
-//                intent = new Intent(getApplicationContext(), OrderActivity.class);
-//                startActivity(intent);
-                break;
-            case R.id.nav_order_history:
-                intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_top_up:
-                intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_allergy_information:
-                intent = new Intent(getApplicationContext(), AllergiesActivity.class);
-                startActivity(intent);
-                break;
-        }
+        new DrawerMenu(getApplicationContext(), id);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

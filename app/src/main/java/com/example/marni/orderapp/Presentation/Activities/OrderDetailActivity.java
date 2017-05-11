@@ -1,10 +1,13 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
@@ -42,6 +45,8 @@ public class OrderDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_order_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -51,6 +56,21 @@ public class OrderDetailActivity extends AppCompatActivity implements
         TextView textViewStatus = (TextView) findViewById(R.id.textViewStatus);
         TextView textViewDateTime = (TextView) findViewById(R.id.textViewDateTime);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabOrderDetail);
+        if(order.getStatus() == 0) {
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+
+            fab.setVisibility(View.INVISIBLE);
+        }
+
         assert order != null;
         textViewOrderId.setText(order.getOrderId() + "");
         if (order.getStatus() == 0) {
@@ -59,9 +79,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
             textViewStatus.setText(getResources().getString(R.string.paid));
         }
         textViewDateTime.setText(order.getTimestamp());
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -76,7 +93,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
-        getProducts("https://mysql-test-p4.herokuapp.com/products/284");
+        getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
     }
 
     public void getBalance(String ApiUrl) {
