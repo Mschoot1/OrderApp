@@ -18,9 +18,8 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.ProductsTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Balance;
-import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.R;
@@ -33,7 +32,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
-        ProductsTask.OnProductAvailable,
+        ProductsGetTask.OnProductAvailable,
         BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
@@ -149,7 +148,7 @@ public class ProductsActivity extends AppCompatActivity implements
     public void getProducts(String ApiUrl) {
 
         String[] urls = new String[]{ApiUrl};
-        ProductsTask task = new ProductsTask(this);
+        ProductsGetTask task = new ProductsGetTask(this);
         task.execute(urls);
     }
 

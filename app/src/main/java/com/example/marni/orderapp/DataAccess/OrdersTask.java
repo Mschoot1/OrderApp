@@ -40,46 +40,36 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
         String response = "";
 
         Log.i(TAG, "doInBackground - " + personUrl);
-//        try {
+        try {
+            URL url = new URL(personUrl);
+            URLConnection urlConnection = url.openConnection();
 
-//            URL url = new URL(personUrl);
-//            URLConnection urlConnection = url.openConnection();
-//
-//            if (!(urlConnection instanceof HttpURLConnection)) {
-//                return null;
-//            }
-//
-//            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-//            httpConnection.setAllowUserInteraction(false);
-//            httpConnection.setInstanceFollowRedirects(true);
-//            httpConnection.setRequestMethod("GET");
-//
-//            httpConnection.connect();
-//
-//            responsCode = httpConnection.getResponseCode();
-//            if (responsCode == HttpURLConnection.HTTP_OK) {
-//                inputStream = httpConnection.getInputStream();
-//                response = getStringFromInputStream(inputStream);
-//            } else {
-//                Log.e(TAG, "Error, invalid response");
-//            }
+            if (!(urlConnection instanceof HttpURLConnection)) {
+                return null;
+            }
 
-        // dummy data
+            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+            httpConnection.setAllowUserInteraction(false);
+            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestMethod("GET");
 
-        response = "{\"results\":[{\"id\":4,\"status\":1,\"timestamp\":\"2017-05-10T20:23:22.000Z\",\"price_total\":10,\"customer_id\":284},{\"id\":14,\"status\":1,\"timestamp\":\"2017-05-10T22:23:34.000Z\",\"price_total\":30,\"customer_id\":284},{\"id\":24,\"status\":0,\"timestamp\":\"2017-05-10T20:24:33.000Z\",\"price_total\":13,\"customer_id\":284}]}";
+            httpConnection.connect();
 
-        Log.i(TAG, "Response: " + response);
-        //
-
-//        } catch (MalformedURLException e) {
-//            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-//            return null;
-//        } catch (IOException e) {
-//            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
-//            return null;
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+            responsCode = httpConnection.getResponseCode();
+            if (responsCode == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConnection.getInputStream();
+                response = getStringFromInputStream(inputStream);
+            } else {
+                Log.e(TAG, "Error, invalid response");
+            }
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            return null;
+        } catch (IOException e) {
+            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+            return null;
+        }
+//        response = "{\"results\":[{\"id\":4,\"status\":1,\"timestamp\":\"2017-05-10T20:23:22.000Z\",\"price_total\":10,\"customer_id\":284},{\"id\":14,\"status\":1,\"timestamp\":\"2017-05-10T22:23:34.000Z\",\"price_total\":30,\"customer_id\":284},{\"id\":24,\"status\":0,\"timestamp\":\"2017-05-10T20:24:33.000Z\",\"price_total\":13,\"customer_id\":284}]}";
 
         return response;
     }

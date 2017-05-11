@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.ProductsTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Balance;
-import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
@@ -26,7 +25,7 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class OrderDetailActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable {
+        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -95,7 +94,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
     public void getProducts(String ApiUrl) {
 
-        ProductsTask task = new ProductsTask(this);
+        ProductsGetTask task = new ProductsGetTask(this);
         String[] urls = new String[]{ApiUrl};
         task.execute(urls);
     }
