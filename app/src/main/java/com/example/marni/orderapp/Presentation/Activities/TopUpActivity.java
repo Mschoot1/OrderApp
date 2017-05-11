@@ -97,19 +97,19 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                 if(button2.isChecked()) {
                     switch (position) {
                         case 0:
-                            addBalance(5);
+                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
                             break;
                         case 1:
-                            addBalance(10);
+                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
                             break;
                         case 2:
-                            addBalance(25);
+                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
                             break;
                         case 3:
-                            addBalance(50);
+                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
                             break;
                         case 4:
-                            addBalance(100);
+                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
                             break;
                     }
 
