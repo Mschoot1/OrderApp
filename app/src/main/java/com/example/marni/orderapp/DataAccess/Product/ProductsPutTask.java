@@ -22,6 +22,12 @@ public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
 
     private final String TAG = getClass().getSimpleName();
 
+    private SuccessListener listener;
+
+    public ProductsPutTask(SuccessListener listener){
+        this.listener = listener;
+    }
+
     @Override
     protected Boolean doInBackground(String... params) {
 
@@ -47,8 +53,10 @@ public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.setRequestMethod("PUT");
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("id", params[1]);
-            jsonParam.put("quantity", params[2]);
+            jsonParam.put("order_id", params[1]);
+            jsonParam.put("product_id", params[2]);
+            jsonParam.put("customer_id", params[3]);
+            jsonParam.put("quantity", params[4]);
 
             Log.i(TAG, String.valueOf(jsonParam));
 
@@ -71,5 +79,15 @@ public class ProductsPutTask extends AsyncTask<String, Void, Boolean> {
         }
 
         return response;
+    }
+
+    protected void onPostExecute(Boolean response) {
+
+        Log.i(TAG, "onPostExecute " + response);
+        listener.successful(response);
+    }
+
+    public interface SuccessListener {
+        void successful(Boolean successful);
     }
 }

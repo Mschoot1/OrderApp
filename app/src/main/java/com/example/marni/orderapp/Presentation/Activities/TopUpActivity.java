@@ -262,10 +262,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         Log.i(TAG, successful.toString());
         if(successful){
-
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
         } else {
-
             Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
         }
     }

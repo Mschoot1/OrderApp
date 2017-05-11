@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -43,17 +44,19 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private Boolean currentOrder;
     private ArrayList<Product> products;
+    private Order order;
 
     private TotalFromAssortment.OnTotalChanged listener;
+    OnMethodAvailable listener2;
 
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener) {
-
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener, OnMethodAvailable listener2) {
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.currentOrder = currentOrder;
-
         this.listener = listener;
+        this.listener2 = listener2;
+        this.order = order;
     }
 
     @Override
@@ -135,6 +138,11 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                     Log.i(TAG, "Methode: " + result);
 
                     product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
+
+                    if(!result.equals("")){
+                        listener2.onMethodAvailable(result, product, order);
+                    }
+
                     TotalFromAssortment tfa = new TotalFromAssortment(products);
 
                     listener.onTotalChanged(tfa.getPriceTotal());
@@ -284,4 +292,9 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             //
         }
     }
+
+    public interface OnMethodAvailable {
+        void onMethodAvailable(String method, Product product, Order order);
+    }
+
 }

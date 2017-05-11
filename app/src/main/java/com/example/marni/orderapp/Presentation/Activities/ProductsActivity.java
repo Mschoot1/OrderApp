@@ -14,11 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -35,7 +37,7 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable {
+        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable, ProductsPutTask.SuccessListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -79,21 +81,6 @@ public class ProductsActivity extends AppCompatActivity implements
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
         stickyList.setFastScrollAlwaysVisible(true);
-    }
-    private void getCurrentOrder(String apiUrl) {
-
-        OrdersTask task = new OrdersTask(this);
-        String[] urls = new String[]{apiUrl};
-        task.execute(urls);
-    }
-
-    @Override
-    public void onOrderAvailable(Order order) {
-
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this);
-
-        stickyList.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -162,6 +149,41 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onBalanceAvailable(Balance bal) {
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + current_balance);
+    }
+
+    private void getCurrentOrder(String apiUrl) {
+
+        String[] urls = new String[]{apiUrl};
+        OrdersTask task = new OrdersTask(this);
+        task.execute(urls);
+    }
+
+    @Override
+    public void onOrderAvailable(Order order) {
+
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this, this);
+
+        stickyList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onMethodAvailable(String method, Product product, Order order){
+        if(method.equals("put")){
+
+            String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/edit", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
+            ProductsPutTask putProduct = new ProductsPutTask(this);
+            putProduct.execute(urls);
+        }
+    }
+
+    @Override
+    public void successful(Boolean successful) {
+        if (successful){
+            Toast.makeText(this, "Product quantitiy changed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

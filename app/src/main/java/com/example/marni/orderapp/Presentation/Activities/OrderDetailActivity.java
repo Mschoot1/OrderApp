@@ -14,6 +14,7 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -29,7 +30,7 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class OrderDetailActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable {
+        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -109,7 +110,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this, this);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -148,5 +149,11 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         textViewTotal.setText("Total: € " + formatter.format(priceTotal));
+    }
+
+
+    @Override
+    public void onMethodAvailable(String method, Product product, Order order) {
+
     }
 }
