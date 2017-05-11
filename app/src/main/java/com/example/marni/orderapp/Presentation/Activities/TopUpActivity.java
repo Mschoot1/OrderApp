@@ -79,6 +79,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             public void onClick(View v) {
                 if(calculateBalance.getAdded_balance() != 0){
                     postBalance("https://mysql-test-p4.herokuapp.com/topup");
+                    getBalance();
                 } else {
                     Toast.makeText(TopUpActivity.this, "No amount selected", Toast.LENGTH_SHORT).show();
                 }

@@ -33,8 +33,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TotalFromAssortment.OnTotalChanged, CategoriesTask.OnCategoryAvailable, ProductsTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable {
+        TotalFromAssortment.OnTotalChanged, CategoriesTask.OnCategoryAvailable, ProductsTask.OnProductAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
