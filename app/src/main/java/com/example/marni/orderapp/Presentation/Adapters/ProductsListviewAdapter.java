@@ -1,8 +1,6 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SectionIndexer;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,8 +28,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
  */
 
 public class ProductsListviewAdapter extends BaseAdapter implements
-        StickyListHeadersAdapter,
-        SectionIndexer {
+        StickyListHeadersAdapter {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -41,20 +37,15 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
     private ArrayList<Product> products;
     private ArrayList<Category> categories;
-    private int[] sectionIndices;
-    private String[] sectionTitles;
 
     private TotalFromAssortment.OnTotalChanged listener;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, ArrayList<Category> categories, TotalFromAssortment.OnTotalChanged listener) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.categories = categories;
-        sectionIndices = getSectionIndices();
-        sectionTitles = getSectionTitles();
 
         this.listener = listener;
     }
@@ -80,13 +71,13 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
         final Product product = products.get(position);
 
-        DecimalFormat formatter = new DecimalFormat("#0.00");
-
         if (convertView == null) {
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
+            Log.i(TAG, "ViewHolder maken. Position: " + position);
 
             viewHolder = new ViewHolder();
+
+            convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
 
             viewHolder.textViewName = (TextView) convertView.findViewById(R.id.listViewProducts_productname);
             viewHolder.textViewPrice = (TextView) convertView.findViewById(R.id.listViewProducts_productprice);
@@ -100,8 +91,12 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             convertView.setTag(viewHolder);
         } else {
 
+            Log.i(TAG, "ViewHolder meegekregen. Position: " + position);
+
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        DecimalFormat formatter = new DecimalFormat("#0.00");
 
         viewHolder.textViewName.setText(product.getName());
         viewHolder.textViewPrice.setText("€ " + formatter.format(product.getPrice()));
@@ -112,9 +107,11 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                 R.array.product_quantity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinnerAmount.setAdapter(adapter);
+        viewHolder.spinnerAmount.setSelection(product.getQuantity());
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position2, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
 
@@ -129,8 +126,6 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             }
         });
-
-        viewHolder.spinnerAmount.setSelection(product.getQuantity());
 
         viewHolder.linearLayout.removeAllViews();
 
@@ -149,68 +144,15 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         return convertView;
     }
 
-    private int[] getSectionIndices() {
-        ArrayList<Integer> sectionIndices = new ArrayList<>();
-        if (products.size() > 1) {
+    private class ViewHolder {
+        TextView textViewName;
+        TextView textViewPrice;
+        TextView textViewSize;
+        TextView textViewAlcohol;
 
+        Spinner spinnerAmount;
 
-            int categoryId = products.get(0).getCategoryId();
-            sectionIndices.add(0);
-            for (int i = 1; i < products.size(); i++) {
-                if (products.get(i).getCategoryId() != categoryId) {
-                    categoryId = products.get(i).getCategoryId();
-                    sectionIndices.add(i);
-                }
-            }
-            int[] sections = new int[sectionIndices.size()];
-            for (int i = 0; i < sectionIndices.size(); i++) {
-                sections[i] = sectionIndices.get(i);
-
-            }
-
-            return sections;
-        } else {
-
-            return new int[0];
-        }
-    }
-
-    private String[] getSectionTitles() {
-        String[] titles = new String[sectionIndices.length];
-        for (int i = 0; i < sectionIndices.length; i++) {
-
-            titles[i] = "sectionIndice: " + sectionIndices[i];
-        }
-        return titles;
-    }
-
-    @Override
-    public Object[] getSections() {
-        return sectionTitles;
-    }
-
-    @Override
-    public int getPositionForSection(int sectionIndex) {
-        if (sectionIndices.length == 0) {
-            return 0;
-        }
-
-        if (sectionIndex >= sectionIndices.length) {
-            sectionIndex = sectionIndices.length - 1;
-        } else if (sectionIndex < 0) {
-            sectionIndex = 0;
-        }
-        return sectionIndices[sectionIndex];
-    }
-
-    @Override
-    public int getSectionForPosition(int position) {
-        for (int i = 0; i < sectionIndices.length; i++) {
-            if (position < sectionIndices[i]) {
-                return i - 1;
-            }
-        }
-        return sectionIndices.length - 1;
+        LinearLayout linearLayout;
     }
 
     @Override
@@ -240,25 +182,14 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         return convertView;
     }
 
-    @Override
-    public long getHeaderId(int position) {
-        return products.get(position).getCategoryId();
-    }
-
-    private class ViewHolder {
-        TextView textViewName;
-        TextView textViewPrice;
-        TextView textViewSize;
-        TextView textViewAlcohol;
-
-        Spinner spinnerAmount;
-
-        LinearLayout linearLayout;
-    }
-
     private class HeaderViewHolder {
 
         TextView textViewCategoryTitle;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        return products.get(position).getCategoryId();
     }
 
     private int getRandomIconId() {

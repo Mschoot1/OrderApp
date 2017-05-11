@@ -62,6 +62,7 @@ public class ProductsActivity extends AppCompatActivity implements
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
+
         StickyListHeadersListView stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
         stickyList.setFastScrollEnabled(true);
@@ -141,6 +142,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getCategories(String ApiUrl) {
 
+        Log.i(TAG, "getcategories called.");
+
         CategoriesTask task = new CategoriesTask(this);
         String[] urls = new String[]{ApiUrl};
         task.execute(urls);
@@ -164,7 +167,7 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-//        mAdapter.getAllergyIcons(product);
+        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 }
