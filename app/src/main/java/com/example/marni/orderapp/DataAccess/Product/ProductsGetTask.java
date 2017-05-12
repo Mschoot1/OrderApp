@@ -25,11 +25,13 @@ import java.net.URLConnection;
 public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
     private OnProductAvailable listener = null;
+    private String myorder;
 
     private final String TAG = getClass().getSimpleName();
 
-    public ProductsGetTask(OnProductAvailable listener) {
+    public ProductsGetTask(OnProductAvailable listener, String myorder) {
         this.listener = listener;
+        this.myorder = myorder;
     }
 
     protected String doInBackground(String... params) {
@@ -105,7 +107,14 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
                 Product p = new Product();
 
-                Integer id = product.getInt("id");
+                if(myorder.equals("myorder")){
+                    Integer id = product.getInt("product_id");
+                    p.setProductId(id);
+                } else {
+                    Integer id = product.getInt("id");
+                    p.setProductId(id);
+                }
+
                 String name = product.getString("name");
                 Double price = product.getDouble("price");
                 int size = product.getInt("size");
@@ -119,7 +128,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                     p.setOrderId(orderId);
                 }
 
-                p.setProductId(id);
+
                 p.setName(name);
                 p.setPrice(price);
                 p.setSize(size);

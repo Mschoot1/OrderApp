@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
@@ -38,7 +39,8 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable, ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener{
+        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -127,7 +129,7 @@ public class ProductsActivity extends AppCompatActivity implements
     public void getProducts(String ApiUrl) {
 
         String[] urls = new String[]{ApiUrl};
-        ProductsGetTask task = new ProductsGetTask(this);
+        ProductsGetTask task = new ProductsGetTask(this, "assortment");
         task.execute(urls);
     }
 
@@ -180,13 +182,18 @@ public class ProductsActivity extends AppCompatActivity implements
                 String[] urls2 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/add", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
                 ProductsPostTask postProduct = new ProductsPostTask(this);
                 postProduct.execute(urls2);
+                break;
+            case "delete":
+                String[] urls3 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/delete", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284" };
+                ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
+                deleteProduct.execute(urls3);
         }
     }
 
     @Override
     public void successful(Boolean successful) {
         if (successful){
-            Toast.makeText(this, "Product quantitiy changed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
         }
