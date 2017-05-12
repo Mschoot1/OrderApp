@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.DataAccess.PriceTotal;
+package com.example.marni.orderapp.DataAccess.Orders;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,13 +17,13 @@ import java.net.URLConnection;
  * Created by marcu on 5/12/2017.
  */
 
-public class PriceTotalPutTask extends AsyncTask<String, Void, Boolean> {
+public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
 
     private final String TAG = getClass().getSimpleName();
 
-    private SuccessListener listener;
+    private PutSuccessListener listener;
 
-    public PriceTotalPutTask(SuccessListener listener) {
+    public OrdersPutTask(PutSuccessListener listener) {
         this.listener = listener;
     }
 
@@ -79,10 +79,10 @@ public class PriceTotalPutTask extends AsyncTask<String, Void, Boolean> {
     }
 
     protected void onPostExecute(Boolean response) {
-        listener.successful(response);
+        listener.putSuccessful(response);
     }
 
-    public interface SuccessListener {
-        void successful(Boolean successful);
+    public interface PutSuccessListener {
+        void putSuccessful(Boolean successful);
     }
 }

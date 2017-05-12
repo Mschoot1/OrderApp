@@ -111,5 +111,3 @@ public class OrdersListviewAdapter extends BaseAdapter {
         TextView textViewTotalPrice;
     }
 }
-
-

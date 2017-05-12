@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,13 +25,13 @@ import java.util.Date;
  * Created by marni on 8-5-2017.
  */
 
-public class OrdersTask extends AsyncTask<String, Void, String> {
+public class OrdersGetTask extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
 
-    private OrdersTask.OnOrderAvailable listener = null;
+    private OrdersGetTask.OnOrderAvailable listener = null;
 
-    public OrdersTask(OrdersTask.OnOrderAvailable listener) {
+    public OrdersGetTask(OrdersGetTask.OnOrderAvailable listener) {
         this.listener = listener;
     }
 

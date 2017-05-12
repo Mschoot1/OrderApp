@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
-import com.example.marni.orderapp.DataAccess.PriceTotal.PriceTotalPutTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
@@ -40,8 +40,8 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, PriceTotalPutTask.SuccessListener{
+        BalanceGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, OrdersPutTask.PutSuccessListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -51,6 +51,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     private double current_balance;
     private TextView textview_balance;
+    private double priceTotal;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -119,6 +120,8 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onTotalChanged(Double priceTotal) {
 
+        this.priceTotal = priceTotal;
+
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
@@ -156,7 +159,7 @@ public class ProductsActivity extends AppCompatActivity implements
     private void getCurrentOrder(String apiUrl) {
 
         String[] urls = new String[]{apiUrl};
-        OrdersTask task = new OrdersTask(this);
+        OrdersGetTask task = new OrdersGetTask(this);
         task.execute(urls);
     }
 
@@ -188,6 +191,10 @@ public class ProductsActivity extends AppCompatActivity implements
                 ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
                 deleteProduct.execute(urls3);
         }
+
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/order/price/edit", priceTotal + "", Integer.toString(order.getOrderId()) };
+        OrdersPutTask putOrder = new OrdersPutTask(this);
+        putOrder.execute(urls);
     }
 
     @Override
@@ -196,6 +203,15 @@ public class ProductsActivity extends AppCompatActivity implements
             Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void putSuccessful(Boolean successful) {
+        if (successful) {
+            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
         }
     }
 }

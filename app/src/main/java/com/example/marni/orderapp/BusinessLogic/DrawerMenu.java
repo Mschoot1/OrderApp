@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.Presentation.Activities.OrderDetailActivity;
@@ -19,7 +19,7 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
  * Created by marni on 11-5-2017.
  */
 
-public class DrawerMenu implements OrdersTask.OnOrderAvailable {
+public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -59,7 +59,7 @@ public class DrawerMenu implements OrdersTask.OnOrderAvailable {
         Log.i(TAG, "getCurrent called.");
 
         String[] urls = new String[]{apiUrl};
-        OrdersTask task = new OrdersTask(this);
+        OrdersGetTask task = new OrdersGetTask(this);
         task.execute(urls);
     }
 

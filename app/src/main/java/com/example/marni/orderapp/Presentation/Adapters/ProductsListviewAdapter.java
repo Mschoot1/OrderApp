@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
-import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
@@ -47,7 +44,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     private Order order;
 
     private TotalFromAssortment.OnTotalChanged listener;
-    OnMethodAvailable listener2;
+    private OnMethodAvailable listener2;
 
     public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener, OnMethodAvailable listener2) {
         this.context = context;
@@ -135,13 +132,13 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
                 product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
 
-                if (!result.equals("")) {
-                    listener2.onMethodAvailable(result, product, order);
-                }
-
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
 
                 listener.onTotalChanged(tfa.getPriceTotal());
+
+                if (!result.equals("")) {
+                    listener2.onMethodAvailable(result, product, order);
+                }
             }
 
             @Override

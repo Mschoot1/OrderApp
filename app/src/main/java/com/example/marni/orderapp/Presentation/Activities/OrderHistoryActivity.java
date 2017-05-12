@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable {
+        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -132,7 +132,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     public void getOrders(String ApiUrl) {
 
-        OrdersTask task = new OrdersTask(this);
+        OrdersGetTask task = new OrdersGetTask(this);
         String[] urls = new String[]{ApiUrl};
         task.execute(urls);
     }
