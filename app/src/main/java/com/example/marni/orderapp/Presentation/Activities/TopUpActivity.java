@@ -1,5 +1,6 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,11 +30,15 @@ import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
+import static android.R.color.darker_gray;
+import static android.R.color.holo_green_light;
+import static android.graphics.Color.rgb;
+
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable, BalancePostTask.SuccessListener {
 
     private final String TAG = getClass().getSimpleName();
-    public final static  String TOPUP_EXTRA = "topup_extra";
+    public final static String TOPUP_EXTRA = "topup_extra";
     private RadioButton button1, button2;
     private TextView textview_balance, textview_newbalance;
     private EditText edittext_value;
@@ -234,11 +239,13 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onBalanceChanged(double newBalance) {
         textview_newbalance.setText("€ " + newBalance);
+        payment.setBackgroundColor(getResources().getColor(holo_green_light));
     }
 
     @Override
     public void onResetBalance(double balance) {
         textview_newbalance.setText("");
+        payment.setBackgroundColor(getResources().getColor(darker_gray));
     }
 
     public void addBalance(double balance){
