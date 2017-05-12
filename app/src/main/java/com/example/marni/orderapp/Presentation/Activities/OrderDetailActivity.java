@@ -60,6 +60,14 @@ public class OrderDetailActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Bundle bundle = getIntent().getExtras();
 
         order = (Order) bundle.get(ORDER);

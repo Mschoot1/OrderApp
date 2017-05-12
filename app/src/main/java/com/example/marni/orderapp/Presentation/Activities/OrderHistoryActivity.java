@@ -51,6 +51,13 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         // hide title
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

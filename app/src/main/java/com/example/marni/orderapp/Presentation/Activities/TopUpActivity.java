@@ -1,5 +1,6 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -178,7 +179,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
-
                 default:
                     // If we got here, the user's action was not recognized.
                     // Invoke the superclass to handle it.
