@@ -90,7 +90,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
         }
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
-        viewHolder.textViewOrderId.setText(order.getOrderId() + "");
+        viewHolder.textViewOrderId.setText("");
         if (order.getStatus() == 0) {
             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
         } else {
