@@ -118,44 +118,38 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         viewHolder.spinnerAmount.setAdapter(adapter);
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
 
-        if (currentOrder) {
+        viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 
-            Log.i(TAG, "Current order.");
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                calculateQuantity = new CalculateQuantity();
 
-                    Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
+                Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
 
-                    calculateQuantity = new CalculateQuantity();
+                String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
 
-                    Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
+                Log.i(TAG, "Methode: " + result);
 
-                    String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
+                product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
 
-                    Log.i(TAG, "Methode: " + result);
-
-                    product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
-
-                    if(!result.equals("")){
-                        listener2.onMethodAvailable(result, product, order);
-                    }
-
-                    TotalFromAssortment tfa = new TotalFromAssortment(products);
-
-                    listener.onTotalChanged(tfa.getPriceTotal());
+                if (!result.equals("")) {
+                    listener2.onMethodAvailable(result, product, order);
                 }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                TotalFromAssortment tfa = new TotalFromAssortment(products);
 
-                }
-            });
-        } else {
+                listener.onTotalChanged(tfa.getPriceTotal());
+            }
 
-            Log.i(TAG, "Old order.");
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if (!currentOrder) {
 
             viewHolder.spinnerAmount.setEnabled(false);
         }
