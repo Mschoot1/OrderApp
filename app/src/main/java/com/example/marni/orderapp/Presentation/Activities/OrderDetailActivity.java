@@ -14,7 +14,6 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
@@ -88,8 +87,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
-        stickyList.setFastScrollEnabled(true);
-        stickyList.setFastScrollAlwaysVisible(true);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
@@ -139,6 +136,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
+        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 
