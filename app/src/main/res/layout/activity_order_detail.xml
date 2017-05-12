@@ -80,6 +80,7 @@
         android:layout_above="@+id/textViewTotal"
         android:layout_alignEnd="@+id/textViewDateTime"
         android:layout_alignRight="@+id/textViewDateTime"
+        android:layout_marginBottom="18dp"
         android:src="@mipmap/plus"
         app:elevation="4dp"
         app:fabSize="normal" />

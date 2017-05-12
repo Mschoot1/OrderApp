@@ -82,8 +82,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
-        stickyList.setFastScrollEnabled(true);
-        stickyList.setFastScrollAlwaysVisible(true);
     }
 
     @Override

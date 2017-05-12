@@ -96,7 +96,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
         } else {
             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
         }
-        viewHolder.textViewTotalPrice.setText("$" + formatter.format(order.getPriceTotal()));
+        viewHolder.textViewTotalPrice.setText("€ " + formatter.format(order.getPriceTotal()));
 
         return convertView;
     }

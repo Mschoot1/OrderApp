@@ -92,8 +92,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
-        stickyList.setFastScrollEnabled(true);
-        stickyList.setFastScrollAlwaysVisible(true);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
@@ -143,6 +141,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
+        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 

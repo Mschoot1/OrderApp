@@ -17,6 +17,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by marni on 8-5-2017.
@@ -100,13 +104,15 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
                 Order o = new Order();
                 o.setOrderId(id);
                 o.setStatus(status);
-                o.setTimestamp(timestamp);
+                o.setTimestamp(getFormattedDate(timestamp));
                 o.setPriceTotal(price_total);
 
                 listener.onOrderAvailable(o);
             }
         } catch (JSONException ex) {
             Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -136,6 +142,17 @@ public class OrdersTask extends AsyncTask<String, Void, String> {
         }
 
         return sb.toString();
+    }
+
+    private String getFormattedDate(String s) throws ParseException {
+
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date parsedDate = sdf.parse(s);
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = sdf.format(parsedDate);
+
+        return formattedDate;
     }
 
     public interface OnOrderAvailable {
