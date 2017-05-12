@@ -1,8 +1,6 @@
-package com.example.marni.orderapp.DataAccess;
+package com.example.marni.orderapp.DataAccess.Product;
 
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -14,21 +12,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 /**
- * Created by marni on 4-5-2017.
+ * Created by marcu on 5/12/2017.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class RegisterTask extends AsyncTask<String, Void, Boolean> {
+public class ProductsDeleteTask extends AsyncTask<String, Void, Boolean> {
 
     private final String TAG = getClass().getSimpleName();
 
     private SuccessListener listener;
 
-    public RegisterTask(SuccessListener listener) {
-
+    public ProductsDeleteTask(SuccessListener listener) {
         this.listener = listener;
     }
 
@@ -36,13 +31,13 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
 
         int responseCode;
-        String MovieUrl = params[0];
+        String balanceUrl = params[0];
 
         Boolean response = null;
 
-        Log.i(TAG, "doInBackground - " + MovieUrl);
+        Log.i(TAG, "doInBackground - " + balanceUrl);
         try {
-            URL url = new URL(MovieUrl);
+            URL url = new URL(balanceUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
@@ -54,11 +49,12 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.setDoOutput(true);
             httpConnection.setDoInput(true);
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestMethod("DELETE");
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("email", params[1]);
-            jsonParam.put("password", params[2]);
+            jsonParam.put("order_id", params[1]);
+            jsonParam.put("product_id", params[2]);
+            jsonParam.put("customer_id", params[3]);
 
             Log.i(TAG, String.valueOf(jsonParam));
 
@@ -84,7 +80,6 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
     }
 
     protected void onPostExecute(Boolean response) {
-
         listener.successful(response);
     }
 

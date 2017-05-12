@@ -1,5 +1,6 @@
 package com.example.marni.orderapp.BusinessLogic;
 
+import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 
 import java.util.ArrayList;
@@ -15,13 +16,10 @@ public class TotalFromAssortment {
     private double priceTotal = 0;
 
     public TotalFromAssortment(ArrayList<Product> products) {
-
         this.products = products;
     }
 
     public Double getPriceTotal() {
-
-
         for (Product product : products) {
 
             priceTotal += product.getQuantity()*product.getPrice();
