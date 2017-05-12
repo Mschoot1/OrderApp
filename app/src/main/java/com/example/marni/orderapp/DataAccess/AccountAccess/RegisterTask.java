@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.DataAccess;
+package com.example.marni.orderapp.DataAccess.AccountAccess;
 
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,19 +14,20 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import static android.content.ContentValues.TAG;
+import java.net.URLEncoder;
 
 /**
  * Created by marni on 4-5-2017.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class LoginTask extends AsyncTask<String, Void, Boolean> {
+public class RegisterTask extends AsyncTask<String, Void, Boolean> {
+
+    private final String TAG = getClass().getSimpleName();
 
     private SuccessListener listener;
 
-    public LoginTask(SuccessListener listener) {
+    public RegisterTask(SuccessListener listener) {
 
         this.listener = listener;
     }
@@ -35,13 +36,13 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
 
         int responseCode;
-        String balanceUrl = params[0];
+        String MovieUrl = params[0];
 
         Boolean response = null;
 
-        Log.i(TAG, "doInBackground - " + balanceUrl);
+        Log.i(TAG, "doInBackground - " + MovieUrl);
         try {
-            URL url = new URL(balanceUrl);
+            URL url = new URL(MovieUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {

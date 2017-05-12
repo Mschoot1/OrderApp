@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.marni.orderapp.DataAccess.LoginTask;
+import com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask;
 import com.example.marni.orderapp.R;
 
 public class LogInActivity extends AppCompatActivity implements
@@ -69,7 +69,7 @@ public class LogInActivity extends AppCompatActivity implements
     @Override
     public void successful(Boolean successful) {
         if (successful) {
-            Toast.makeText(this, "Succesfully logged in", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
 
             startActivity(intent);

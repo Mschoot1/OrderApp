@@ -18,7 +18,8 @@ import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
+import com.example.marni.orderapp.DataAccess.PriceTotal.PriceTotalPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
@@ -40,7 +41,7 @@ public class ProductsActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
         BalanceGetTask.OnBalanceAvailable, OrdersTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener{
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, PriceTotalPutTask.SuccessListener{
 
     private final String TAG = getClass().getSimpleName();
 
@@ -175,6 +176,7 @@ public class ProductsActivity extends AppCompatActivity implements
                 String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/edit", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
                 ProductsPutTask putProduct = new ProductsPutTask(this);
                 putProduct.execute(urls);
+
                 break;
             case "post":
                 String[] urls2 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/add", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
@@ -193,7 +195,7 @@ public class ProductsActivity extends AppCompatActivity implements
         if (successful){
             Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
         }
     }
 }

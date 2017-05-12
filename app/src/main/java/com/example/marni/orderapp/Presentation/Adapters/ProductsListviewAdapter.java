@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;

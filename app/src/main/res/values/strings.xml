@@ -69,7 +69,7 @@
     <string name="topup_newbalance">New balance</string>
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>
-    <string name="topup_topayment">To payment</string>
+    <string name="topup_topayment">Checkout</string>
 
 
 </resources>

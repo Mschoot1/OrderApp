@@ -19,7 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;

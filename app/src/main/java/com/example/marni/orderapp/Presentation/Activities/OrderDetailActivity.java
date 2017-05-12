@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.OrdersTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;

@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.marni.orderapp.DataAccess.RegisterTask;
+import com.example.marni.orderapp.DataAccess.AccountAccess.RegisterTask;
 import com.example.marni.orderapp.R;
 
 public class RegisterActivity extends AppCompatActivity implements
