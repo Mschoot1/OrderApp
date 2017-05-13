@@ -80,8 +80,6 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
             return null;
         }
 
-        Log.i(TAG, "response: " + response);
-
         return response;
     }
 
@@ -127,7 +125,6 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                     int orderId = product.getInt("order_id");
                     p.setOrderId(orderId);
                 }
-
 
                 p.setName(name);
                 p.setPrice(price);

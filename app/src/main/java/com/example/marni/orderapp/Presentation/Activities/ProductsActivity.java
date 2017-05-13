@@ -161,8 +161,10 @@ public class ProductsActivity extends AppCompatActivity implements
 
     @Override
     public void onBalanceAvailable(Balance bal) {
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + current_balance);
+        textview_balance.setText("€ " + formatter.format(current_balance));
     }
 
     private void getCurrentOrder(String apiUrl) {

@@ -136,8 +136,10 @@ public class OrderDetailActivity extends AppCompatActivity implements
     }
 
     public void onBalanceAvailable(Balance bal) {
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + current_balance);
+        textview_balance.setText("€ " + formatter.format(current_balance));
     }
 
     public void getProducts(String ApiUrl) {
@@ -157,7 +159,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onTotalChanged(Double priceTotal) {
-
         this.priceTotal = priceTotal;
 
         DecimalFormat formatter = new DecimalFormat("#0.00");

@@ -25,6 +25,7 @@ import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -144,7 +145,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void onBalanceAvailable(Balance bal){
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + current_balance);
+        textview_balance.setText("€ " + formatter.format(current_balance));
     }
 }

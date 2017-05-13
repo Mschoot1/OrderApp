@@ -31,6 +31,8 @@ import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 
+import java.text.DecimalFormat;
+
 import static android.R.color.darker_gray;
 import static android.R.color.holo_green_light;
 import static android.graphics.Color.rgb;
@@ -238,7 +240,9 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onBalanceChanged(double newBalance) {
-        textview_newbalance.setText("€ " + newBalance);
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
+        textview_newbalance.setText("€ " + formatter.format(newBalance));
         payment.setBackgroundColor(getResources().getColor(holo_green_light));
     }
 
@@ -254,8 +258,10 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void onBalanceAvailable(Balance bal){
+        DecimalFormat formatter = new DecimalFormat("#0.00");
+
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + current_balance);
+        textview_balance.setText("€ " + formatter.format(current_balance));
     }
 
     public void postBalance(String ApiUrl){
