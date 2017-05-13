@@ -107,19 +107,19 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                 if(button2.isChecked()) {
                     switch (position) {
                         case 0:
-                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
+                            addBalance(Integer.parseInt(spinner.getSelectedItem().toString()));
                             break;
                         case 1:
-                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
+                            addBalance(Integer.parseInt(spinner.getSelectedItem().toString()));
                             break;
                         case 2:
-                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
+                            addBalance(Integer.parseInt(spinner.getSelectedItem().toString()));
                             break;
                         case 3:
-                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
+                            addBalance(Integer.parseInt(spinner.getSelectedItem().toString()));
                             break;
                         case 4:
-                            addBalance(Double.parseDouble(spinner.getSelectedItem().toString()));
+                            addBalance(Integer.parseInt(spinner.getSelectedItem().toString()));
                             break;
                     }
 
@@ -130,8 +130,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-
 
         edittext_value.addTextChangedListener(new TextWatcher() {
             @Override
@@ -148,7 +146,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             public void afterTextChanged(Editable s) {
                 try {
                     if(button1.isChecked()){
-                        Double add_balance = Double.parseDouble(edittext_value.getText().toString());
+                        Integer add_balance = Integer.parseInt(edittext_value.getText().toString());
                         addBalance(add_balance);
                     }
                 } catch (Exception e){
@@ -223,7 +221,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                     spinner.setFocusable(true);
 
                     String balance = spinner.getSelectedItem().toString();
-                    Double add_balance = Double.parseDouble(balance);
+                    Integer add_balance = Integer.parseInt(balance);
                     addBalance(add_balance);
 
                     break;
@@ -251,7 +249,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         payment.setBackgroundColor(getResources().getColor(darker_gray));
     }
 
-    public void addBalance(double balance){
+    public void addBalance(int balance){
         calculateBalance.newBalance(current_balance, balance);
         calculateBalance.setAdded_balance(balance);
     }
@@ -271,7 +269,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void successful(Boolean successful) {
-
         Log.i(TAG, successful.toString());
         if(successful){
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();

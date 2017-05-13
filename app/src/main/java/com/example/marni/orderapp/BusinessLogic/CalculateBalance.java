@@ -9,19 +9,20 @@ public class CalculateBalance {
     OnBalanceChanged listener;
     OnResetBalance listener2;
     private double balance;
-    private double added_balance;
+    private int added_balance;
 
     public CalculateBalance(OnBalanceChanged listener, OnResetBalance listener2) {
         this.listener = listener;
         this.listener2 = listener2;
     }
 
-    public void newBalance(double current_balance, double added_balance){
+    public void newBalance(double current_balance,int added_balance){
         double newBalance = current_balance + added_balance;
 
-        balance = newBalance;
-        listener.onBalanceChanged(newBalance);
-
+        if(added_balance != 0){
+            balance = newBalance;
+            listener.onBalanceChanged(newBalance);
+        }
     }
 
     public interface OnBalanceChanged {
@@ -46,7 +47,7 @@ public class CalculateBalance {
         return added_balance;
     }
 
-    public void setAdded_balance(double added_balance) {
+    public void setAdded_balance(int added_balance) {
         this.added_balance = added_balance;
     }
 
