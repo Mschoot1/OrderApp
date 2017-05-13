@@ -1,7 +1,5 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -35,7 +34,6 @@ import java.text.DecimalFormat;
 
 import static android.R.color.darker_gray;
 import static android.R.color.holo_green_light;
-import static android.graphics.Color.rgb;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable, BalancePostTask.SuccessListener {
@@ -98,6 +96,9 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
 
         edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
+        edittext_value.setFilters(new InputFilter[]{
+                new InputFilter.LengthFilter(3)
+        });
 
         spinner = (Spinner)findViewById(R.id.topup_spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -157,8 +158,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                 }
             }
         });
-
-
     }
 
         @Override
