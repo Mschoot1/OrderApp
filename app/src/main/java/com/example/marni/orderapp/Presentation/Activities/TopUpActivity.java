@@ -36,7 +36,8 @@ import static android.R.color.darker_gray;
 import static android.R.color.holo_green_light;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable, BalancePostTask.SuccessListener {
+        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable,
+        BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
 
     private final String TAG = getClass().getSimpleName();
     public final static String TOPUP_EXTRA = "topup_extra";
@@ -47,6 +48,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private CalculateBalance calculateBalance;
     private Spinner spinner;
     private Button payment;
+    private Boolean allowedtopay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         getBalance();
 
-        calculateBalance = new CalculateBalance(this, this);
+        calculateBalance = new CalculateBalance(this, this, this);
 
         button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
         button1.setChecked(true);
@@ -83,11 +85,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(calculateBalance.getAdded_balance() != 0){
-                    postBalance("https://mysql-test-p4.herokuapp.com/topup");
-                } else {
-                    Toast.makeText(TopUpActivity.this, "No amount selected", Toast.LENGTH_SHORT).show();
-                }
+                postBalance("https://mysql-test-p4.herokuapp.com/topup");
             }
         });
 
@@ -150,8 +148,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                     }
                 } catch (Exception e){
                     Log.i(TAG, "Empty value");
-                    calculateBalance.resetBalance();
-                    calculateBalance.resetAddedBalance();
+                    calculateBalance.resetBalance(true);
                 }
             }
         });
@@ -206,15 +203,14 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             case R.id.topup_radiobutton1:
                 if (checked)
                     button2.setChecked(false);
-                    calculateBalance.resetBalance();
-                    calculateBalance.resetAddedBalance();
+                    calculateBalance.resetBalance(true);
                     edittext_value.setEnabled(true);
 
                     break;
             case R.id.topup_radiobutton2:
                 if (checked)
                     button1.setChecked(false);
-                    calculateBalance.resetBalance();
+                    calculateBalance.resetBalance(false);
                     edittext_value.setText("");
                     edittext_value.setEnabled(false);
                     spinner.setFocusable(true);
@@ -238,8 +234,11 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void onBalanceChanged(double newBalance) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        textview_newbalance.setText("€ " + formatter.format(newBalance));
-        payment.setBackgroundColor(getResources().getColor(holo_green_light));
+        calculateBalance.checkPayment();
+
+        if(calculateBalance.getAddedBalance() != 0){
+            textview_newbalance.setText("€ " + formatter.format(newBalance));
+        }
     }
 
     @Override
@@ -250,7 +249,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     public void addBalance(int balance){
         calculateBalance.newBalance(current_balance, balance);
-        calculateBalance.setAdded_balance(balance);
     }
 
     public void onBalanceAvailable(Balance bal){
@@ -262,13 +260,12 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     public void postBalance(String ApiUrl){
         BalancePostTask task = new BalancePostTask(this);
-        String[] urls = new String[]{ApiUrl, Double.toString(calculateBalance.getAdded_balance()), "topup", "284"};
+        String[] urls = new String[]{ApiUrl, Double.toString(calculateBalance.getAddedBalance()), "topup", "284"};
         task.execute(urls);
     }
 
     public void SuccesfulTopUp(){
-        calculateBalance.resetBalance();
-        calculateBalance.resetAddedBalance();
+        calculateBalance.resetBalance(true);
         edittext_value.setText("");
         edittext_value.setEnabled(true);
         button1.setChecked(true);
@@ -285,6 +282,23 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             getBalance();
         } else {
             Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onCheckPayment(String check) {
+        if(check.equals("succes")) {
+            allowedtopay = true;
+            payment.setBackgroundColor(getResources().getColor(holo_green_light));
+            payment.setEnabled(true);
+        } else if (check.equals("zero")){
+            Toast.makeText(this, "Select valid amount", Toast.LENGTH_SHORT).show();
+            payment.setBackgroundColor(getResources().getColor(darker_gray));
+            payment.setEnabled(false);
+        } else {
+            Toast.makeText(this, "Max account balance is 150", Toast.LENGTH_SHORT).show();
+            payment.setBackgroundColor(getResources().getColor(darker_gray));
+            payment.setEnabled(false);
         }
     }
 }
