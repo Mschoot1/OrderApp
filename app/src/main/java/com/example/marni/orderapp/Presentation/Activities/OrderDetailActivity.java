@@ -92,7 +92,8 @@ public class OrderDetailActivity extends AppCompatActivity implements
         }
 
         assert order != null;
-        textViewOrderId.setText(order.getOrderId() + "");
+//        textViewOrderId.setText(order.getOrderId() + "");
+        textViewOrderId.setText("");
         if (order.getStatus() == 0) {
             textViewStatus.setText(getResources().getString(R.string.open));
         } else {
