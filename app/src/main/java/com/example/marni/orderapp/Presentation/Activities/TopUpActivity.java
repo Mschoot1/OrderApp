@@ -267,11 +267,22 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         task.execute(urls);
     }
 
+    public void SuccesfulTopUp(){
+        calculateBalance.resetBalance();
+        calculateBalance.resetAddedBalance();
+        edittext_value.setText("");
+        edittext_value.setEnabled(true);
+        button1.setChecked(true);
+        button2.setChecked(false);
+        spinner.setSelection(0);
+    }
+
     @Override
     public void successful(Boolean successful) {
         Log.i(TAG, successful.toString());
         if(successful){
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
+            SuccesfulTopUp();
         } else {
             Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
         }
