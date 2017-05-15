@@ -1,28 +1,53 @@
 package com.example.marni.orderapp.BusinessLogic;
 
+import android.util.Log;
+
 /**
  * Created by marcu on 5/9/2017.
  */
 
 public class CalculateBalance {
 
+    private final String TAG = getClass().getSimpleName();
     OnBalanceChanged listener;
     OnResetBalance listener2;
-    private double balance;
-    private int added_balance;
+    OnCheckPayment listener3;
 
-    public CalculateBalance(OnBalanceChanged listener, OnResetBalance listener2) {
+    private double balance;
+    private int addedBalance;
+
+    public CalculateBalance(OnBalanceChanged listener, OnResetBalance listener2, OnCheckPayment listener3) {
         this.listener = listener;
         this.listener2 = listener2;
+        this.listener3 = listener3;
     }
 
     public void newBalance(double current_balance,int added_balance){
         double newBalance = current_balance + added_balance;
 
-        if(added_balance != 0){
-            balance = newBalance;
-            listener.onBalanceChanged(newBalance);
+        setBalance(newBalance);
+        setAddedBalance(added_balance);
+
+        listener.onBalanceChanged(newBalance);
+
+    }
+
+    public void checkPayment(){
+        String check;
+
+        if(getAddedBalance() == 0){
+            Log.i(TAG, "Check false, added balance " + getAddedBalance());
+            check = "zero";
+        } else if(getBalance() > 150){
+            Log.i(TAG, "Check false, new balance " + getBalance());
+            check = "max";
+        } else {
+            Log.i(TAG, "Check True, added balance " + getAddedBalance());
+            Log.i(TAG, "Check True, new balance " + getBalance());
+            check = "succes";
         }
+
+        listener3.onCheckPayment(check);
     }
 
     public interface OnBalanceChanged {
@@ -33,8 +58,17 @@ public class CalculateBalance {
         void onResetBalance(double balance);
     }
 
-    public void resetBalance(){
-        balance = 0;
+    public interface OnCheckPayment {
+        void onCheckPayment(String check);
+    }
+
+    public void resetBalance(boolean reset){
+        if(reset) {
+            setBalance(0);
+            setAddedBalance(0);
+        } else {
+            setBalance(0);
+        }
 
         listener2.onResetBalance(balance);
     }
@@ -43,15 +77,15 @@ public class CalculateBalance {
         return balance;
     }
 
-    public double getAdded_balance() {
-        return added_balance;
+    public double getAddedBalance() {
+        return addedBalance;
     }
 
-    public void setAdded_balance(int added_balance) {
-        this.added_balance = added_balance;
+    public void setAddedBalance(int addedBalance) {
+        this.addedBalance = addedBalance;
     }
 
-    public void resetAddedBalance(){
-        added_balance = 0;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
