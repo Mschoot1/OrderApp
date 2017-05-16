@@ -12,6 +12,7 @@ import com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity;
 import com.example.marni.orderapp.Presentation.Activities.ProductsActivity;
 import com.example.marni.orderapp.Presentation.Activities.TopUpActivity;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.MainActivity;
 
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
@@ -51,6 +52,9 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
                 intent = new Intent(context, AllergiesActivity.class);
                 context.startActivity(intent);
                 break;
+            case R.id.nav_scanorder:
+                intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
         }
     }
 
