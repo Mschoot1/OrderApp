@@ -72,6 +72,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         getAllergies();
         getBalance();
 
+
+
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);

@@ -35,7 +35,6 @@
         </activity>
         <activity android:name=".Presentation.Activities.TopUpActivity" />
         <activity android:name=".Presentation.Activities.ProductsActivity" />
-        <activity android:name=".cardemulation.MainActivity"/>
 
         <!-- BEGIN_INCLUDE(CardEmulationManifest) -->
         <!-- Service for handling communication with NFC terminal. -->

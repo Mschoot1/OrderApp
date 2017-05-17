@@ -12,7 +12,6 @@ import com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity;
 import com.example.marni.orderapp.Presentation.Activities.ProductsActivity;
 import com.example.marni.orderapp.Presentation.Activities.TopUpActivity;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.cardemulation.MainActivity;
 
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 

@@ -91,6 +91,8 @@ public class ProductsActivity extends AppCompatActivity implements
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/284");
 
+
+
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
     }
