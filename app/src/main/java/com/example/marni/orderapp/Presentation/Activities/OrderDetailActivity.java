@@ -112,7 +112,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
 
         if (savedInstanceState == null) {
-            AccountStorage.SetAccount(this, "14");
+            AccountStorage.SetAccount(this, "" + order.getOrderId());
         }
     }
 
