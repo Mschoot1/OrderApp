@@ -17,9 +17,6 @@
         <item
             android:id="@+id/nav_allergy_information"
             android:title="@string/allergy_information" />
-        <item
-            android:id="@+id/nav_scanorder"
-            android:title="@string/scanorder"/>
     </group>
 
 </menu>

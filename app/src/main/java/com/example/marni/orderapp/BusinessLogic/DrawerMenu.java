@@ -56,10 +56,6 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;
-            case R.id.nav_scanorder:
-                intent = new Intent(context, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
         }
     }
 

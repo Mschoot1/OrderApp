@@ -18,7 +18,6 @@
 package com.example.marni.orderapp.cardemulation;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.marni.orderapp.R;
@@ -31,8 +30,6 @@ import com.example.marni.orderapp.R;
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
 public class MainActivity extends AppCompatActivity {
-
-    public static final String TAG = "MainActivity";
 
     // Whether the Log Fragment is currently shown
 
