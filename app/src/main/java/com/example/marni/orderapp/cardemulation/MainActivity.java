@@ -42,12 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            CardEmulationFragment fragment = new CardEmulationFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
-            transaction.commit();
+            AccountStorage.SetAccount(this, "14");
         }
     }
-
-
 }
