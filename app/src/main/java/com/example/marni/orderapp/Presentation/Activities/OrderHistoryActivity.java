@@ -96,8 +96,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             }
         });
 
-        getOrders("https://mysql-test-p4.herokuapp.com/orders/394");
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/394");
+        getOrders("https://mysql-test-p4.herokuapp.com/orders/284");
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
     }
 
     @Override
@@ -154,7 +154,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         String[] urls = new String[]{apiUrl};
         task.execute(urls);
     }
-
 
     @Override
     public void onOrderAvailable(Order order) {

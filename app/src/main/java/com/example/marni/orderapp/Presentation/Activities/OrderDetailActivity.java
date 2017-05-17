@@ -108,7 +108,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/394");
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
 
         if (savedInstanceState == null) {

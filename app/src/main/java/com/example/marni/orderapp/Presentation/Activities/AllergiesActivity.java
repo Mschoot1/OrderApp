@@ -18,12 +18,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
  */
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AllergiesGenerator.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable {
+        AllergiesGenerator.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -71,8 +74,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
         getAllergies();
         getBalance();
-
-
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
 
@@ -139,6 +141,13 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         getRandomUser.execute(urls);
     }
 
+    private void getCurrentOrder(String apiUrl) {
+
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
+        String[] urls = new String[]{apiUrl};
+        task.execute(urls);
+    }
+
     public void getBalance(){
         String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
 
@@ -151,5 +160,10 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+    }
+
+    @Override
+    public void onCurrentOrderAvailable(Order order) {
+        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 }
