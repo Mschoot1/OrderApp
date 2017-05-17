@@ -19,16 +19,12 @@ package com.example.marni.orderapp.cardemulation;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ViewAnimator;
 
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.common.activities.SampleActivityBase;
-import com.example.marni.orderapp.common.logger.Log;
-import com.example.marni.orderapp.common.logger.LogFragment;
-import com.example.marni.orderapp.common.logger.LogWrapper;
-import com.example.marni.orderapp.common.logger.MessageOnlyLogFilter;
 
 /**
  * A simple launcher activity containing a summary sample description, sample log and a custom
@@ -37,7 +33,7 @@ import com.example.marni.orderapp.common.logger.MessageOnlyLogFilter;
  * For devices with displays with a width of 720dp or greater, the sample log is always visible,
  * on other devices it's visibility is controlled by an item on the Action Bar.
  */
-public class MainActivity extends SampleActivityBase {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
 
@@ -89,23 +85,4 @@ public class MainActivity extends SampleActivityBase {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Create a chain of targets that will receive log data */
-    @Override
-    public void initializeLogging() {
-        // Wraps Android's native log framework.
-        LogWrapper logWrapper = new LogWrapper();
-        // Using Log, front-end to the logging chain, emulates android.util.log method signatures.
-        Log.setLogNode(logWrapper);
-
-        // Filter strips out everything except the message text.
-        MessageOnlyLogFilter msgFilter = new MessageOnlyLogFilter();
-        logWrapper.setNext(msgFilter);
-
-        // On screen logging via a fragment with a TextView.
-        LogFragment logFragment = (LogFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.log_fragment);
-        msgFilter.setNext(logFragment.getLogView());
-
-        Log.i(TAG, "Ready");
-    }
 }
