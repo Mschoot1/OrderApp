@@ -18,8 +18,7 @@ package com.example.marni.orderapp.cardemulation;
 
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
-
-import com.example.marni.orderapp.common.logger.Log;
+import android.util.Log;
 
 import java.util.Arrays;
 
