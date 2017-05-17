@@ -42,7 +42,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     private BaseAdapter ordersAdapter;
     private double current_balance;
     private TextView textview_balance;
-    private Order order;
 
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -151,7 +150,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     private void getCurrentOrder(String apiUrl) {
 
-        OrdersGetTask task = new OrdersGetTask(this);
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
         String[] urls = new String[]{apiUrl};
         task.execute(urls);
     }
