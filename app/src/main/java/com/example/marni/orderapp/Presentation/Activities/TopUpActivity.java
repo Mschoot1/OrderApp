@@ -43,7 +43,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
-    public final static String TOPUP_EXTRA = "topup_extra";
     private RadioButton button1, button2;
     private TextView textview_balance, textview_newbalance;
     private EditText edittext_value;
