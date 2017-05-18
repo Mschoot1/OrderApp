@@ -150,6 +150,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                     }
                 } catch (Exception e){
                     Log.i(TAG, "Empty value");
+                    Toast.makeText(getApplicationContext(), "Select valid amount", Toast.LENGTH_SHORT).show();
                     calculateBalance.resetBalance(true);
                 }
             }
@@ -259,6 +260,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void onResetBalance(double balance) {
         textview_newbalance.setText("");
         payment.setBackgroundColor(getResources().getColor(darker_gray));
+        payment.setEnabled(false);
     }
 
     public void addBalance(int balance){
@@ -314,6 +316,4 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             payment.setEnabled(false);
         }
     }
-
-    //test
 }

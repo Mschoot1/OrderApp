@@ -145,6 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@android:color/darker_gray"
+        android:enabled="false"
         android:layout_alignParentBottom="true"
         android:text="@string/topup_topayment"
         android:textSize="25sp"/>
