@@ -19,19 +19,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable {
+        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -95,6 +97,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         });
 
         getOrders("https://mysql-test-p4.herokuapp.com/orders/284");
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
     }
 
     @Override
@@ -145,6 +148,13 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         task.execute(urls);
     }
 
+    private void getCurrentOrder(String apiUrl) {
+
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
+        String[] urls = new String[]{apiUrl};
+        task.execute(urls);
+    }
+
     @Override
     public void onOrderAvailable(Order order) {
 
@@ -166,5 +176,10 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+    }
+
+    @Override
+    public void onCurrentOrderAvailable(Order order) {
+        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 }

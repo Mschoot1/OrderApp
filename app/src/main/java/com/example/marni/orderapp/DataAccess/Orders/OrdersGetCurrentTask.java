@@ -22,16 +22,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by marni on 8-5-2017.
+ * Created by marcu on 5/17/2017.
  */
 
-public class OrdersGetTask extends AsyncTask<String, Void, String> {
+public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
 
-    private OnOrderAvailable listener = null;
+    private OnCurrentOrderAvailable listener = null;
 
-    public OrdersGetTask(OnOrderAvailable listener) {
+    public OrdersGetCurrentTask(OnCurrentOrderAvailable listener) {
         this.listener = listener;
     }
 
@@ -106,7 +106,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
                 o.setTimestamp(getFormattedDate(timestamp));
                 o.setPriceTotal(price_total);
 
-                listener.onOrderAvailable(o);
+                listener.onCurrentOrderAvailable(o);
             }
         } catch (JSONException ex) {
             Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
@@ -154,7 +154,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
         return formattedDate;
     }
 
-    public interface OnOrderAvailable {
-        void onOrderAvailable(Order order);
+    public interface OnCurrentOrderAvailable {
+        void onCurrentOrderAvailable(Order order);
     }
 }

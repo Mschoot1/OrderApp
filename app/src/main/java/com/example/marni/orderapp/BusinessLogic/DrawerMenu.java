@@ -33,6 +33,7 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
         switch (id) {
             case R.id.nav_assortment:
                 intent = new Intent(context, ProductsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;
             case R.id.nav_my_order:
@@ -41,14 +42,17 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
                 break;
             case R.id.nav_order_history:
                 intent = new Intent(context, OrderHistoryActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;
             case R.id.nav_top_up:
                 intent = new Intent(context, TopUpActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;
             case R.id.nav_allergy_information:
                 intent = new Intent(context, AllergiesActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 break;
         }

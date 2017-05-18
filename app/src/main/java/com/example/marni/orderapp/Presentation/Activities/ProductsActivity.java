@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
@@ -32,6 +33,7 @@ import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
+        BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, OrdersPutTask.PutSuccessListener {
 
     private final String TAG = getClass().getSimpleName();
@@ -186,12 +188,12 @@ public class ProductsActivity extends AppCompatActivity implements
     private void getCurrentOrder(String apiUrl) {
 
         String[] urls = new String[]{apiUrl};
-        OrdersGetTask task = new OrdersGetTask(this);
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
         task.execute(urls);
     }
 
     @Override
-    public void onOrderAvailable(Order order) {
+    public void onCurrentOrderAvailable(Order order) {
 
         this.order = order;
 
@@ -199,6 +201,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+
+        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 
     @Override

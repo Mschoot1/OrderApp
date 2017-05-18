@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,10 +87,10 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
 //        viewHolder.cardView.setBackgroundColor(0);
 
-//        if (order.getStatus() == 0) {
-//
-//            viewHolder.cardView.setBackgroundColor(context.getColor(holo_green_light));
-//        }
+//         if (order.getStatus() == 0) {
+
+//             viewHolder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context,holo_green_light));
+//         }
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
         viewHolder.textViewOrderId.setText("");

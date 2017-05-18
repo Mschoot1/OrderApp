@@ -24,6 +24,7 @@ import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -116,6 +117,10 @@ public class OrderDetailActivity extends AppCompatActivity implements
         getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+
+        if (savedInstanceState == null) {
+            AccountStorage.SetAccount(this, "" + order.getOrderId());
+        }
     }
 
     private void getCurrentOrder(String apiUrl) {

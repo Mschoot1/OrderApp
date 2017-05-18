@@ -26,9 +26,12 @@ import android.widget.Toast;
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.Balance.BalancePostTask;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
+import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 
@@ -37,7 +40,7 @@ import static android.R.color.holo_green_light;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable,
-        BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
+        BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
@@ -72,6 +75,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setCheckedItem(R.id.nav_top_up);
 
         getBalance();
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
 
         calculateBalance = new CalculateBalance(this, this, this);
 
@@ -228,6 +232,18 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         getBalance.execute(urls);
     }
 
+    private void getCurrentOrder(String apiUrl) {
+
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
+        String[] urls = new String[]{apiUrl};
+        task.execute(urls);
+    }
+
+    @Override
+    public void onCurrentOrderAvailable(Order order) {
+        AccountStorage.SetAccount(this, "" + order.getOrderId());
+    }
+
     @Override
     public void onBalanceChanged(double newBalance) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
@@ -298,4 +314,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             payment.setEnabled(false);
         }
     }
+
+    //test
 }

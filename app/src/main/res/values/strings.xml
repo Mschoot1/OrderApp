@@ -61,6 +61,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="allergy_information">Allergy Information</string>
     <string name="information_allergies">Information Allergies</string>
+    <string name="scanorder">Scan order</string>
 
 
     <!--Top up -->
@@ -72,5 +73,8 @@
     <string name="topup_topayment">Checkout</string>
     <string name="view_chart">VIEW ORDER</string>
 
+    <string name="service_name">CardEmulation Sample</string>
+    <string name="card_title">Sample Loyalty Card</string>
+    <string name="account_number">Account Number</string>
 
 </resources>
