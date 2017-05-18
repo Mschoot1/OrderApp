@@ -38,6 +38,8 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
+import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
+
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged,
@@ -55,6 +57,8 @@ public class ProductsActivity extends AppCompatActivity implements
     private TextView textview_balance;
     private double priceTotal;
 
+    private Order order = null;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class ProductsActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Assortment");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +97,16 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
+
+        TextView textView = (TextView) findViewById(R.id.text_view_view_order);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                intent.putExtra(ORDER, order);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -127,14 +141,16 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onTotalChanged(Double priceTotal) {
+    public void onTotalChanged(Double priceTotal, int quantity) {
 
         this.priceTotal = priceTotal;
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
-        textViewTotal.setText("Total: € " + formatter.format(priceTotal));
+        TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
+        textViewTotal.setText("€ " + formatter.format(priceTotal));
+        textViewQuantity.setText(quantity + "");
     }
 
     public void getProducts(String ApiUrl) {
@@ -176,6 +192,8 @@ public class ProductsActivity extends AppCompatActivity implements
 
     @Override
     public void onOrderAvailable(Order order) {
+
+        this.order = order;
 
         mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this, this);
 

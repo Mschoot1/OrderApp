@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.listview_item_order, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.relativeLayout = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutOrder);
+            viewHolder.cardView = (CardView) convertView.findViewById(R.id.cardView);
 
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
             viewHolder.textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
@@ -83,12 +84,12 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        viewHolder.relativeLayout.setBackgroundColor(0);
+//        viewHolder.cardView.setBackgroundColor(0);
 
-        if (order.getStatus() == 0) {
-
-            viewHolder.relativeLayout.setBackgroundColor(context.getColor(holo_green_light));
-        }
+//        if (order.getStatus() == 0) {
+//
+//            viewHolder.cardView.setBackgroundColor(context.getColor(holo_green_light));
+//        }
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
         viewHolder.textViewOrderId.setText("");
@@ -104,7 +105,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
     private static class ViewHolder {
 
-        RelativeLayout relativeLayout;
+        CardView cardView;
 
         TextView textViewOrderId;
         TextView textViewStatus;

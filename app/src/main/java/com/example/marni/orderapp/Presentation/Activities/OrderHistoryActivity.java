@@ -51,7 +51,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Home");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

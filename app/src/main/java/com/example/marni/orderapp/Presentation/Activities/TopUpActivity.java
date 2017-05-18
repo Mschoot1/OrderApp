@@ -40,7 +40,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
 
     private final String TAG = getClass().getSimpleName();
-    public final static String TOPUP_EXTRA = "topup_extra";
     private RadioButton button1, button2;
     private TextView textview_balance, textview_newbalance;
     private EditText edittext_value;
@@ -48,7 +47,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private CalculateBalance calculateBalance;
     private Spinner spinner;
     private Button payment;
-    private Boolean allowedtopay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +57,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         setSupportActionBar(toolbar);
 
         // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Top Up");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -288,7 +286,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onCheckPayment(String check) {
         if(check.equals("succes")) {
-            allowedtopay = true;
             payment.setBackgroundColor(getResources().getColor(holo_green_light));
             payment.setEnabled(true);
         } else if (check.equals("zero")){

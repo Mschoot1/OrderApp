@@ -49,9 +49,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         setContentView(R.layout.activity_allergies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        
-        // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportActionBar().setTitle("Allergy Information");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
