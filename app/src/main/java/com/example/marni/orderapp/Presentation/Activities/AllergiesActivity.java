@@ -22,7 +22,7 @@ import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
-import com.example.marni.orderapp.DummyGenerator.AllergiesGenerator;
+import com.example.marni.orderapp.DataAccess.Allergies.AllergiesGetTask;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AllergiesGenerator.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        AllergiesGetTask.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -136,7 +136,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/allergie" };
 
         // Connect and pass self for callback
-        AllergiesGenerator getRandomUser = new AllergiesGenerator(this);
+        AllergiesGetTask getRandomUser = new AllergiesGetTask(this);
         getRandomUser.execute(urls);
     }
 

@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.DummyGenerator;
+package com.example.marni.orderapp.DataAccess.Allergies;
 
 import android.os.AsyncTask;
 import android.widget.TextView;
@@ -35,13 +35,13 @@ import static android.content.ContentValues.TAG;
  * Created by Wallaard on 4-5-2017.
  */
 
-public class AllergiesGenerator extends AsyncTask<String, Void, String> {
+public class AllergiesGetTask extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
 
     private OnRandomUserAvailable listener = null;
 
-    public AllergiesGenerator(OnRandomUserAvailable listener) {
+    public AllergiesGetTask(OnRandomUserAvailable listener) {
         this.listener = listener;
     }
 
