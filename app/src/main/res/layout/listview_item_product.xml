@@ -4,59 +4,30 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/layoutOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/listViewProducts_productprice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/rounded_corner_left"
-            android:padding="@dimen/paddingProduct"
-            android:text="$2.00"
-            android:textSize="@dimen/textsizeProduct" />
-
-        <Spinner
-            android:id="@+id/listViewProducts_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/listViewProducts_productprice"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/listViewProducts_productprice"
-            android:layout_toRightOf="@+id/listViewProducts_productprice"
-            android:background="@drawable/rounded_corner_right"
-            android:entries="@array/product_quantity" />
+        android:layout_margin="15dp">
 
         <TextView
             android:id="@+id/listViewProducts_productname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/paddingProduct"
-            android:text="Beer"
-            android:textSize="@dimen/textsizeProduct"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/listViewProducts_product_alcoholpercentage"
-            android:layout_toEndOf="@+id/listViewProducts_product_alcoholpercentage" />
+            android:text="Beer"
+            android:textColor="@color/productName"
+            android:textSize="@dimen/textsizeProduct" />
 
         <TextView
             android:id="@+id/listViewProducts_productsize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/listViewProducts_spinner"
-            android:layout_alignBottom="@+id/listViewProducts_spinner"
-            android:layout_toEndOf="@+id/listViewProducts_spinner"
-            android:layout_toRightOf="@+id/listViewProducts_spinner"
-            android:padding="@dimen/paddingProduct"
+            android:layout_alignLeft="@+id/listViewProducts_productname"
+            android:layout_alignStart="@+id/listViewProducts_productname"
+            android:layout_below="@+id/listViewProducts_productname"
+            android:layout_marginEnd="@dimen/tvMarginRight"
+            android:layout_marginRight="@dimen/tvMarginRight"
             android:text="330ml"
             android:textSize="@dimen/textsizeProduct" />
 
@@ -64,24 +35,48 @@
             android:id="@+id/listViewProducts_product_alcoholpercentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignBaseline="@+id/listViewProducts_productsize"
+            android:layout_alignBottom="@+id/listViewProducts_productsize"
             android:layout_toEndOf="@+id/listViewProducts_productsize"
             android:layout_toRightOf="@+id/listViewProducts_productsize"
-            android:padding="@dimen/paddingProduct"
             android:text="5% Alc."
             android:textSize="@dimen/textsizeProduct" />
 
+        <Spinner
+            android:id="@+id/listViewProducts_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/listViewProducts_productprice"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/listViewProducts_productprice"
+            android:background="@drawable/rounded_corner_right"
+            android:entries="@array/product_quantity" />
+
+        <LinearLayout
+            android:id="@+id/iconHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/listViewProducts_spinner"
+            android:layout_alignRight="@id/listViewProducts_spinner"
+            android:layout_alignTop="@+id/listViewProducts_productname"
+            android:orientation="horizontal"
+            android:padding="@dimen/paddingProduct" />
+
+        <TextView
+            android:id="@+id/listViewProducts_productprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/listViewProducts_product_alcoholpercentage"
+            android:layout_alignBottom="@+id/listViewProducts_product_alcoholpercentage"
+            android:layout_marginEnd="@dimen/tvMarginRight"
+            android:layout_marginRight="@dimen/tvMarginRight"
+            android:layout_toLeftOf="@+id/listViewProducts_spinner"
+            android:layout_toStartOf="@+id/listViewProducts_spinner"
+            android:text="$2.00"
+            android:textColor="@color/productName"
+            android:textSize="@dimen/textsizeProduct" />
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/iconHolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/layoutOne"
-        android:layout_alignEnd="@+id/layoutOne"
-        android:layout_alignRight="@+id/layoutOne"
-        android:orientation="horizontal"
-        android:padding="@dimen/paddingProduct" />
 
 </RelativeLayout>

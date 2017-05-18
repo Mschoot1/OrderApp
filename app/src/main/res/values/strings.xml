@@ -71,6 +71,7 @@
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>
     <string name="topup_topayment">Checkout</string>
+    <string name="view_chart">VIEW ORDER</string>
 
     <string name="service_name">CardEmulation Sample</string>
     <string name="card_title">Sample Loyalty Card</string>

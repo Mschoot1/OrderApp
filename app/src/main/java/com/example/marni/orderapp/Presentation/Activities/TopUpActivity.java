@@ -60,7 +60,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         setSupportActionBar(toolbar);
 
         // hide title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Top Up");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -2,5 +2,12 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="textsize">16sp</dimen>
     <dimen name="textsizeProduct">18sp</dimen>
-    <dimen name="paddingProduct">4sp</dimen>
+    <dimen name="paddingProduct">2sp</dimen>
+    <dimen name="tvMargin">12sp</dimen>
+    <dimen name="tvMarginRight">6sp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
 </resources>

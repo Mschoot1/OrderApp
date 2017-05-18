@@ -134,7 +134,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
 
-                listener.onTotalChanged(tfa.getPriceTotal());
+                listener.onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
 
                 if (!result.equals("")) {
                     listener2.onMethodAvailable(result, product, order);
@@ -165,7 +165,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             ImageView imageView = new ImageView(context);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(63, 63);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(55, 55);
+            lp.setMargins(5, 0, 0, 0);
 
             imageView.setLayoutParams(lp);
             imageView.setImageResource((int) iconId);

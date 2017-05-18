@@ -22,7 +22,7 @@
             android:id="@+id/listViewProducts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/textViewTotal"
+            android:layout_above="@+id/layoutTwo"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/toolbar_include"
@@ -33,15 +33,50 @@
             android:padding="0dp"
             android:scrollbarStyle="outsideOverlay" />
 
-        <TextView
-            android:id="@+id/textViewTotal"
+        <RelativeLayout
+            android:id="@+id/layoutTwo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
-            android:padding="16dp"
-            android:text="@string/total"
-            android:textSize="18sp" />
+            android:background="#555">
+
+            <TextView
+                android:id="@+id/textViewTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="@string/total"
+                android:textColor="#FFF"
+                android:textSize="@dimen/textsizeProduct"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/text_view_view_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="15dp"
+                android:text="@string/view_chart"
+                android:textColor="#FFF"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textViewTotalQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="#FFF"
+                android:textSize="@dimen/textsizeProduct"
+                android:layout_alignTop="@+id/text_view_view_order"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

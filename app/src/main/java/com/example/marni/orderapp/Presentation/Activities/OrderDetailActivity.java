@@ -58,7 +58,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_order_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
@@ -72,6 +72,14 @@ public class OrderDetailActivity extends AppCompatActivity implements
         Bundle bundle = getIntent().getExtras();
 
         order = (Order) bundle.get(ORDER);
+
+        String title;
+        if (order.getStatus() == 0) {
+            title = "My Order";
+        } else {
+            title = "Order";
+        }
+        getSupportActionBar().setTitle(title);
 
         TextView textViewOrderId = (TextView) findViewById(R.id.textViewOrderId);
         TextView textViewStatus = (TextView) findViewById(R.id.textViewStatus);
@@ -93,7 +101,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
         }
 
         assert order != null;
-//        textViewOrderId.setText(order.getOrderId() + "");
         textViewOrderId.setText("");
         if (order.getStatus() == 0) {
             textViewStatus.setText(getResources().getString(R.string.open));
@@ -164,13 +171,15 @@ public class OrderDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onTotalChanged(Double priceTotal) {
+    public void onTotalChanged(Double priceTotal, int quantity) {
         this.priceTotal = priceTotal;
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
-        textViewTotal.setText("Total: € " + formatter.format(priceTotal));
+        TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
+        textViewTotal.setText("€ " + formatter.format(priceTotal));
+        textViewQuantity.setText(quantity + "");
     }
 
     @Override

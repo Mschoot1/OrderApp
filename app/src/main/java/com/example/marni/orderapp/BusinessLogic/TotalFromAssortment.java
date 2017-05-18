@@ -13,13 +13,14 @@ public class TotalFromAssortment {
 
     private ArrayList<Product> products;
 
-    private double priceTotal = 0;
-
     public TotalFromAssortment(ArrayList<Product> products) {
         this.products = products;
     }
 
     public Double getPriceTotal() {
+
+        double priceTotal = 0;
+
         for (Product product : products) {
 
             priceTotal += product.getQuantity()*product.getPrice();
@@ -28,8 +29,20 @@ public class TotalFromAssortment {
         return priceTotal;
     }
 
+    public int getQuanitity() {
+
+        int quantity = 0;
+
+        for (Product product : products) {
+
+            quantity += product.getQuantity();
+        }
+
+        return quantity;
+    }
+
     public interface OnTotalChanged {
 
-        void onTotalChanged(Double priceTotal);
+        void onTotalChanged(Double priceTotal, int quantity);
     }
 }
