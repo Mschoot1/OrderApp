@@ -2,6 +2,7 @@
     <string name="app_name">OrderApp</string>
     <string name="company_image">Company Image</string>
     <string name="sign_in">Sign In</string>
+    <string name="remember_credentials">Remember email</string>
     <string name="emailaddress">Email address</string>
     <string name="password">Password</string>
     <string name="no_account_yet_register_here">No account yet? Register here</string>

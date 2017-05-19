@@ -73,11 +73,10 @@
         android:id="@+id/buttonSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewSignIn"
-        android:layout_alignStart="@+id/textViewSignIn"
-        android:layout_below="@+id/login_editTextPassword"
-        android:layout_marginTop="12dp"
-        android:text="@string/sign_in" />
+        android:layout_marginTop="8dp"
+        android:text="@string/sign_in"
+        android:layout_below="@+id/checkBox_login"
+        android:layout_alignEnd="@+id/textViewSignIn" />
 
     <TextView
         android:id="@+id/textViewNoAccountYet"
@@ -89,5 +88,13 @@
         android:text="@string/no_account_yet_register_here"
         android:textColor="#000"
         android:textSize="14sp" />
+
+    <CheckBox
+        android:id="@+id/checkBox_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_credentials"
+        android:layout_below="@+id/login_editTextPassword"
+        android:layout_alignStart="@+id/login_editTextPassword" />
 
 </RelativeLayout>
