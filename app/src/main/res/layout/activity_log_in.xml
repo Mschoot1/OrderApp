@@ -10,11 +10,11 @@
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="69dp"
         android:contentDescription="@string/company_image"
-        android:src="@mipmap/rsz_3logo" />
+        android:src="@mipmap/rsz_3logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textViewSignIn"
@@ -73,10 +73,10 @@
         android:id="@+id/buttonSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="9dp"
         android:text="@string/sign_in"
         android:layout_below="@+id/checkBox_login"
-        android:layout_alignEnd="@+id/textViewSignIn" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textViewNoAccountYet"

@@ -150,7 +150,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                     }
                 } catch (Exception e){
                     Log.i(TAG, "Empty value");
-                    Toast.makeText(getApplicationContext(), "Select valid amount", Toast.LENGTH_SHORT).show();
                     calculateBalance.resetBalance(true);
                 }
             }
@@ -304,15 +303,14 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onCheckPayment(String check) {
         if(check.equals("succes")) {
-            payment.setBackgroundColor(getResources().getColor(holo_green_light));
+            payment.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             payment.setEnabled(true);
         } else if (check.equals("zero")){
-            Toast.makeText(this, "Select valid amount", Toast.LENGTH_SHORT).show();
-            payment.setBackgroundColor(getResources().getColor(darker_gray));
+            payment.setBackgroundColor(getResources().getColor(R.color.backgroundcategoryheaders));
             payment.setEnabled(false);
         } else {
             Toast.makeText(this, "Max account balance is 150", Toast.LENGTH_SHORT).show();
-            payment.setBackgroundColor(getResources().getColor(darker_gray));
+            payment.setBackgroundColor(getResources().getColor(R.color.backgroundcategoryheaders));
             payment.setEnabled(false);
         }
     }

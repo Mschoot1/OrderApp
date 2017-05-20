@@ -71,7 +71,6 @@ public class OrdersListviewAdapter extends BaseAdapter {
             viewHolder.cardView = (CardView) convertView.findViewById(R.id.cardView);
 
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
-            viewHolder.textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
             viewHolder.textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
             viewHolder.textViewTotalPrice = (TextView) convertView.findViewById(R.id.textViewTotalPrice);
 
@@ -85,30 +84,25 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-//        viewHolder.cardView.setBackgroundColor(0);
+         if (order.getStatus() == 0) {
+             viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
+             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
+             viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
 
-//         if (order.getStatus() == 0) {
-
-//             viewHolder.relativeLayout.setBackgroundColor(ContextCompat.getColor(context,holo_green_light));
-//         }
+             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
+         } else {
+             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
+         }
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
-        viewHolder.textViewOrderId.setText("");
-        if (order.getStatus() == 0) {
-            viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
-        } else {
-            viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
-        }
         viewHolder.textViewTotalPrice.setText("€ " + formatter.format(order.getPriceTotal()));
 
         return convertView;
     }
 
     private static class ViewHolder {
-
         CardView cardView;
 
-        TextView textViewOrderId;
         TextView textViewStatus;
         TextView textViewDateTime;
         TextView textViewTotalPrice;
