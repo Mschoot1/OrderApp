@@ -47,6 +47,7 @@ public class LogInActivity extends AppCompatActivity implements
 
         if(sharedPreferences.getBoolean(KEY_REMEMBER, true)){
             checkBox.setChecked(true);
+            editTextEmail.setFocusable(false);
             editTextEmail.setText(sharedPreferences.getString(KEY_EMAIL, ""));
         } else {
             checkBox.setChecked(false);
