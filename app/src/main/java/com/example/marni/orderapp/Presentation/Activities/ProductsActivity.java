@@ -84,6 +84,8 @@ public class ProductsActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
+                intent.putExtra(JWT_STR, jwt);
+                intent.putExtra(USER, user);
                 startActivity(intent);
             }
         });
@@ -114,6 +116,8 @@ public class ProductsActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                intent.putExtra(JWT_STR, jwt);
+                intent.putExtra(USER, user);
                 intent.putExtra(ORDER, order);
                 startActivity(intent);
             }

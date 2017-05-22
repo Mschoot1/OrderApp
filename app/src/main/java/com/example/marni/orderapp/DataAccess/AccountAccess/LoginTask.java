@@ -1,9 +1,13 @@
 package com.example.marni.orderapp.DataAccess.AccountAccess;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+
+import com.example.marni.orderapp.Presentation.Activities.LogInActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +31,18 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
     private SuccessListener listener;
 
-    public LoginTask(SuccessListener listener) {
+    private ProgressDialog dialog;
 
-        this.listener = listener;
+    public LoginTask(LogInActivity activity) {
+
+        this.listener = activity;
+        dialog = new ProgressDialog(activity);
     }
 
     @Override
     protected void onPreExecute() {
-
+        dialog.setMessage("Authenticating. Please wait..");
+        dialog.show();
     }
 
     @Override
@@ -99,6 +107,9 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response) {
 
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
         Log.i(TAG, "response: " + response);
 
         listener.successful(response);

@@ -68,7 +68,7 @@ public class Product implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public ArrayList getAllergies() {
+    public ArrayList<Allergy> getAllergies() {
         return allergies;
     }
 
