@@ -148,7 +148,8 @@
         android:enabled="false"
         android:layout_alignParentBottom="true"
         android:text="@string/topup_topayment"
-        android:textSize="25sp"/>
+        android:textSize="25sp"
+        android:textColor="@color/colorWhite"/>
 
 </RelativeLayout>
 
