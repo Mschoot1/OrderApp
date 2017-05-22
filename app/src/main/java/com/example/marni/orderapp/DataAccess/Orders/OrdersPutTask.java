@@ -13,10 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by marcu on 5/12/2017.
- */
-
 public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
 
     private final String TAG = getClass().getSimpleName();
@@ -46,14 +42,13 @@ public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
 
-            httpConnection.setDoOutput(true);
-            httpConnection.setDoInput(true);
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("PUT");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("price_total", params[1]);
-            jsonParam.put("order_id", params[2]);
+            jsonParam.put("price_total", params[2]);
+            jsonParam.put("order_id", params[3]);
 
             Log.i(TAG, String.valueOf(jsonParam));
 

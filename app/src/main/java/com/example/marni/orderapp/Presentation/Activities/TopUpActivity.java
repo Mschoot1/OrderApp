@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.Balance.BalancePostTask;
@@ -37,6 +38,8 @@ import java.text.DecimalFormat;
 
 import static android.R.color.darker_gray;
 import static android.R.color.holo_green_light;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable,
@@ -51,10 +54,17 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private Spinner spinner;
     private Button payment;
 
+    private JWT jwt;
+    private int user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_up);
+
+        Bundle bundle = getIntent().getExtras();
+        jwt = bundle.getParcelable(JWT_STR);
+        user = bundle.getInt(USER);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -74,8 +84,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
 
-        getBalance();
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         calculateBalance = new CalculateBalance(this, this, this);
 
@@ -190,7 +200,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
             int id = item.getItemId();
 
-            new DrawerMenu(getApplicationContext(), id);
+            new DrawerMenu(getApplicationContext(), id, jwt, user);
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
@@ -225,8 +235,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    public void getBalance(){
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+    public void getBalance(String apiUrl){
+        String[] urls = new String[] { apiUrl, jwt.toString() };
 
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
@@ -235,7 +245,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl};
+        String[] urls = new String[]{apiUrl, jwt.toString()};
         task.execute(urls);
     }
 
@@ -275,11 +285,11 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     public void postBalance(String ApiUrl){
         BalancePostTask task = new BalancePostTask(this);
-        String[] urls = new String[]{ApiUrl, Double.toString(calculateBalance.getAddedBalance()), "topup", "284"};
+        String[] urls = new String[]{ApiUrl, jwt.toString(), Double.toString(calculateBalance.getAddedBalance()), "topup", user + ""};
         task.execute(urls);
     }
 
-    public void SuccesfulTopUp(){
+    public void SuccessfulTopUp(){
         calculateBalance.resetBalance(true);
         edittext_value.setText("");
         edittext_value.setEnabled(true);
@@ -293,8 +303,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         Log.i(TAG, successful.toString());
         if(successful){
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
-            SuccesfulTopUp();
-            getBalance();
+            SuccessfulTopUp();
+            getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
         } else {
             Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
         }

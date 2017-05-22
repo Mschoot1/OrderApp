@@ -21,10 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by marni on 8-5-2017.
- */
-
 public class OrdersGetTask extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
@@ -52,9 +48,9 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             httpConnection.connect();
 
@@ -72,7 +68,6 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
             Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
-//        response = "{\"results\":[{\"id\":4,\"status\":1,\"timestamp\":\"2017-05-10T20:23:22.000Z\",\"price_total\":10,\"customer_id\":284},{\"id\":14,\"status\":1,\"timestamp\":\"2017-05-10T22:23:34.000Z\",\"price_total\":30,\"customer_id\":284},{\"id\":24,\"status\":0,\"timestamp\":\"2017-05-10T20:24:33.000Z\",\"price_total\":13,\"customer_id\":284}]}";
 
         return response;
     }

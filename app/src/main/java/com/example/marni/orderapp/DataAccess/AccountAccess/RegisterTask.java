@@ -16,10 +16,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-/**
- * Created by marni on 4-5-2017.
- */
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class RegisterTask extends AsyncTask<String, Void, Boolean> {
 

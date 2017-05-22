@@ -1,9 +1,9 @@
-package com.example.marni.orderapp.DataAccess.Orders;
+package com.example.marni.orderapp.DataAccess;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.marni.orderapp.Domain.Order;
+import com.example.marni.orderapp.Domain.Secret;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,17 +17,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
+public class GetSecret2Task extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
 
-    private OnCurrentOrderAvailable listener = null;
+    private OnSecretAvailable listener = null;
 
-    public OrdersGetCurrentTask(OnCurrentOrderAvailable listener) {
+    public GetSecret2Task(OnSecretAvailable listener) {
         this.listener = listener;
     }
 
@@ -52,6 +49,8 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
+            Log.i(TAG, "params[1]: " + params[1]);
+
             httpConnection.connect();
 
             responsCode = httpConnection.getResponseCode();
@@ -59,7 +58,7 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
             } else {
-                Log.e(TAG, "Error, invalid response");
+                Log.e(TAG, "Error, invalid response. ResponseCode: " + responsCode);
             }
         } catch (MalformedURLException e) {
             Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
@@ -82,31 +81,27 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
         }
 
         try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            JSONArray jsonArray = new JSONArray(response);
+            JSONArray jsonArray2 = jsonArray.getJSONArray(0);
 
-            Log.i(TAG, "results.length(): " + jsonArray.length());
+            Log.i(TAG, "results.length(): " + jsonArray2.length());
 
-            for (int idx = 0; idx < jsonArray.length(); idx++) {
-                JSONObject order = jsonArray.getJSONObject(idx);
+            for (int idx = 0; idx < jsonArray2.length(); idx++) {
+                JSONObject secret = jsonArray2.getJSONObject(idx);
 
-                int id = order.getInt("id");
-                int status = order.getInt("status");
-                String timestamp = order.getString("timestamp");
-                Double price_total = order.getDouble("price_total");
+                int id = secret.getInt("id");
+                String email = secret.getString("email");
+                String password = secret.getString("password");
 
-                Order o = new Order();
-                o.setOrderId(id);
-                o.setStatus(status);
-                o.setTimestamp(getFormattedDate(timestamp));
-                o.setPriceTotal(price_total);
+                Secret s = new Secret();
+                s.setId(id);
+                s.setEmail(email);
+                s.setPassword(password);
 
-                listener.onCurrentOrderAvailable(o);
+                listener.onSecretAvailable(s);
             }
         } catch (JSONException ex) {
             Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 
@@ -138,18 +133,7 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
         return sb.toString();
     }
 
-    private String getFormattedDate(String s) throws ParseException {
-
-        SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date parsedDate = sdf.parse(s);
-        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = sdf.format(parsedDate);
-
-        return formattedDate;
-    }
-
-    public interface OnCurrentOrderAvailable {
-        void onCurrentOrderAvailable(Order order);
+    public interface OnSecretAvailable {
+        void onSecretAvailable(Secret secret);
     }
 }

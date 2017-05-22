@@ -1,16 +1,5 @@
 package com.example.marni.orderapp.BusinessLogic;
 
-
-import android.content.Context;
-import android.widget.Toast;
-
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.Domain.Balance;
-
-/**
- * Created by marcu on 5/11/2017.
- */
-
 public class CalculateQuantity{
     private String method;
 

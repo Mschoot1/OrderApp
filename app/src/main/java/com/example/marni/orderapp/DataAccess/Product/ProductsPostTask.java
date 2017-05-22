@@ -46,10 +46,9 @@ public class ProductsPostTask extends AsyncTask<String, Void, Boolean> {
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
 
-            httpConnection.setDoOutput(true);
-            httpConnection.setDoInput(true);
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             JSONObject jsonParam = new JSONObject();
             jsonParam.put("order_id", params[1]);

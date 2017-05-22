@@ -7,10 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
 public class OrderDetailActivity extends AppCompatActivity implements
@@ -51,11 +55,15 @@ public class OrderDetailActivity extends AppCompatActivity implements
     private Order order;
     private double priceTotal;
 
+    private JWT jwt;
+    private int user;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,8 +78,11 @@ public class OrderDetailActivity extends AppCompatActivity implements
         });
 
         Bundle bundle = getIntent().getExtras();
-
+        jwt = bundle.getParcelable(JWT_STR);
+        user = bundle.getInt(USER);
         order = (Order) bundle.get(ORDER);
+
+        Log.i(TAG, "user: " + user);
 
         String addItemsText;
         String title;
@@ -121,8 +132,8 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/284");
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
 
         if (savedInstanceState == null) {
@@ -133,7 +144,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{apiUrl};
+        String[] urls = new String[]{apiUrl, jwt.toString()};
         task.execute(urls);
     }
 
@@ -150,7 +161,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
     public void getBalance(String ApiUrl) {
 
-        String[] urls = new String[]{ApiUrl};
+        String[] urls = new String[]{ApiUrl, jwt.toString()};
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
@@ -191,25 +202,25 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onMethodAvailable(String method, Product product, Order order) {
-        switch (method){
+        switch (method) {
             case "put":
-                String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/edit", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
+                String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/edit", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
                 ProductsPutTask putProduct = new ProductsPutTask(this);
                 putProduct.execute(urls);
 
                 break;
             case "post":
-                String[] urls2 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/add", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284", Integer.toString(product.getQuantity()) };
+                String[] urls2 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/add", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
                 ProductsPostTask postProduct = new ProductsPostTask(this);
                 postProduct.execute(urls2);
                 break;
             case "delete":
-                String[] urls3 = new String[] { "https://mysql-test-p4.herokuapp.com/product/quantity/delete", Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), "284" };
+                String[] urls3 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/delete", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + ""};
                 ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
                 deleteProduct.execute(urls3);
         }
 
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/order/price/edit", priceTotal + "", Integer.toString(order.getOrderId()) };
+        String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/order/price/edit", jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
         OrdersPutTask putOrder = new OrdersPutTask(this);
         putOrder.execute(urls);
     }

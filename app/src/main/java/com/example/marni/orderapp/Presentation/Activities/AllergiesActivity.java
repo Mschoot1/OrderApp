@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Allergy;
@@ -31,9 +32,8 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-/**
- * Created by Wallaard on 4-5-2017.
- */
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         AllergiesGetTask.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
@@ -46,12 +46,19 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
+    private JWT jwt;
+    private int user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allergies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        Bundle bundle = getIntent().getExtras();
+        jwt = bundle.getParcelable(JWT_STR);
+        user = bundle.getInt(USER);
 
         getSupportActionBar().setTitle("Allergy Information");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
@@ -72,8 +79,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
 
         getAllergies();
-        getBalance();
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
 
@@ -117,7 +124,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
         int id = item.getItemId();
 
-        new DrawerMenu(getApplicationContext(), id);
+        new DrawerMenu(getApplicationContext(), id, jwt, user);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -143,12 +150,12 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl};
+        String[] urls = new String[]{apiUrl, jwt.toString()};
         task.execute(urls);
     }
 
-    public void getBalance(){
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+    public void getBalance(String apiUrl){
+        String[] urls = new String[] { apiUrl, jwt.toString() };
 
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);

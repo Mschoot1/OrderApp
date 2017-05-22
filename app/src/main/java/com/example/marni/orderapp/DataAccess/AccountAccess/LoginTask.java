@@ -8,8 +8,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,12 +20,10 @@ import java.net.URLConnection;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by marni on 4-5-2017.
- */
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class LoginTask extends AsyncTask<String, Void, Boolean> {
+public class LoginTask extends AsyncTask<String, Void, String> {
+
+    public static final String UNAUTHORIZED = "Unauthorized";
 
     private SuccessListener listener;
 
@@ -32,12 +33,18 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected void onPreExecute() {
 
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+        InputStream inputStream = null;
         int responseCode;
         String balanceUrl = params[0];
 
-        Boolean response = null;
+        String response = null;
 
         Log.i(TAG, "doInBackground - " + balanceUrl);
         try {
@@ -68,7 +75,14 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.connect();
 
             responseCode = httpConnection.getResponseCode();
-            response = (responseCode == HttpURLConnection.HTTP_OK);
+
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConnection.getInputStream();
+                response = getStringFromInputStream(inputStream).replace("\"", "");
+            } else {
+                response = UNAUTHORIZED;
+            }
         } catch (MalformedURLException e) {
             Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
@@ -83,12 +97,42 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean response) {
+    protected void onPostExecute(String response) {
+
+        Log.i(TAG, "response: " + response);
 
         listener.successful(response);
     }
 
+    private static String getStringFromInputStream(InputStream is) {
+
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
+
+        String line;
+        try {
+
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
     public interface SuccessListener {
-        void successful(Boolean successful);
+        void successful(String response);
     }
 }

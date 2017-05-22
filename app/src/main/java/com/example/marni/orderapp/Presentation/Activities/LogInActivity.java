@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,12 +16,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.auth0.android.jwt.Claim;
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask;
 import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
 import com.example.marni.orderapp.R;
 
+import static com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask.UNAUTHORIZED;
+
 public class LogInActivity extends AppCompatActivity implements
         LoginTask.SuccessListener {
+
+    public static final String JWT_STR = "jwt_str";
+    public static final String USER = "user";
+
+    private final String TAG = getClass().getSimpleName();
 
     private EditText editTextEmail,editTextPassword;
     private CheckBox checkBox;
@@ -59,8 +69,8 @@ public class LogInActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
                 if (isValidEmail(editTextEmail.getText().toString())) {
+                    login("https://mysql-test-p4.herokuapp.com/loginAuth");
                     managePreferences();
-                    login("https://mysql-test-p4.herokuapp.com/login");
                     deviceinformation("https://mysql-test-p4.herokuapp.com/customer/device");
                 } else {
                     Toast.makeText(LogInActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
@@ -185,11 +195,22 @@ public class LogInActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void successful(Boolean successful) {
-        if (successful) {
-            Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
+    public void successful(String response) {
 
+        Log.i(TAG, "response: " + response);
+
+        if (response.equals(UNAUTHORIZED)) {
+            Toast.makeText(this, "Login failed, please try again.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Logged in", Toast.LENGTH_LONG).show();
+
+            JWT jwt = new JWT(response);
+            Claim user = jwt.getClaim("user");
+            Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
+            intent.putExtra(JWT_STR, jwt);
+            intent.putExtra(USER, user.asInt());
+
+            Log.i(TAG, "user.asInt(): " + user.asInt());
             startActivity(intent);
         } else {
             Toast.makeText(this, "Login failed, please try again.", Toast.LENGTH_LONG).show();

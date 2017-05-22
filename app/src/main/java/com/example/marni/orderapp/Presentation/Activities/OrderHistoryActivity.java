@@ -18,11 +18,14 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.GetSecret2Task;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
+import com.example.marni.orderapp.Domain.Secret;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
@@ -31,13 +34,20 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
+
+
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, GetSecret2Task.OnSecretAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     public static final String ORDER = "ORDER";
+
+    public JWT jwt;
+    public int user;
 
     private BaseAdapter ordersAdapter;
     private double current_balance;
@@ -51,6 +61,10 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_order_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        Bundle bundle = getIntent().getExtras();
+        jwt = bundle.getParcelable(JWT_STR);
+        user = bundle.getInt(USER);
 
         // hide title
         getSupportActionBar().setTitle("Home");
@@ -74,9 +88,9 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_order_history);
 
-        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance();
+        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
@@ -90,14 +104,27 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
-
+                intent.putExtra(JWT_STR, jwt);
+                intent.putExtra(USER, user);
                 intent.putExtra(ORDER, orders.get(position));
                 startActivity(intent);
             }
         });
 
-        getOrders("https://mysql-test-p4.herokuapp.com/orders/284");
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/284");
+        getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
+        getSercet2("https://mysql-test-p4.herokuapp.com/secret2");
+    }
+
+    private void getSercet2(String apiUrl) {
+        GetSecret2Task task = new GetSecret2Task(this);
+        String[] urls = new String[]{apiUrl, jwt.toString()};
+        task.execute(urls);
+    }
+
+    @Override
+    public void onSecretAvailable(Secret secret) {
+        Log.i(TAG, secret.getEmail());
     }
 
     @Override
@@ -134,7 +161,9 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
 
-        new DrawerMenu(getApplicationContext(), id);
+        Log.i(TAG, "user: " + user);
+
+        new DrawerMenu(getApplicationContext(), id, jwt, user);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -144,14 +173,14 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     public void getOrders(String ApiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{ApiUrl};
+        String[] urls = new String[]{ApiUrl, jwt.toString()};
         task.execute(urls);
     }
 
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl};
+        String[] urls = new String[]{apiUrl, jwt.toString()};
         task.execute(urls);
     }
 
@@ -165,14 +194,14 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         ordersAdapter.notifyDataSetChanged();
     }
 
-    public void getBalance(){
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/balance/284" };
+    public void getBalance(String apiUrl) {
+        String[] urls = new String[]{apiUrl, jwt.toString()};
 
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Balance bal){
+    public void onBalanceAvailable(Balance bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();

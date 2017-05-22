@@ -26,6 +26,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presentation.Activities.LogInActivity" />
         </activity>
+        <activity
+            android:name=".Presentation.Activities.OrderHistoryActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".Presentation.Activities.AllergiesActivity" />
         <activity android:name=".Presentation.Activities.OrderHistoryActivity" />
         <activity android:name=".Presentation.Activities.AllergiesActivity"
             android:exported="true"/>
@@ -39,18 +43,20 @@
 
         <!-- BEGIN_INCLUDE(CardEmulationManifest) -->
         <!-- Service for handling communication with NFC terminal. -->
-        <service android:name=".cardemulation.CardService"
+        <service
+            android:name=".cardemulation.CardService"
             android:exported="true"
             android:permission="android.permission.BIND_NFC_SERVICE">
             <!-- Intent filter indicating that we support card emulation. -->
             <intent-filter>
-                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Required XML configuration file, listing the AIDs that we are emulating cards
                  for. This defines what protocols our card emulation service supports. -->
-            <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
-                android:resource="@xml/aid_list"/>
+            <meta-data
+                android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/aid_list" />
         </service>
         <!-- END_INCLUDE(CardEmulationManifest) -->
     </application>

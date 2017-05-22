@@ -18,10 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by MarcdenUil on 9-5-2017.
- */
-
 public class BalanceGetTask extends AsyncTask<String, Void, String> {
 
     private OnBalanceAvailable listener = null;
@@ -52,21 +48,17 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
                 return null;
             }
 
-            // Initialiseer een HTTP connectie
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
-            // Voer het request uit via de HTTP connectie op de URL
             httpConnection.connect();
 
-            // Kijk of het gelukt is door de response code te checken
             responsCode = httpConnection.getResponseCode();
             if (responsCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
-                // Log.i(TAG, "doInBackground response = " + response);
             } else {
                 Log.e(TAG, "Error, invalid response");
             }
