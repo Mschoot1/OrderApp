@@ -61,7 +61,6 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.cardView = (CardView) convertView.findViewById(R.id.cardView);
-
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
             viewHolder.textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
             viewHolder.textViewTotalPrice = (TextView) convertView.findViewById(R.id.textViewTotalPrice);
@@ -73,6 +72,10 @@ public class OrdersListviewAdapter extends BaseAdapter {
         }
 
         Order order = orders.get(position);
+
+        if (order.getStatus() == 0) {
+            viewHolder.cardView.setElevation(15);
+        }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 

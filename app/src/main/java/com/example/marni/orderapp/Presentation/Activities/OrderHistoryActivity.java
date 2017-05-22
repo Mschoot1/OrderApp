@@ -101,7 +101,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
 
         listView.setAdapter(ordersAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
