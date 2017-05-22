@@ -30,10 +30,6 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-/**
- * Created by MarcdenUil on 5-5-2017.
- */
-
 public class ProductsListviewAdapter extends BaseAdapter implements
         StickyListHeadersAdapter {
 
@@ -179,9 +175,10 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             imageView.setLayoutParams(lp);
 
-            int id = context.getResources().getIdentifier(allergy.getImage_url(), "drawable", context.getPackageName());
+            int id = context.getResources().getIdentifier(allergy.getImage_url(), "mipmap", context.getPackageName());
             Log.i(TAG, "id: " + id);
             imageView.setImageResource(id);
+
 
             viewHolder.linearLayout.addView(imageView);
         }
