@@ -20,14 +20,14 @@ import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
-import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
@@ -46,9 +46,8 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable,
-        BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
+        TotalFromAssortment.OnTotalChanged, ProductsGetTask.OnProductAvailable,
+        AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, OrdersPutTask.PutSuccessListener {
 
     private final String TAG = getClass().getSimpleName();
@@ -59,6 +58,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     private double current_balance;
     private TextView textview_balance;
+    private TextView account_email;
     private double priceTotal;
 
     private Order order = null;
@@ -97,14 +97,16 @@ public class ProductsActivity extends AppCompatActivity implements
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_assortment);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
+        account_email = (TextView)headerView.findViewById(R.id.nav_email);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/" + user);
 
@@ -186,16 +188,17 @@ public class ProductsActivity extends AppCompatActivity implements
     public void getBalance(String apiUrl) {
 
         String[] urls = new String[] { apiUrl, jwt.toString() };
-        BalanceGetTask getBalance = new BalanceGetTask(this);
+        AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
     @Override
-    public void onBalanceAvailable(Balance bal) {
+    public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+        account_email.setText(bal.getEmail());
     }
 
     private void getCurrentOrder(String apiUrl) {

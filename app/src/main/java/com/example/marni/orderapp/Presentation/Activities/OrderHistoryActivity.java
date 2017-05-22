@@ -21,11 +21,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
 import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
+import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
-import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
@@ -41,7 +41,8 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePostTask.SuccessListener {
+        OrdersGetTask.OnOrderAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePostTask.SuccessListener,
+    AccountGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -53,6 +54,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     private BaseAdapter ordersAdapter;
     private double current_balance;
     private TextView textview_balance;
+    private TextView account_email;
 
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -87,14 +89,16 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_order_history);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
+        account_email = (TextView)headerView.findViewById(R.id.nav_email);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
@@ -193,15 +197,16 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     public void getBalance(String apiUrl) {
         String[] urls = new String[]{apiUrl, jwt.toString()};
 
-        BalanceGetTask getBalance = new BalanceGetTask(this);
+        AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Balance bal) {
+    public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+        account_email.setText(bal.getEmail());
     }
 
     @Override

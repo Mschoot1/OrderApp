@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.Balance.BalancePostTask;
+import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
+import com.example.marni.orderapp.DataAccess.Account.BalancePostTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
-import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.R;
@@ -36,19 +36,18 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 
-import static android.R.color.darker_gray;
-import static android.R.color.holo_green_light;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, BalanceGetTask.OnBalanceAvailable,
+        CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, AccountGetTask.OnBalanceAvailable,
         BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
     private TextView textview_balance, textview_newbalance;
     private EditText edittext_value;
+    private TextView account_email;
     private double current_balance;
     private CalculateBalance calculateBalance;
     private Spinner spinner;
@@ -79,12 +78,13 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
         // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_top_up);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         calculateBalance = new CalculateBalance(this, this, this);
@@ -102,6 +102,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         });
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+        account_email = (TextView)headerView.findViewById(R.id.nav_email);
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
 
         edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
@@ -238,7 +239,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void getBalance(String apiUrl){
         String[] urls = new String[] { apiUrl, jwt.toString() };
 
-        BalanceGetTask getBalance = new BalanceGetTask(this);
+        AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
@@ -276,11 +277,12 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         calculateBalance.newBalance(current_balance, balance);
     }
 
-    public void onBalanceAvailable(Balance bal){
+    public void onBalanceAvailable(Account bal){
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+        account_email.setText(bal.getEmail());
     }
 
     public void postBalance(String ApiUrl){
@@ -302,11 +304,11 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     public void successful(Boolean successful) {
         Log.i(TAG, successful.toString());
         if(successful){
-            Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Account succesfully added", Toast.LENGTH_SHORT).show();
             SuccessfulTopUp();
             getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
         } else {
-            Toast.makeText(this, "Balance top up failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Account top up failed", Toast.LENGTH_SHORT).show();
         }
     }
 

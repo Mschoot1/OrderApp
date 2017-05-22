@@ -1,9 +1,9 @@
-package com.example.marni.orderapp.DataAccess.Balance;
+package com.example.marni.orderapp.DataAccess.Account;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Account;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,13 +18,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class BalanceGetTask extends AsyncTask<String, Void, String> {
+public class AccountGetTask extends AsyncTask<String, Void, String> {
 
     private OnBalanceAvailable listener = null;
 
     private final String TAG = getClass().getSimpleName();
 
-    public BalanceGetTask(OnBalanceAvailable listener){
+    public AccountGetTask(OnBalanceAvailable listener){
         this.listener = listener;
     }
 
@@ -84,21 +84,24 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
         // Het resultaat is in ons geval een stuk tekst in JSON formaat.
         // Daar moeten we de info die we willen tonen uit filteren (parsen).
         // Dat kan met een JSONObject.
-        JSONArray balance_array;
+        JSONObject jsonObject;
 
         try {
             // Top level json object
-            balance_array = new JSONArray(response);
+            jsonObject = new JSONObject(response);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
 
             // Get all products and start looping
-            for (int idx = 0; idx < balance_array.length(); idx++) {
+            for (int idx = 0; idx < jsonArray.length(); idx++) {
                 // array level objects and get user
-                JSONObject balance_object = balance_array.getJSONObject(idx);
+                JSONObject account_object = jsonArray.getJSONObject(idx);
 
-                Double balance = balance_object.getDouble("balance");
+                Double balance = account_object.getDouble("balance");
+                String email = account_object.getString("email");
 
-                // Create new Balance object
-                Balance b = new Balance(balance);
+                // Create new Account object
+                Account b = new Account(balance, email);
 
                 Log.d(TAG, "onPostExecute: " + " balance: " + balance);
                 //
@@ -141,6 +144,6 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
     }
 
     public interface OnBalanceAvailable {
-        void onBalanceAvailable(Balance balance);
+        void onBalanceAvailable(Account balance);
     }
 }

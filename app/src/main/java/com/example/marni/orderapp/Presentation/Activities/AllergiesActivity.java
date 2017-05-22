@@ -18,10 +18,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
+import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Allergy;
-import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.DataAccess.Allergies.AllergiesGetTask;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
@@ -36,13 +36,15 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AllergiesGetTask.OnRandomUserAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        AllergiesGetTask.OnRandomUserAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     private BaseAdapter allergiesAdapter;
     private TextView textview_balance;
+    private TextView account_email;
     private double current_balance;
+
 
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
@@ -78,15 +80,17 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setCheckedItem(R.id.nav_allergy_information);
 
         getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
+        account_email = (TextView)headerView.findViewById(R.id.nav_email);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
         allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);
@@ -161,15 +165,16 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     public void getBalance(String apiUrl){
         String[] urls = new String[] { apiUrl, jwt.toString() };
 
-        BalanceGetTask getBalance = new BalanceGetTask(this);
+        AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Balance bal){
+    public void onBalanceAvailable(Account bal){
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
+        account_email.setText(bal.getEmail());
     }
 
     @Override

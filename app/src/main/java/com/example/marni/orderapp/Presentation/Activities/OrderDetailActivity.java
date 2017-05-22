@@ -3,7 +3,6 @@ package com.example.marni.orderapp.Presentation.Activities;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +14,10 @@ import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
-import com.example.marni.orderapp.Domain.Balance;
+import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
@@ -38,9 +33,8 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
-public class OrderDetailActivity extends AppCompatActivity implements
-        TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable {
+public class OrderDetailActivity extends AppCompatActivity implements TotalFromAssortment.OnTotalChanged,
+        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -91,7 +85,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
 
@@ -121,11 +115,11 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void getBalance(String ApiUrl) {
 
         String[] urls = new String[]{ApiUrl, jwt.toString()};
-        BalanceGetTask getBalance = new BalanceGetTask(this);
+        AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Balance bal) {
+    public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
@@ -155,7 +149,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         textViewTotal.setText("€ " + formatter.format(priceTotal));
-        textViewQuantity.setText(quantity + " items");
+        textViewQuantity.setText(quantity + "");
     }
 
     @Override

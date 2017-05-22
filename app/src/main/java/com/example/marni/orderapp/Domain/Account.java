@@ -4,11 +4,13 @@ package com.example.marni.orderapp.Domain;
  * Created by MarcdenUil on 9-5-2017.
  */
 
-public class Balance {
+public class Account {
     private double balance;
+    private String email;
 
-    public Balance(double balance) {
+    public Account(double balance, String email) {
         this.balance = balance;
+        this.email = email;
     }
 
     public double getBalance() {
@@ -17,5 +19,13 @@ public class Balance {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
