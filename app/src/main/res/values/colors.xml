@@ -9,4 +9,5 @@
 
 
     <color name="productName">#000</color>
+    <color name="black_text">#000</color>
 </resources>

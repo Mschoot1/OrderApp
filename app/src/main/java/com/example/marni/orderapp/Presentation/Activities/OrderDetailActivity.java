@@ -73,17 +73,23 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         order = (Order) bundle.get(ORDER);
 
+        String addItemsText;
         String title;
         if (order.getStatus() == 0) {
             title = "My Order";
+            addItemsText = "Add items";
         } else {
             title = "Order";
+            addItemsText = "";
         }
         getSupportActionBar().setTitle(title);
 
+        TextView textViewAddProduct = (TextView) findViewById(R.id.textViewAddNewItems);
         TextView textViewOrderId = (TextView) findViewById(R.id.textViewOrderId);
         TextView textViewStatus = (TextView) findViewById(R.id.textViewStatus);
         TextView textViewDateTime = (TextView) findViewById(R.id.textViewDateTime);
+
+        textViewAddProduct.setText(addItemsText);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabOrderDetail);
         if (order.getStatus() == 0) {
@@ -106,6 +112,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
             textViewStatus.setText(getResources().getString(R.string.open));
         } else {
             textViewStatus.setText(getResources().getString(R.string.paid));
+            textViewAddProduct.setText("");
         }
         textViewDateTime.setText(order.getTimestamp());
 

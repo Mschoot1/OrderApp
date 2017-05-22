@@ -65,49 +65,58 @@
         android:id="@+id/layoutTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary">
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/textViewTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:padding="16dp"
             android:text="@string/total"
             android:textColor="#FFF"
-            android:textSize="@dimen/textsizeProduct" />
+            android:textSize="@dimen/textsizeProduct"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/textViewTotalQuantity"
+            android:layout_marginEnd="30dp" />
+
+        <TextView
+            android:id="@+id/textViewAddNewItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Add products"
+            android:textColor="#FFF"
+            android:textSize="@dimen/textsizeProduct"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/fabOrderDetail"
+            android:layout_marginStart="32dp" />
 
         <TextView
             android:id="@+id/textViewTotalQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewTotal"
-            android:layout_alignBottom="@+id/textViewTotal"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
             android:padding="16dp"
             android:gravity="center"
             android:text="0"
             android:textColor="#FFF"
-            android:textSize="@dimen/textsizeProduct" />
+            android:textSize="@dimen/textsizeProduct"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabOrderDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/plus"
+            app:elevation="4dp"
+            app:fabSize="mini"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabOrderDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/layoutTwo"
-        android:layout_alignEnd="@+id/textViewDateTime"
-        android:layout_alignRight="@+id/textViewDateTime"
-        android:layout_marginBottom="18dp"
-        android:src="@mipmap/plus"
-        app:elevation="4dp"
-        app:fabSize="normal" />
 
 </RelativeLayout>

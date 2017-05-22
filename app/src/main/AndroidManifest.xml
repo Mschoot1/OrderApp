@@ -27,7 +27,8 @@
                 android:value=".Presentation.Activities.LogInActivity" />
         </activity>
         <activity android:name=".Presentation.Activities.OrderHistoryActivity" />
-        <activity android:name=".Presentation.Activities.AllergiesActivity" />
+        <activity android:name=".Presentation.Activities.AllergiesActivity"
+            android:exported="true"/>
         <activity android:name=".Presentation.Activities.OrderDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

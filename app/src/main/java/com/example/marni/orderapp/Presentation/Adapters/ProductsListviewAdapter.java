@@ -107,7 +107,11 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         viewHolder.textViewName.setText(product.getName());
         viewHolder.textViewPrice.setText("€ " + formatter.format(product.getPrice()));
         viewHolder.textViewSize.setText(product.getSize() + " ml");
-        viewHolder.textViewAlcohol.setText(product.getAlcohol_percentage() + "% Alc.");
+        if(product.getAlcohol_percentage()==0) {
+            viewHolder.textViewAlcohol.setText("");
+        } else {
+            viewHolder.textViewAlcohol.setText(product.getAlcohol_percentage() + "% Alc.");
+        }
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 R.array.product_quantity, android.R.layout.simple_spinner_item);

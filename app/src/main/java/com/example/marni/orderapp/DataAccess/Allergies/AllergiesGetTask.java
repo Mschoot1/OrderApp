@@ -98,16 +98,20 @@ public class AllergiesGetTask extends AsyncTask<String, Void, String> {
         return response;
     }
 
+
     protected void onPostExecute(String response) {
         JSONArray jsonArray;
+        JSONObject jsonObject;
         try {
-            jsonArray = new JSONArray(response);
+            jsonObject = new JSONObject(response);
+            jsonArray = jsonObject.getJSONArray("results");
+
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject allergy = jsonArray.getJSONObject(i);
 
-                String allergieimage = allergy.getString("allergieimage");
-                String allergieinformatie = allergy.getString("allergieinformatie");
+                String allergieimage = allergy.getString("image");
+                String allergieinformatie = allergy.getString("description");
 
                 Allergy a = new Allergy(allergieimage, allergieinformatie);
 

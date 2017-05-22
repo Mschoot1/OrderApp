@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask;
+import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
 import com.example.marni.orderapp.R;
 
 public class LogInActivity extends AppCompatActivity implements
@@ -61,6 +62,7 @@ public class LogInActivity extends AppCompatActivity implements
                 if (isValidEmail(editTextEmail.getText().toString())) {
                     managePreferences();
                     login("https://mysql-test-p4.herokuapp.com/login");
+                    deviceinformation("https://mysql-test-p4.herokuapp.com/customer/device");
                 } else {
                     Toast.makeText(LogInActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
                 }
@@ -85,7 +87,101 @@ public class LogInActivity extends AppCompatActivity implements
     void login(String ApiUrl) {
 
         LoginTask task = new LoginTask(this);
-        String[] urls = new String[]{ApiUrl, editTextEmail.getText().toString(), editTextPassword.getText().toString()};
+        String[] urls = new String[]{
+                ApiUrl, editTextEmail.getText().toString(), editTextPassword.getText().toString(),
+        };
+        task.execute(urls);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    void deviceinformation(String ApiUrl2) {
+
+        String hardware,type,model,brand,device,manufacturer,user,serial,host,id,bootloader,board,display;
+
+        if(Build.HARDWARE.equals("")){
+            hardware = "";
+        } else{
+            hardware = Build.HARDWARE;}
+
+        if(Build.TYPE.equals("")){
+            type = "";
+        } else{
+            type = Build.TYPE;}
+
+        if(Build.MODEL.equals("")){
+            model = "";
+        } else{
+            model = Build.MODEL;}
+
+        if(Build.BRAND.equals("")){
+            brand = "";
+        } else{
+            brand = Build.BRAND;}
+
+        if(Build.DEVICE.equals("")){
+            device = "";
+        } else{
+            device = Build.DEVICE;}
+
+        if(Build.MANUFACTURER.equals("")){
+            manufacturer = "";
+        } else{
+            manufacturer = Build.MANUFACTURER;}
+
+        if(Build.USER.equals("")){
+            user = "";
+        } else{
+            user = Build.USER;}
+
+        if(Build.SERIAL.equals("")){
+            serial = "";
+        } else{
+            serial = Build.SERIAL;}
+
+        if(Build.HOST.equals("")){
+            host = "";
+        } else{
+            host = Build.HOST;}
+
+        if(Build.ID.equals("")){
+            id = "";
+        } else{
+            id = Build.ID;}
+
+        if(Build.BOOTLOADER.equals("")){
+            bootloader = "";
+        } else{
+            bootloader = Build.BOOTLOADER;}
+
+        if(Build.BOARD.equals("")){
+            board = "";
+        } else{
+            board = Build.BOARD;}
+
+        if(Build.DISPLAY.equals("")){
+            display = "";
+        } else{
+            display = Build.DISPLAY;}
+
+
+        DevicePostTask task = new DevicePostTask(this);
+        String[] urls = new String[]{
+                ApiUrl2,
+                "284",
+                hardware,
+                type,
+                model,
+                brand,
+                device,
+                manufacturer,
+                user,
+                serial,
+                host,
+                id,
+                bootloader,
+                board,
+                display
+        };
         task.execute(urls);
     }
 

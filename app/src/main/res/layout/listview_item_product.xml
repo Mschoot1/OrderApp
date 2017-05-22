@@ -29,7 +29,8 @@
             android:layout_marginEnd="@dimen/tvMarginRight"
             android:layout_marginRight="@dimen/tvMarginRight"
             android:text="330ml"
-            android:textSize="@dimen/textsizeProduct" />
+            android:textSize="@dimen/textsizeProduct"
+            android:textColor="@color/black_text"/>
 
         <TextView
             android:id="@+id/listViewProducts_product_alcoholpercentage"
@@ -40,7 +41,8 @@
             android:layout_toEndOf="@+id/listViewProducts_productsize"
             android:layout_toRightOf="@+id/listViewProducts_productsize"
             android:text="5% Alc."
-            android:textSize="@dimen/textsizeProduct" />
+            android:textSize="@dimen/textsizeProduct"
+            android:textColor="@color/black_text"/>
 
         <Spinner
             android:id="@+id/listViewProducts_spinner"
@@ -57,8 +59,7 @@
             android:id="@+id/iconHolder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/listViewProducts_spinner"
-            android:layout_alignRight="@id/listViewProducts_spinner"
+            android:layout_toRightOf="@+id/listViewProducts_productname"
             android:layout_alignTop="@+id/listViewProducts_productname"
             android:orientation="horizontal"
             android:padding="@dimen/paddingProduct" />

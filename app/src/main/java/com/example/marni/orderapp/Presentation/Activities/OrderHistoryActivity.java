@@ -161,6 +161,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         Log.i(TAG, "OrderId returned: " + order.getOrderId());
 
         orders.add(order);
+
         ordersAdapter.notifyDataSetChanged();
     }
 

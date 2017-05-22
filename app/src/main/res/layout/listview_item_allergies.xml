@@ -19,6 +19,7 @@
         android:textSize="20sp"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/imageViewAllergyIcon"
-        android:layout_toEndOf="@+id/imageViewAllergyIcon" />
+        android:layout_toEndOf="@+id/imageViewAllergyIcon"
+        android:textColor="@color/black_text"/>
 
 </RelativeLayout>

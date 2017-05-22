@@ -133,7 +133,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
     public void getAllergies() {
 
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/allergie" };
+        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/allergies" };
 
         // Connect and pass self for callback
         AllergiesGetTask getRandomUser = new AllergiesGetTask(this);

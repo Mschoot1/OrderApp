@@ -1,29 +1,21 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import static android.R.color.holo_green_light;
 
 /**
  * Created by marni on 8-5-2017.
@@ -86,7 +78,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
          if (order.getStatus() == 0) {
              viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
-             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
+             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.textprimarycolor));
              viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
 
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
