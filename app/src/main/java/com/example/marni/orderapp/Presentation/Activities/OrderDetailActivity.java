@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,28 +85,18 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
         Log.i(TAG, "user: " + user);
 
-        String addItemsText;
         String title;
         if (order.getStatus() == 0) {
             title = "My Order";
-            addItemsText = "Add items";
         } else {
             title = "Order";
-            addItemsText = "";
         }
         getSupportActionBar().setTitle(title);
 
-        TextView textViewAddProduct = (TextView) findViewById(R.id.textViewAddNewItems);
-        TextView textViewOrderId = (TextView) findViewById(R.id.textViewOrderId);
-        TextView textViewStatus = (TextView) findViewById(R.id.textViewStatus);
-        TextView textViewDateTime = (TextView) findViewById(R.id.textViewDateTime);
-
-        textViewAddProduct.setText(addItemsText);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabOrderDetail);
+        ImageView imageView = (ImageView)findViewById(R.id.additem_orderdetail);
         if (order.getStatus() == 0) {
 
-            fab.setOnClickListener(new View.OnClickListener() {
+            imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
@@ -113,19 +104,8 @@ public class OrderDetailActivity extends AppCompatActivity implements
                 }
             });
         } else {
-
-            fab.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.INVISIBLE);
         }
-
-        assert order != null;
-        textViewOrderId.setText("");
-        if (order.getStatus() == 0) {
-            textViewStatus.setText(getResources().getString(R.string.open));
-        } else {
-            textViewStatus.setText(getResources().getString(R.string.paid));
-            textViewAddProduct.setText("");
-        }
-        textViewDateTime.setText(order.getTimestamp());
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -197,7 +177,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         textViewTotal.setText("€ " + formatter.format(priceTotal));
-        textViewQuantity.setText(quantity + "");
+        textViewQuantity.setText(quantity + " items");
     }
 
     @Override

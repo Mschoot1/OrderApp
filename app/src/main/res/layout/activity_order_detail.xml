@@ -12,47 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize" />
 
-    <TextView
-        android:id="@+id/textViewOrderId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar_include"
-        android:layout_marginLeft="13dp"
-        android:layout_marginStart="13dp"
-        android:padding="@dimen/paddingProduct"
-        android:text="11"
-        android:textSize="@dimen/textsizeProduct" />
-
-    <TextView
-        android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_include"
-        android:layout_toEndOf="@+id/textViewOrderId"
-        android:layout_toRightOf="@+id/textViewOrderId"
-        android:padding="@dimen/paddingProduct"
-        android:text="Paid"
-        android:textSize="@dimen/textsizeProduct" />
-
-    <TextView
-        android:id="@+id/textViewDateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/toolbar_include"
-        android:layout_marginEnd="21dp"
-        android:layout_marginRight="21dp"
-        android:padding="@dimen/paddingProduct"
-        android:text="8-5-2017 15:32"
-        android:textSize="@dimen/textsizeProduct" />
-
     <se.emilsjolander.stickylistheaders.StickyListHeadersListView
         android:id="@+id/listViewProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutTwo"
-        android:layout_below="@+id/textViewOrderId"
+        android:layout_below="@+id/toolbar_include"
         android:clipToPadding="false"
         android:dividerHeight="0dp"
         android:drawSelectorOnTop="true"
@@ -78,20 +43,7 @@
             android:textColor="#FFF"
             android:textSize="@dimen/textsizeProduct"
             android:layout_alignParentTop="true"
-            android:layout_alignEnd="@+id/textViewTotalQuantity"
-            android:layout_marginEnd="30dp" />
-
-        <TextView
-            android:id="@+id/textViewAddNewItems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Add products"
-            android:textColor="#FFF"
-            android:textSize="@dimen/textsizeProduct"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/fabOrderDetail"
-            android:layout_marginStart="32dp" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/textViewTotalQuantity"
@@ -106,14 +58,12 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabOrderDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/additem_orderdetail"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="10dp"
-            android:src="@mipmap/plus"
-            app:elevation="4dp"
-            app:fabSize="mini"
+            android:src="@drawable/ic_add_shopping_cart_white_24dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true" />
 
