@@ -164,7 +164,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-        mAdapter.getAllergyIcons(product);
+//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 
