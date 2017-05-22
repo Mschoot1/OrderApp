@@ -74,6 +74,8 @@ public class OrderDetailActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
+                intent.putExtra(JWT_STR, jwt);
+                intent.putExtra(USER, user);
                 startActivity(intent);
             }
         });

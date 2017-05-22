@@ -179,9 +179,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             imageView.setLayoutParams(lp);
 
-
-
             int id = context.getResources().getIdentifier(allergy.getImage_url(), "drawable", context.getPackageName());
+            Log.i(TAG, "id: " + id);
             imageView.setImageResource(id);
 
             viewHolder.linearLayout.addView(imageView);
