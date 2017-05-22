@@ -68,9 +68,9 @@ public class AllergiesGetTask extends AsyncTask<String, Void, String> {
 
             // Initialiseer een HTTP connectie
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             // Voer het request uit via de HTTP connectie op de URL
             httpConnection.connect();

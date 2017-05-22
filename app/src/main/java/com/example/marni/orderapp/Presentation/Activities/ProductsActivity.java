@@ -181,7 +181,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getBalance(String apiUrl) {
 
-        String[] urls = new String[] { apiUrl };
+        String[] urls = new String[] { apiUrl, jwt.toString() };
         BalanceGetTask getBalance = new BalanceGetTask(this);
         getBalance.execute(urls);
     }

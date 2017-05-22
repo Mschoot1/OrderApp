@@ -25,14 +25,14 @@ import com.example.marni.orderapp.R;
 import static com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask.UNAUTHORIZED;
 
 public class LogInActivity extends AppCompatActivity implements
-        LoginTask.SuccessListener {
+        LoginTask.SuccessListener, DevicePostTask.SuccessListener {
 
     public static final String JWT_STR = "jwt_str";
     public static final String USER = "user";
 
     private final String TAG = getClass().getSimpleName();
 
-    private EditText editTextEmail,editTextPassword;
+    private EditText editTextEmail, editTextPassword;
     private CheckBox checkBox;
 
     SharedPreferences sharedPreferences;
@@ -52,11 +52,11 @@ public class LogInActivity extends AppCompatActivity implements
 
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
 
-        checkBox = (CheckBox)findViewById(R.id.checkBox_login);
+        checkBox = (CheckBox) findViewById(R.id.checkBox_login);
         editTextEmail = (EditText) findViewById(R.id.login_editTextEmailaddress);
         editTextPassword = (EditText) findViewById(R.id.login_editTextPassword);
 
-        if(sharedPreferences.getBoolean(KEY_REMEMBER, true)){
+        if (sharedPreferences.getBoolean(KEY_REMEMBER, true)) {
             checkBox.setChecked(true);
             editTextEmail.setText(sharedPreferences.getString(KEY_EMAIL, ""));
         } else {
@@ -105,72 +105,85 @@ public class LogInActivity extends AppCompatActivity implements
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     void deviceinformation(String ApiUrl2) {
 
-        String hardware,type,model,brand,device,manufacturer,user,serial,host,id,bootloader,board,display;
+        String hardware, type, model, brand, device, manufacturer, user, serial, host, id, bootloader, board, display;
 
-        if(Build.HARDWARE.equals("")){
+        if (Build.HARDWARE.equals("")) {
             hardware = "";
-        } else{
-            hardware = Build.HARDWARE;}
+        } else {
+            hardware = Build.HARDWARE;
+        }
 
-        if(Build.TYPE.equals("")){
+        if (Build.TYPE.equals("")) {
             type = "";
-        } else{
-            type = Build.TYPE;}
+        } else {
+            type = Build.TYPE;
+        }
 
-        if(Build.MODEL.equals("")){
+        if (Build.MODEL.equals("")) {
             model = "";
-        } else{
-            model = Build.MODEL;}
+        } else {
+            model = Build.MODEL;
+        }
 
-        if(Build.BRAND.equals("")){
+        if (Build.BRAND.equals("")) {
             brand = "";
-        } else{
-            brand = Build.BRAND;}
+        } else {
+            brand = Build.BRAND;
+        }
 
-        if(Build.DEVICE.equals("")){
+        if (Build.DEVICE.equals("")) {
             device = "";
-        } else{
-            device = Build.DEVICE;}
+        } else {
+            device = Build.DEVICE;
+        }
 
-        if(Build.MANUFACTURER.equals("")){
+        if (Build.MANUFACTURER.equals("")) {
             manufacturer = "";
-        } else{
-            manufacturer = Build.MANUFACTURER;}
+        } else {
+            manufacturer = Build.MANUFACTURER;
+        }
 
-        if(Build.USER.equals("")){
+        if (Build.USER.equals("")) {
             user = "";
-        } else{
-            user = Build.USER;}
+        } else {
+            user = Build.USER;
+        }
 
-        if(Build.SERIAL.equals("")){
+        if (Build.SERIAL.equals("")) {
             serial = "";
-        } else{
-            serial = Build.SERIAL;}
+        } else {
+            serial = Build.SERIAL;
+        }
 
-        if(Build.HOST.equals("")){
+        if (Build.HOST.equals("")) {
             host = "";
-        } else{
-            host = Build.HOST;}
+        } else {
+            host = Build.HOST;
+        }
 
-        if(Build.ID.equals("")){
+        if (Build.ID.equals("")) {
             id = "";
-        } else{
-            id = Build.ID;}
+        } else {
+            id = Build.ID;
+        }
 
-        if(Build.BOOTLOADER.equals("")){
+        if (Build.BOOTLOADER.equals("")) {
             bootloader = "";
-        } else{
-            bootloader = Build.BOOTLOADER;}
+        } else {
+            bootloader = Build.BOOTLOADER;
+        }
 
-        if(Build.BOARD.equals("")){
+        if (Build.BOARD.equals("")) {
             board = "";
-        } else{
-            board = Build.BOARD;}
+        } else {
+            board = Build.BOARD;
+        }
 
-        if(Build.DISPLAY.equals("")){
+        if (Build.DISPLAY.equals("")) {
             display = "";
-        } else{
-            display = Build.DISPLAY;}
+        } else {
+            display = Build.DISPLAY;
+        }
 
 
         DevicePostTask task = new DevicePostTask(this);
@@ -212,8 +225,6 @@ public class LogInActivity extends AppCompatActivity implements
 
             Log.i(TAG, "user.asInt(): " + user.asInt());
             startActivity(intent);
-        } else {
-            Toast.makeText(this, "Login failed, please try again.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -221,8 +232,8 @@ public class LogInActivity extends AppCompatActivity implements
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    private void managePreferences(){
-        if(checkBox.isChecked()){
+    private void managePreferences() {
+        if (checkBox.isChecked()) {
             editor.putString(KEY_EMAIL, editTextEmail.getText().toString().trim());
             editor.putBoolean(KEY_REMEMBER, true);
             editor.apply();
@@ -231,5 +242,10 @@ public class LogInActivity extends AppCompatActivity implements
             editor.putBoolean(KEY_REMEMBER, false);
             editor.apply();
         }
+    }
+
+    @Override
+    public void successfulPost(Boolean successful) {
+
     }
 }

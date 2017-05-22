@@ -69,7 +69,6 @@ public class BalanceGetTask extends AsyncTask<String, Void, String> {
             Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
-//        response = "[{\"balance\":231}]";
 
         return response;
     }

@@ -78,7 +78,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getAllergies();
+        getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
         getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
@@ -138,9 +138,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         allergiesAdapter.notifyDataSetChanged();
     }
 
-    public void getAllergies() {
+    public void getAllergies(String apiUrl) {
 
-        String[] urls = new String[] { "https://mysql-test-p4.herokuapp.com/product/allergies" };
+        String[] urls = new String[] { apiUrl, jwt.toString()};
 
         // Connect and pass self for callback
         AllergiesGetTask getRandomUser = new AllergiesGetTask(this);

@@ -17,16 +17,12 @@ import java.net.URLConnection;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Wallaard on 15-5-2017.
- */
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
 
-    private com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask.SuccessListener listener;
+    private SuccessListener listener;
 
-    public DevicePostTask(com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask.SuccessListener listener) {
+    public DevicePostTask(SuccessListener listener) {
 
         this.listener = listener;
     }
@@ -71,21 +67,6 @@ public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
             jsonParam.put("board", params[13]);
             jsonParam.put("display", params[14]);
 
-            /*/jsonParam.put("test1",params[1]);
-            jsonParam.put("test2", params[2]);
-            jsonParam.put("test3", params[3]);
-            jsonParam.put("test4", params[4]);
-            jsonParam.put("test5", params[5]);
-            jsonParam.put("test6", params[6]);
-            jsonParam.put("test7", params[7]);
-            jsonParam.put("test8", params[8]);
-            jsonParam.put("test9", params[9]);
-            jsonParam.put("test10", params[10]);
-            jsonParam.put("test11", params[11]);
-            jsonParam.put("test12", params[12]);
-            jsonParam.put("test13", params[13]);
-            jsonParam.put("test14", params[14]);/*/
-
             Log.i(TAG, String.valueOf(jsonParam));
 
             DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
@@ -111,10 +92,10 @@ public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean response) {
 
-        listener.successful(response);
+        listener.successfulPost(response);
     }
 
     public interface SuccessListener {
-        void successful(Boolean successful);
+        void successfulPost(Boolean successful);
     }
 }

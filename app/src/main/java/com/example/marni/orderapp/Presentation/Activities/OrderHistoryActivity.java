@@ -20,12 +20,10 @@ import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
-import com.example.marni.orderapp.DataAccess.GetSecret2Task;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Balance;
 import com.example.marni.orderapp.Domain.Order;
-import com.example.marni.orderapp.Domain.Secret;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
@@ -40,7 +38,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, GetSecret2Task.OnSecretAvailable {
+        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -113,18 +111,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
-        getSercet2("https://mysql-test-p4.herokuapp.com/secret2");
-    }
-
-    private void getSercet2(String apiUrl) {
-        GetSecret2Task task = new GetSecret2Task(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
-        task.execute(urls);
-    }
-
-    @Override
-    public void onSecretAvailable(Secret secret) {
-        Log.i(TAG, secret.getEmail());
     }
 
     @Override
