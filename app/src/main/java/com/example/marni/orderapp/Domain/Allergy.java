@@ -1,9 +1,5 @@
 package com.example.marni.orderapp.Domain;
 
-/**
- * Created by Wallaard on 4-5-2017.
- */
-
 public class Allergy {
     private String image_url;
     private String informationtext;

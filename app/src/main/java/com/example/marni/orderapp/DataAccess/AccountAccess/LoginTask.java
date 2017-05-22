@@ -18,10 +18,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static android.content.ContentValues.TAG;
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class LoginTask extends AsyncTask<String, Void, String> {
+
+    private final String TAG = getClass().getSimpleName();
 
     public static final String UNAUTHORIZED = "Unauthorized";
 

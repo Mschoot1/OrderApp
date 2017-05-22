@@ -166,7 +166,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     public void getProducts(String ApiUrl) {
 
-        String[] urls = new String[]{ApiUrl};
+        String[] urls = new String[]{ApiUrl, jwt.toString()};
         ProductsGetTask task = new ProductsGetTask(this, "assortment");
         task.execute(urls);
     }
@@ -175,7 +175,7 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-        mAdapter.getAllergyIcons(product);
+//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 

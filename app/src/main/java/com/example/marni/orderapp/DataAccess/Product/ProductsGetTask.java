@@ -3,6 +3,7 @@ package com.example.marni.orderapp.DataAccess.Product;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Product;
 
 import org.json.JSONArray;
@@ -17,10 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
-/**
- * Created by MarcdenUil on 6-5-2017.
- */
+import java.util.ArrayList;
 
 public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
@@ -56,9 +54,9 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
             // Initialiseer een HTTP connectie
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
-            httpConnection.setAllowUserInteraction(false);
-            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             // Voer het request uit via de HTTP connectie op de URL
             httpConnection.connect();
@@ -113,6 +111,21 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                     p.setProductId(id);
                 }
 
+                JSONArray allergies = product.getJSONArray("allergies");
+
+                Log.i(TAG, "allergies.length(): " + allergies.length());
+
+                ArrayList<Allergy> as = new ArrayList<>();
+//                for (int j = 0; j < allergies.length(); j++) {
+//
+//                    JSONObject allergy = jsonArray.getJSONObject(j);
+//
+//                    Log.i(TAG, "allergy.getString(\"description\")" + allergy.getString("description"));
+//
+//                    Allergy a = new Allergy("image", "description");
+//                    as.add(a);
+//                }
+
                 String name = product.getString("name");
                 Double price = product.getDouble("price");
                 int size = product.getInt("size");
@@ -133,6 +146,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 p.setCategoryId(categoryId);
                 p.setQuantity(quantity);
                 p.setCategoryName(categoryName);
+                p.setAllergies(as);
 
                 listener.onProductAvailable(p);
 

@@ -176,7 +176,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void getProducts(String ApiUrl) {
 
         ProductsGetTask task = new ProductsGetTask(this, "myorder");
-        String[] urls = new String[]{ApiUrl};
+        String[] urls = new String[]{ApiUrl, jwt.toString()};
         task.execute(urls);
     }
 
