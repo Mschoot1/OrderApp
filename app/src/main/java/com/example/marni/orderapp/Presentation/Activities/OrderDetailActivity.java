@@ -65,6 +65,11 @@ public class OrderDetailActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
 
+        Bundle bundle = getIntent().getExtras();
+        jwt = bundle.getParcelable(JWT_STR);
+        user = bundle.getInt(USER);
+        order = (Order) bundle.get(ORDER);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,11 +84,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-
-        Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
-        order = (Order) bundle.get(ORDER);
 
         Log.i(TAG, "user: " + user);
 
