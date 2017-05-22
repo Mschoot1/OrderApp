@@ -8,6 +8,7 @@ import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
+import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
 import com.example.marni.orderapp.Presentation.Activities.OrderDetailActivity;
 import com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity;
 import com.example.marni.orderapp.Presentation.Activities.ProductsActivity;
@@ -49,7 +50,7 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
                 context.startActivity(intent);
                 break;
             case R.id.nav_my_order:
-                intent = new Intent(context, OrderDetailActivity.class);
+                intent = new Intent(context, MyOrderActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(JWT_STR, jwt);
                 intent.putExtra(USER, user);

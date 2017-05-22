@@ -107,7 +107,12 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                Intent intent;
+                if(orders.get(position).getStatus() == 0) {
+                    intent = new Intent(getApplicationContext(), MyOrderActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                }
                 intent.putExtra(JWT_STR, jwt);
                 intent.putExtra(USER, user);
                 intent.putExtra(ORDER, orders.get(position));

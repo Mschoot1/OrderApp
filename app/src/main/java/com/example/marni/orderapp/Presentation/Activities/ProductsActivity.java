@@ -115,7 +115,7 @@ public class ProductsActivity extends AppCompatActivity implements
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 intent.putExtra(JWT_STR, jwt);
                 intent.putExtra(USER, user);
                 intent.putExtra(ORDER, order);

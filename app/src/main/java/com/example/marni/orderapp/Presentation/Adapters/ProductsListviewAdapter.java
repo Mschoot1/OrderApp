@@ -126,21 +126,13 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Integer new_quantity = Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString());
-
                 calculateQuantity = new CalculateQuantity();
-
                 Log.i(TAG, "Spinner clicked. Value: " + viewHolder.spinnerAmount.getSelectedItem().toString());
-
                 String result = calculateQuantity.getmethod(product.getQuantity(), new_quantity);
-
                 Log.i(TAG, "Methode: " + result);
-
                 product.setQuantity(Integer.parseInt(viewHolder.spinnerAmount.getSelectedItem().toString()));
-
                 TotalFromAssortment tfa = new TotalFromAssortment(products);
-
                 listener.onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
-
                 if (!result.equals("")) {
                     listener2.onMethodAvailable(result, product, order);
                 }

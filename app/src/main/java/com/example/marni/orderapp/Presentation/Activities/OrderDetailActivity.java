@@ -40,8 +40,7 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class OrderDetailActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, OrdersPutTask.PutSuccessListener {
+        ProductsGetTask.OnProductAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -85,31 +84,7 @@ public class OrderDetailActivity extends AppCompatActivity implements
             }
         });
 
-        Log.i(TAG, "user: " + user);
-
-        String title;
-        if (order.getStatus() == 0) {
-            title = "My Order";
-        } else {
-            title = "Order";
-        }
-        getSupportActionBar().setTitle(title);
-
-        ImageView imageView = (ImageView)findViewById(R.id.additem_orderdetail);
-        if (order.getStatus() == 0) {
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
-                    intent.putExtra(JWT_STR, jwt);
-                    intent.putExtra(USER, user);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            imageView.setVisibility(View.INVISIBLE);
-        }
+        getSupportActionBar().setTitle("Order");
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -168,7 +143,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
 
         products.add(product);
-//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -186,46 +160,6 @@ public class OrderDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onMethodAvailable(String method, Product product, Order order) {
-        switch (method) {
-            case "put":
-                String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/edit", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
-                ProductsPutTask putProduct = new ProductsPutTask(this);
-                putProduct.execute(urls);
 
-                break;
-            case "post":
-                String[] urls2 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/add", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
-                ProductsPostTask postProduct = new ProductsPostTask(this);
-                postProduct.execute(urls2);
-                break;
-            case "delete":
-                String[] urls3 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/delete", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + ""};
-                ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
-                deleteProduct.execute(urls3);
-        }
-
-        String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/order/price/edit", jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
-        OrdersPutTask putOrder = new OrdersPutTask(this);
-        putOrder.execute(urls);
-    }
-
-    @Override
-    public void successful(Boolean successful) {
-        if (successful) {
-            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
-            products.clear();
-            getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
-        } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void putSuccessful(Boolean successful) {
-        if (successful) {
-            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
-        }
     }
 }

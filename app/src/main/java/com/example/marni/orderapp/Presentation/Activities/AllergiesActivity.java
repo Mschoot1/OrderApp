@@ -80,6 +80,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.setCheckedItem(R.id.nav_allergy_information);
+
         getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
         getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
