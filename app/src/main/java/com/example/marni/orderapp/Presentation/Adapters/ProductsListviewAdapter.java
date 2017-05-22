@@ -172,8 +172,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(55, 55);
             lp.setMargins(5, 0, 0, 0);
 
-            imageView.setLayoutParams(lp);
-            imageView.setImageResource((int) iconId);
+//            imageView.setLayoutParams(lp);
+//            imageView.setImageResource((int) iconId);
 
             viewHolder.linearLayout.addView(imageView);
         }
