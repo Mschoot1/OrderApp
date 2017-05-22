@@ -51,10 +51,10 @@ public class ProductsPostTask extends AsyncTask<String, Void, Boolean> {
             httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("order_id", params[1]);
-            jsonParam.put("product_id", params[2]);
-            jsonParam.put("customer_id", params[3]);
-            jsonParam.put("quantity", params[4]);
+            jsonParam.put("order_id", params[2]);
+            jsonParam.put("product_id", params[3]);
+            jsonParam.put("customer_id", params[4]);
+            jsonParam.put("quantity", params[5]);
 
             Log.i(TAG, String.valueOf(jsonParam));
 

@@ -116,15 +116,12 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 Log.i(TAG, "allergies.length(): " + allergies.length());
 
                 ArrayList<Allergy> as = new ArrayList<>();
-//                for (int j = 0; j < allergies.length(); j++) {
-//
-//                    JSONObject allergy = jsonArray.getJSONObject(j);
-//
-//                    Log.i(TAG, "allergy.getString(\"description\")" + allergy.getString("description"));
-//
-//                    Allergy a = new Allergy("image", "description");
-//                    as.add(a);
-//                }
+                for (int j = 0; j < allergies.length(); j++) {
+
+                    JSONObject allergy = allergies.getJSONObject(j);
+                    Allergy a = new Allergy(allergy.getString("image"), allergy.getString("description"));
+                    as.add(a);
+                }
 
                 String name = product.getString("name");
                 Double price = product.getDouble("price");
