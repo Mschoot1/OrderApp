@@ -2,6 +2,8 @@ package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +18,13 @@ import android.widget.TextView;
 
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
+import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.R;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -71,6 +75,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         return position;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final ViewHolder viewHolder;
@@ -165,15 +170,19 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         });
         viewHolder.linearLayout.removeAllViews();
 
-        for (Object iconId : product.getAllergies()) {
+        for (Allergy allergy : product.getAllergies()) {
 
             ImageView imageView = new ImageView(context);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(55, 55);
             lp.setMargins(5, 0, 0, 0);
 
-//            imageView.setLayoutParams(lp);
-//            imageView.setImageResource((int) iconId);
+            imageView.setLayoutParams(lp);
+
+
+
+            int id = context.getResources().getIdentifier(allergy.getImage_url(), "drawable", context.getPackageName());
+            imageView.setImageResource(id);
 
             viewHolder.linearLayout.addView(imageView);
         }
@@ -221,72 +230,6 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     @Override
     public long getHeaderId(int position) {
         return products.get(position).getCategoryId();
-    }
-
-    private int getRandomIconId() {
-
-        int i = (int) (Math.random() * 13 + 1);
-
-        switch (i) {
-
-            case 1:
-                return R.mipmap.celery_icon;
-            case 2:
-                return R.mipmap.cereals_containing_gluten_icon;
-            case 3:
-                return R.mipmap.crustaceans_icon;
-            case 4:
-                return R.mipmap.eggs_icon;
-            case 5:
-                return R.mipmap.fish_icon;
-            case 6:
-                return R.mipmap.milk_icon;
-            case 7:
-                return R.mipmap.lupin_icon;
-            case 8:
-                return R.mipmap.molluscs_icon;
-            case 9:
-                return R.mipmap.mustard_icon;
-            case 10:
-                return R.mipmap.nuts_icon;
-            case 11:
-                return R.mipmap.peanuts_icon;
-            case 12:
-                return R.mipmap.soya_icon;
-            case 13:
-                return R.mipmap.sulphur_dioxide_icon;
-            default:
-                return 0;
-        }
-    }
-
-    public void getAllergyIcons(Product product) {
-
-        for (int i = 0; i < products.size(); i++) {
-
-            // random icon generation
-            ArrayList<Integer> allergies = new ArrayList<>();
-
-            int iconCount = (int) (Math.random() * 3 + 0);
-
-            for (int j = 0; j < iconCount; j++) {
-
-                int iconId = getRandomIconId();
-
-                for (int k = 0; k < allergies.size(); k++) {
-
-                    if (allergies.get(k) == iconId) {
-
-                        iconId = getRandomIconId();
-                    }
-                }
-
-                allergies.add(iconId);
-            }
-
-            product.setAllergies(allergies);
-            //
-        }
     }
 
     public interface OnMethodAvailable {
