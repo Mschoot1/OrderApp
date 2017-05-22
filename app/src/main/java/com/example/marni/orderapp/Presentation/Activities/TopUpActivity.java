@@ -306,7 +306,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         if(successful){
             Toast.makeText(this, "Account succesfully added", Toast.LENGTH_SHORT).show();
             SuccessfulTopUp();
-            getBalance("https://mysql-test-p4.herokuapp.com/balance/" + user);
+            getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         } else {
             Toast.makeText(this, "Account top up failed", Toast.LENGTH_SHORT).show();
         }
