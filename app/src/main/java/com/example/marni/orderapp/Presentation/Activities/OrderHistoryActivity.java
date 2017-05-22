@@ -1,7 +1,9 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Balance.BalanceGetTask;
+import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Balance;
@@ -38,7 +41,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        OrdersGetTask.OnOrderAvailable, BalanceGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePostTask.SuccessListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -55,6 +58,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        deviceinformation("https://mysql-test-p4.herokuapp.com/customer/device");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -199,5 +203,115 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     @Override
     public void onCurrentOrderAvailable(Order order) {
         AccountStorage.SetAccount(this, "" + order.getOrderId());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    void deviceinformation(String ApiUrl2) {
+
+        String hardware, type, model, brand, device, manufacturer, user, serial, host, id, bootloader, board, display;
+
+        if (Build.HARDWARE.equals("")) {
+            hardware = "";
+        } else {
+            hardware = Build.HARDWARE;
+        }
+
+        if (Build.TYPE.equals("")) {
+            type = "";
+        } else {
+            type = Build.TYPE;
+        }
+
+        if (Build.MODEL.equals("")) {
+            model = "";
+        } else {
+            model = Build.MODEL;
+        }
+
+        if (Build.BRAND.equals("")) {
+            brand = "";
+        } else {
+            brand = Build.BRAND;
+        }
+
+        if (Build.DEVICE.equals("")) {
+            device = "";
+        } else {
+            device = Build.DEVICE;
+        }
+
+        if (Build.MANUFACTURER.equals("")) {
+            manufacturer = "";
+        } else {
+            manufacturer = Build.MANUFACTURER;
+        }
+
+        if (Build.USER.equals("")) {
+            user = "";
+        } else {
+            user = Build.USER;
+        }
+
+        if (Build.SERIAL.equals("")) {
+            serial = "";
+        } else {
+            serial = Build.SERIAL;
+        }
+
+        if (Build.HOST.equals("")) {
+            host = "";
+        } else {
+            host = Build.HOST;
+        }
+
+        if (Build.ID.equals("")) {
+            id = "";
+        } else {
+            id = Build.ID;
+        }
+
+        if (Build.BOOTLOADER.equals("")) {
+            bootloader = "";
+        } else {
+            bootloader = Build.BOOTLOADER;
+        }
+
+        if (Build.BOARD.equals("")) {
+            board = "";
+        } else {
+            board = Build.BOARD;
+        }
+
+        if (Build.DISPLAY.equals("")) {
+            display = "";
+        } else {
+            display = Build.DISPLAY;
+        }
+
+
+        DevicePostTask task = new DevicePostTask(this);
+        String[] urls = new String[]{
+                ApiUrl2,
+                "284",
+                hardware,
+                type,
+                model,
+                brand,
+                device,
+                manufacturer,
+                user,
+                serial,
+                host,
+                id,
+                bootloader,
+                board,
+                display
+        };
+        task.execute(urls);
+    }
+
+    @Override
+    public void successfulPost(Boolean successful) {
+
     }
 }
