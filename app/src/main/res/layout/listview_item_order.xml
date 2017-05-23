@@ -19,29 +19,27 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
 
             <TextView
                 android:id="@+id/textViewDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="13dp"
-                android:layout_marginRight="13dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
                 android:padding="@dimen/paddingProduct"
                 android:text="8-5-2017 12:01"
-                android:textSize="@dimen/textsizeProduct" />
+                android:textSize="@dimen/textsizeProduct"
+                android:layout_alignParentTop="true" />
 
             <TextView
                 android:id="@+id/textViewStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="13dp"
-                android:layout_marginStart="13dp"
-                android:layout_below="@id/textViewDateTime"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="13dp"
                 android:padding="@dimen/paddingProduct"
                 android:text="Paid"
                 android:textSize="@dimen/textsizeProduct" />
@@ -50,9 +48,9 @@
                 android:id="@+id/textViewTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/textViewDateTime"
-                android:layout_alignRight="@+id/textViewDateTime"
-                android:layout_below="@+id/textViewDateTime"
+                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
+                android:layout_below="@id/textViewDateTime"
                 android:padding="@dimen/paddingProduct"
                 android:text="$10.00"
                 android:textSize="@dimen/textsizeProduct" />

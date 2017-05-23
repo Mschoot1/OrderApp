@@ -81,7 +81,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
 
          if (order.getStatus() == 0) {
              viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
-             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.textprimarycolor));
+             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.colorPrimary));
              viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
 
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
@@ -89,8 +89,9 @@ public class OrdersListviewAdapter extends BaseAdapter {
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
          }
 
-        viewHolder.textViewDateTime.setText(order.getTimestamp());
         viewHolder.textViewTotalPrice.setText("€ " + formatter.format(order.getPriceTotal()));
+
+        viewHolder.textViewDateTime.setText(order.getTimestamp());
 
         return convertView;
     }

@@ -143,7 +143,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
         SimpleDateFormat sdf;
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsedDate = sdf.parse(s);
-        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String formattedDate = sdf.format(parsedDate);
 
         return formattedDate;
