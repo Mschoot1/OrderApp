@@ -120,7 +120,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             }
         });
 
-//        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
+        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
