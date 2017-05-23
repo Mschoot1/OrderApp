@@ -74,7 +74,7 @@ public class OrdersListviewAdapter extends BaseAdapter {
         Order order = orders.get(position);
 
         if (order.getStatus() == 0) {
-            viewHolder.cardView.setElevation(15);
+            viewHolder.cardView.setElevation(10);
         }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");

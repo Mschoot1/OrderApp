@@ -106,7 +106,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
 
         Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this, this, jwt, user);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

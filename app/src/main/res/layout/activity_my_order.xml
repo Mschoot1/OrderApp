@@ -8,7 +8,7 @@
     tools:context="com.example.marni.orderapp.Presentation.Activities.ProductsActivity"
     tools:openDrawer="start">
 
-<RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,6 +22,7 @@
             android:id="@+id/listViewProducts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
             android:clipToPadding="false"
             android:dividerHeight="0dp"
             android:drawSelectorOnTop="true"
@@ -29,8 +30,8 @@
             android:overScrollMode="never"
             android:padding="0dp"
             android:scrollbarStyle="outsideOverlay"
-            android:layout_below="@+id/toolbar_include"
-            android:layout_alignParentStart="true" />
+            android:layout_above="@+id/layoutTwo"
+            android:layout_below="@+id/toolbar_include" />
 
         <RelativeLayout
             android:id="@+id/layoutTwo"
@@ -44,43 +45,40 @@
                 android:id="@+id/textViewTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/total"
-                android:textColor="#FFF"
-                android:textSize="@dimen/textsizeProduct"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:padding="16dp"
+                android:textColor="#FFF"
+                android:textSize="@dimen/textsizeProduct" />
 
             <TextView
                 android:id="@+id/textViewTotalQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:paddingLeft="2dp"
                 android:paddingRight="15dp"
-                android:layout_centerVertical="true"
-                android:text="0"
                 android:textColor="#FFF"
-                android:textSize="@dimen/textsizeProduct"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
+                android:textSize="@dimen/textsizeProduct" />
 
             <ImageView
                 android:id="@+id/additem_orderdetail"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_add_shopping_cart_white_24dp"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_add_shopping_cart_white_24dp" />
 
             <ImageView
                 android:id="@+id/imageView_orderdetail_cart"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_shopping_cart_white_24dp"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@+id/textViewTotalQuantity"
-                />
+                android:src="@drawable/ic_shopping_cart_white_24dp" />
 
 
         </RelativeLayout>

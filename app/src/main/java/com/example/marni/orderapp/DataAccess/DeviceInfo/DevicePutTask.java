@@ -15,14 +15,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import static android.content.ContentValues.TAG;
-
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
+public class DevicePutTask extends AsyncTask<String, Void, Boolean> {
+
+    private final String TAG = getClass().getSimpleName();
 
     private SuccessListener listener;
 
-    public DevicePostTask(SuccessListener listener) {
+    public DevicePutTask(SuccessListener listener) {
 
         this.listener = listener;
     }
@@ -46,26 +46,25 @@ public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
 
-            httpConnection.setDoOutput(true);
-            httpConnection.setDoInput(true);
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            httpConnection.setRequestMethod("POST");
+            httpConnection.setRequestMethod("PUT");
+            httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("customer_id",params[1]);
-            jsonParam.put("hardware", params[2]);
-            jsonParam.put("type", params[3]);
-            jsonParam.put("model", params[4]);
-            jsonParam.put("brand", params[5]);
-            jsonParam.put("device", params[6]);
-            jsonParam.put("manufacturer", params[7]);
-            jsonParam.put("user", params[8]);
-            jsonParam.put("serial", params[9]);
-            jsonParam.put("host", params[10]);
-            jsonParam.put("device_id", params[11]);
-            jsonParam.put("bootloader", params[12]);
-            jsonParam.put("board", params[13]);
-            jsonParam.put("display", params[14]);
+            jsonParam.put("customer_id",params[2]);
+            jsonParam.put("hardware", params[3]);
+            jsonParam.put("type", params[4]);
+            jsonParam.put("model", params[5]);
+            jsonParam.put("brand", params[6]);
+            jsonParam.put("device", params[7]);
+            jsonParam.put("manufacturer", params[8]);
+            jsonParam.put("user", params[9]);
+            jsonParam.put("serial", params[10]);
+            jsonParam.put("host", params[11]);
+            jsonParam.put("device_id", params[12]);
+            jsonParam.put("bootloader", params[13]);
+            jsonParam.put("board", params[14]);
+            jsonParam.put("display", params[15]);
 
             Log.i(TAG, String.valueOf(jsonParam));
 
@@ -92,10 +91,10 @@ public class DevicePostTask extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean response) {
 
-        listener.successfulPost(response);
+        listener.successfulPut(response);
     }
 
     public interface SuccessListener {
-        void successfulPost(Boolean successful);
+        void successfulPut(Boolean successful);
     }
 }

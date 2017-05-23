@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
+import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePutTask;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
@@ -41,8 +41,8 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePostTask.SuccessListener,
-    AccountGetTask.OnBalanceAvailable {
+        OrdersGetTask.OnOrderAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePutTask.SuccessListener,
+        AccountGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -60,7 +60,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        deviceinformation("https://mysql-test-p4.herokuapp.com/customer/device");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -96,9 +95,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         navigationView.setCheckedItem(R.id.nav_order_history);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
-        account_email = (TextView)headerView.findViewById(R.id.nav_email);
-
-        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+        account_email = (TextView) headerView.findViewById(R.id.nav_email);
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
@@ -111,7 +108,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent;
-                if(orders.get(position).getStatus() == 0) {
+                if (orders.get(position).getStatus() == 0) {
                     intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 } else {
                     intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
@@ -123,6 +120,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             }
         });
 
+//        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
     }
@@ -215,93 +214,29 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    void deviceinformation(String ApiUrl2) {
+    public void putDeviceInfo(String apiUrl) {
 
         String hardware, type, model, brand, device, manufacturer, user, serial, host, id, bootloader, board, display;
 
-        if (Build.HARDWARE.equals("")) {
-            hardware = "";
-        } else {
-            hardware = Build.HARDWARE;
-        }
+        hardware = Build.HARDWARE;
+        type = Build.TYPE;
+        model = Build.MODEL;
+        brand = Build.BRAND;
+        device = Build.DEVICE;
+        manufacturer = Build.MANUFACTURER;
+        user = Build.USER;
+        serial = Build.SERIAL;
+        host = Build.HOST;
+        id = Build.ID;
+        bootloader = Build.BOOTLOADER;
+        board = Build.BOARD;
+        display = Build.DISPLAY;
 
-        if (Build.TYPE.equals("")) {
-            type = "";
-        } else {
-            type = Build.TYPE;
-        }
-
-        if (Build.MODEL.equals("")) {
-            model = "";
-        } else {
-            model = Build.MODEL;
-        }
-
-        if (Build.BRAND.equals("")) {
-            brand = "";
-        } else {
-            brand = Build.BRAND;
-        }
-
-        if (Build.DEVICE.equals("")) {
-            device = "";
-        } else {
-            device = Build.DEVICE;
-        }
-
-        if (Build.MANUFACTURER.equals("")) {
-            manufacturer = "";
-        } else {
-            manufacturer = Build.MANUFACTURER;
-        }
-
-        if (Build.USER.equals("")) {
-            user = "";
-        } else {
-            user = Build.USER;
-        }
-
-        if (Build.SERIAL.equals("")) {
-            serial = "";
-        } else {
-            serial = Build.SERIAL;
-        }
-
-        if (Build.HOST.equals("")) {
-            host = "";
-        } else {
-            host = Build.HOST;
-        }
-
-        if (Build.ID.equals("")) {
-            id = "";
-        } else {
-            id = Build.ID;
-        }
-
-        if (Build.BOOTLOADER.equals("")) {
-            bootloader = "";
-        } else {
-            bootloader = Build.BOOTLOADER;
-        }
-
-        if (Build.BOARD.equals("")) {
-            board = "";
-        } else {
-            board = Build.BOARD;
-        }
-
-        if (Build.DISPLAY.equals("")) {
-            display = "";
-        } else {
-            display = Build.DISPLAY;
-        }
-
-
-        DevicePostTask task = new DevicePostTask(this);
+        DevicePutTask task = new DevicePutTask(this);
         String[] urls = new String[]{
-                ApiUrl2,
-                "284",
+                apiUrl,
+                jwt.toString(),
+                this.user + "",
                 hardware,
                 type,
                 model,
@@ -320,7 +255,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void successfulPost(Boolean successful) {
+    public void successfulPut(Boolean successful) {
 
     }
 }

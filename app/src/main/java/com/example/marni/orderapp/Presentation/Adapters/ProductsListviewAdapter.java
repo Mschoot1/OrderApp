@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.Domain.Allergy;
@@ -30,10 +31,15 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
+
 public class ProductsListviewAdapter extends BaseAdapter implements
         StickyListHeadersAdapter {
 
     private final String TAG = getClass().getSimpleName();
+    private final JWT jwt;
+    private final int user;
 
     private Context context;
     private LayoutInflater layoutInflater;
@@ -46,7 +52,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
     private TotalFromAssortment.OnTotalChanged listener;
     private OnMethodAvailable listener2;
 
-    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener, OnMethodAvailable listener2) {
+    public ProductsListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, Boolean currentOrder, TotalFromAssortment.OnTotalChanged listener, OnMethodAvailable listener2, JWT jwt, int user) {
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
@@ -54,6 +60,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
         this.listener = listener;
         this.listener2 = listener2;
         this.order = order;
+        this.jwt = jwt;
+        this.user = user;
     }
 
     @Override
@@ -90,9 +98,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             viewHolder.textViewPrice = (TextView) convertView.findViewById(R.id.listViewProducts_productprice);
             viewHolder.textViewSize = (TextView) convertView.findViewById(R.id.listViewProducts_productsize);
             viewHolder.textViewAlcohol = (TextView) convertView.findViewById(R.id.listViewProducts_product_alcoholpercentage);
-
             viewHolder.spinnerAmount = (Spinner) convertView.findViewById(R.id.listViewProducts_spinner);
-
             viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.iconHolder);
 
             convertView.setTag(viewHolder);
@@ -118,6 +124,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
                 R.array.product_quantity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.spinnerAmount.setAdapter(adapter);
+        viewHolder.spinnerAmount.setSelection(product.getQuantity());
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
 
         viewHolder.spinnerAmount.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -153,6 +160,8 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, AllergiesActivity.class);
+                intent.putExtra(JWT_STR, jwt);
+                intent.putExtra(USER, user);
                 context.startActivity(intent);
             }
         });
@@ -170,7 +179,6 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             int id = context.getResources().getIdentifier(allergy.getImage_url(), "mipmap", context.getPackageName());
             Log.i(TAG, "id: " + id);
             imageView.setImageResource(id);
-
 
             viewHolder.linearLayout.addView(imageView);
         }

@@ -213,7 +213,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         this.order = order;
 
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this, this);
+        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, true, this, this, jwt, user);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

@@ -19,13 +19,13 @@ import android.widget.Toast;
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask;
-import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePostTask;
+import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePutTask;
 import com.example.marni.orderapp.R;
 
 import static com.example.marni.orderapp.DataAccess.AccountAccess.LoginTask.UNAUTHORIZED;
 
 public class LogInActivity extends AppCompatActivity implements
-        LoginTask.SuccessListener, DevicePostTask.SuccessListener {
+        LoginTask.SuccessListener, DevicePutTask.SuccessListener {
 
     public static final String JWT_STR = "jwt_str";
     public static final String USER = "user";
@@ -59,6 +59,7 @@ public class LogInActivity extends AppCompatActivity implements
         if (sharedPreferences.getBoolean(KEY_REMEMBER, true)) {
             checkBox.setChecked(true);
             editTextEmail.setText(sharedPreferences.getString(KEY_EMAIL, ""));
+            editTextEmail.setSelection(editTextEmail.getText().length());
         } else {
             checkBox.setChecked(false);
         }
@@ -139,7 +140,7 @@ public class LogInActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void successfulPost(Boolean successful) {
+    public void successfulPut(Boolean successful) {
 
     }
 }
