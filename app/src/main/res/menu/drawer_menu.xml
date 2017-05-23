@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menutop"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_order_history"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/order_history" />
-        <item
-            android:id="@+id/nav_top_up"
-            android:icon="@drawable/ic_account_balance_wallet_black_24dp"
-            android:title="@string/top_up" />
         <item
             android:id="@+id/nav_my_order"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
@@ -19,9 +17,22 @@
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/Assortment" />
         <item
+            android:id="@+id/nav_top_up"
+            android:icon="@drawable/ic_account_balance_wallet_black_24dp"
+            android:title="@string/top_up" />
+        <item
             android:id="@+id/nav_allergy_information"
             android:icon="@drawable/ic_info_black_24dp"
             android:title="@string/allergy_information" />
+    </group>
+
+    <group
+        android:id="@+id/menubottom"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="@string/navigation_logout" />
     </group>
 
 </menu>

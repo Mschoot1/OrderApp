@@ -60,6 +60,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_logout">Logout</string>
     <string name="allergy_information">Allergy Information</string>
     <string name="information_allergies">Information Allergies</string>
     <string name="scanorder">Scan order</string>
