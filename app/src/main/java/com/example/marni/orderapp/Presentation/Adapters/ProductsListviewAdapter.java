@@ -25,7 +25,6 @@ import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.R;
 
-import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -120,9 +119,17 @@ public class ProductsListviewAdapter extends BaseAdapter implements
             viewHolder.textViewAlcohol.setText(product.getAlcohol_percentage() + "% Alc.");
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
-                R.array.product_quantity, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter;
+        if (!currentOrder) {
+            adapter = ArrayAdapter.createFromResource(context,
+                    R.array.product_quantity, R.layout.my_spinner_item_disabled);
+            viewHolder.spinnerAmount.setEnabled(false);
+        } else {
+            adapter = ArrayAdapter.createFromResource(context,
+                    R.array.product_quantity, R.layout.my_spinner_item);
+        }
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         viewHolder.spinnerAmount.setAdapter(adapter);
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
         viewHolder.spinnerAmount.setSelection(product.getQuantity());
@@ -150,10 +157,6 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             }
         });
-        if (!currentOrder) {
-
-            viewHolder.spinnerAmount.setEnabled(false);
-        }
 
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +174,7 @@ public class ProductsListviewAdapter extends BaseAdapter implements
 
             ImageView imageView = new ImageView(context);
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(55, 55);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(35, 35);
             lp.setMargins(5, 0, 0, 0);
 
             imageView.setLayoutParams(lp);

@@ -74,7 +74,6 @@ public class OrdersListviewAdapter extends BaseAdapter {
         Order order = orders.get(position);
 
         if (order.getStatus() == 0) {
-            viewHolder.cardView.setElevation(10);
         }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
@@ -85,8 +84,14 @@ public class OrdersListviewAdapter extends BaseAdapter {
              viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
 
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
+             viewHolder.cardView.setElevation(8);
          } else {
+             viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
+             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.colorGrey));
+             viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
+
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
+             viewHolder.cardView.setElevation(5);
          }
 
         viewHolder.textViewTotalPrice.setText("€ " + formatter.format(order.getPriceTotal()));
