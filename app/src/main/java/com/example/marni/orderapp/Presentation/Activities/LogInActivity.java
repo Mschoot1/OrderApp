@@ -35,7 +35,7 @@ public class LogInActivity extends AppCompatActivity implements LoginTask.Succes
 
                 if(isValidEmail(editTextEmail.getText().toString()))
                 {
-                    login("https://mysql-test-p4.herokuapp.com/loginRegsiter");
+                    login("https://mysql-test-p4.herokuapp.com/loginRegister");
                 } else {
                     Toast.makeText(LogInActivity.this,"Invalid email adress",Toast.LENGTH_SHORT).show();
                 }
