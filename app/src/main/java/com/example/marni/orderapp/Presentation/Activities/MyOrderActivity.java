@@ -48,7 +48,8 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 public class MyOrderActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener, OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener {
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener,
+        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -170,9 +171,7 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     @Override
     public void onProductAvailable(Product product) {
-
         products.add(product);
-//        mAdapter.getAllergyIcons(product);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -211,6 +210,7 @@ public class MyOrderActivity extends AppCompatActivity implements
                 postProduct.execute(urls2);
                 break;
             case "delete":
+                Log.i(TAG, "delete product");
                 String[] urls3 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/delete", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + ""};
                 ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
                 deleteProduct.execute(urls3);
@@ -225,6 +225,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     public void successful(Boolean successful) {
         if (successful) {
             Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
+
             products.clear();
             getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
         } else {
@@ -233,13 +234,31 @@ public class MyOrderActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void putSuccessful(Boolean successful) {
+    public void successfulDeleted(Boolean successful) {
         if (successful) {
-            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
+
+            if(products.size() == 1){
+                products.clear();
+                mAdapter.notifyDataSetChanged();
+            } else {
+                products.clear();
+                getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+            }
+
         } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Product couldn't be removed", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void putSuccessful(Boolean successful) {
+        if (successful) {
+            Log.i(TAG, "Totalprice succesfully edited");
+        } else {
+            Log.i(TAG, "Error while updating totalprice");
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -281,4 +300,5 @@ public class MyOrderActivity extends AppCompatActivity implements
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

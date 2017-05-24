@@ -258,9 +258,18 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Totalprice succesfully edited");
         } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "Error while updating totalprice");
+        }
+    }
+
+    @Override
+    public void successfulDeleted(Boolean successful) {
+        if (successful){
+            Toast.makeText(this, "Product removed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Product couldn't be removed", Toast.LENGTH_SHORT).show();
         }
     }
 }
