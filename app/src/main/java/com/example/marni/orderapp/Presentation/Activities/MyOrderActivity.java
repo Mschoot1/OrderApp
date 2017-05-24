@@ -184,8 +184,16 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
-        textViewTotal.setText("€ " + formatter.format(priceTotal));
-        textViewQuantity.setText(quantity + "");
+        if(priceTotal == 0){
+            textViewTotal.setText("€ " + formatter.format(0));
+        } else {
+            textViewTotal.setText("€ " + formatter.format(priceTotal));
+        }
+        if(quantity == 0){
+            textViewQuantity.setText("0");
+        } else{
+            textViewQuantity.setText(quantity + "");
+        }
     }
 
     @Override

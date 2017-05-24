@@ -42,6 +42,7 @@
             android:background="@color/colorGrey">
 
             <TextView
+                android:text="€ 0,00"
                 android:id="@+id/textViewTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,6 +54,7 @@
 
             <TextView
                 android:id="@+id/textViewTotalQuantity"
+                android:text="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
