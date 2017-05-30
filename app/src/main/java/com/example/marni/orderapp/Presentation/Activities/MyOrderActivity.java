@@ -125,9 +125,6 @@ public class MyOrderActivity extends AppCompatActivity implements
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
 
-        if (savedInstanceState == null) {
-            AccountStorage.SetAccount(this, "" + order.getOrderId());
-        }
     }
 
     private void getCurrentOrder(String apiUrl) {
@@ -193,6 +190,7 @@ public class MyOrderActivity extends AppCompatActivity implements
         } else{
             textViewQuantity.setText(quantity + "");
         }
+        AccountStorage.SetAccount(this, "" + order.getOrderId(), current_balance, priceTotal);
     }
 
     @Override
