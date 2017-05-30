@@ -19,8 +19,6 @@ package com.example.marni.orderapp.cardemulation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Utility class for persisting account numbers to disk.

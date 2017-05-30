@@ -41,8 +41,6 @@ import java.util.Arrays;
  */
 public class CardService extends HostApduService {
 
-    private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
-
     private static final String TAG = "CardService";
     // AID for our loyalty card service.
     private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
@@ -93,7 +91,7 @@ public class CardService extends HostApduService {
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             String account = AccountStorage.GetAccount(this);
 
-            if(!account.equals(DEFAULT_ACCOUNT_NUMBER)){
+            if(!account.equals("00000000")){
                 byte[] accountBytes = account.getBytes();
                 Log.i(TAG, "Sending account number: " + account);
                 return ConcatArrays(accountBytes, SELECT_OK_SW);
