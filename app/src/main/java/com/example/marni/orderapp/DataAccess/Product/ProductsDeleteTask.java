@@ -75,10 +75,10 @@ public class ProductsDeleteTask extends AsyncTask<String, Void, Boolean> {
     }
 
     protected void onPostExecute(Boolean response) {
-        listener.successful(response);
+        listener.successfulDeleted(response);
     }
 
     public interface SuccessListener {
-        void successful(Boolean successful);
+        void successfulDeleted(Boolean successful);
     }
 }
