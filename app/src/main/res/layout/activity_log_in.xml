@@ -4,27 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.example.marni.orderapp.Presentation.Activities.LogInActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="69dp"
+        android:layout_marginBottom="63dp"
         android:contentDescription="@string/company_image"
+        android:minHeight="150dp"
+        android:minWidth="150dp"
         android:src="@mipmap/rsz_3logo"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/textViewEmailaddress"
         android:layout_centerHorizontal="true" />
-
 
     <TextView
         android:id="@+id/textViewEmailaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_above="@+id/login_editTextEmailaddress"
         android:layout_alignStart="@+id/login_editTextEmailaddress"
-        android:layout_below="@+id/imageView"
-        android:layout_marginTop="40dp"
         android:text="@string/emailaddress"
         android:textColor="#000"
         android:textSize="@dimen/textsize" />
@@ -33,7 +33,7 @@
         android:id="@+id/login_editTextEmailaddress"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewEmailaddress"
+        android:layout_above="@+id/textViewPassword"
         android:layout_centerHorizontal="true"
         android:inputType="textEmailAddress"
         android:textSize="@dimen/textsize" />
@@ -42,9 +42,8 @@
         android:id="@+id/textViewPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_above="@+id/login_editTextPassword"
         android:layout_alignStart="@+id/login_editTextEmailaddress"
-        android:layout_below="@+id/login_editTextEmailaddress"
         android:text="@string/password"
         android:textColor="#000"
         android:textSize="@dimen/textsize" />
@@ -53,20 +52,27 @@
         android:id="@+id/login_editTextPassword"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewPassword"
+        android:layout_above="@+id/checkBox_login"
         android:layout_alignStart="@+id/textViewPassword"
-        android:layout_below="@+id/textViewPassword"
         android:inputType="textPassword"
         android:textSize="@dimen/textsize" />
+
+    <CheckBox
+        android:id="@+id/checkBox_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_credentials"
+        android:layout_marginBottom="37.5dp"
+        android:layout_above="@+id/buttonSignIn"
+        android:layout_alignStart="@+id/login_editTextPassword" />
 
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="@string/sign_in"
-        android:layout_below="@+id/checkBox_login"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/textViewNoAccountYet"
+        android:layout_centerHorizontal="true"
+        android:text="@string/sign_in" />
 
     <TextView
         android:id="@+id/textViewNoAccountYet"
@@ -78,13 +84,5 @@
         android:text="@string/no_account_yet_register_here"
         android:textColor="#000"
         android:textSize="14sp" />
-
-    <CheckBox
-        android:id="@+id/checkBox_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/remember_credentials"
-        android:layout_below="@+id/login_editTextPassword"
-        android:layout_alignStart="@+id/login_editTextPassword" />
 
 </RelativeLayout>

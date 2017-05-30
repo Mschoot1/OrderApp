@@ -6,11 +6,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
@@ -20,7 +17,8 @@ import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
-import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.OrderDetailListViewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
@@ -34,14 +32,14 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
 public class OrderDetailActivity extends AppCompatActivity implements TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable {
+        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
-    private ProductsListviewAdapter mAdapter;
+    private OrderDetailListViewAdapter mAdapter;
 
     private double current_balance;
     private TextView textview_balance;
@@ -100,9 +98,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     @Override
     public void onOrderAvailable(Order order) {
 
-        Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
-
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this, this, jwt, user);
+        mAdapter = new OrderDetailListViewAdapter(getApplicationContext(), getLayoutInflater(), products, jwt, user);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -146,10 +142,5 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         textViewTotal.setText("€ " + formatter.format(priceTotal));
         textViewQuantity.setText(quantity + "");
-    }
-
-    @Override
-    public void onMethodAvailable(String method, Product product, Order order) {
-
     }
 }

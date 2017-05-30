@@ -2,6 +2,7 @@ package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +25,7 @@ import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.DataAccess.Allergies.AllergiesGetTask;
-import com.example.marni.orderapp.Presentation.Adapters.AllergiesListviewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.AllergiesListViewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
@@ -45,7 +46,6 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     private TextView account_email;
     private double current_balance;
 
-
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
     private JWT jwt;
@@ -61,6 +61,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         Bundle bundle = getIntent().getExtras();
         jwt = bundle.getParcelable(JWT_STR);
         user = bundle.getInt(USER);
+
 
         getSupportActionBar().setTitle("Allergy Information");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
@@ -92,7 +93,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         account_email = (TextView)headerView.findViewById(R.id.nav_email);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
-        allergiesAdapter = new AllergiesListviewAdapter(this, getLayoutInflater(), allergies);
+        allergiesAdapter = new AllergiesListViewAdapter(this, getLayoutInflater(), allergies);
         listViewAllergies.setAdapter(allergiesAdapter);
     }
 

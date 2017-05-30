@@ -16,9 +16,9 @@
         android:src="@mipmap/rsz_3logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="66dp"
         android:contentDescription="@string/company_image"
         android:id="@+id/imageView"
+        android:layout_above="@+id/textViewSignIn"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -28,10 +28,10 @@
         android:textAlignment="center"
         android:textSize="32sp"
         android:paddingBottom="25dp"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
         android:textColor="#000000"
-        android:id="@+id/textViewSignIn" />
+        android:id="@+id/textViewSignIn"
+        android:layout_above="@+id/emailTextview"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,8 +40,7 @@
         android:text="@string/emailaddress"
         android:id="@+id/emailTextview"
         android:textColor="#000000"
-        android:layout_below="@+id/textViewSignIn"
-        android:layout_alignLeft="@+id/emailTextfield"
+        android:layout_above="@+id/emailTextfield"
         android:layout_alignStart="@+id/emailTextfield" />
 
     <EditText
@@ -50,7 +49,7 @@
         android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:layout_below="@+id/emailTextview"
+        android:layout_above="@+id/passwordTextview"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -59,20 +58,18 @@
         android:textSize="@dimen/textsize"
         android:text="@string/password"
         android:id="@+id/passwordTextview"
-        android:layout_below="@+id/emailTextfield"
-        android:layout_alignLeft="@+id/emailTextfield"
-        android:layout_alignStart="@+id/emailTextfield"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:layout_above="@+id/firstPasswordTextfield"
+        android:layout_alignStart="@+id/emailTextfield" />
 
     <EditText
         android:id="@+id/firstPasswordTextfield"
         android:layout_width="320dp"
         android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordTextview"
-        android:layout_alignLeft="@+id/passwordTextview"
-        android:layout_alignStart="@+id/passwordTextview"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:layout_above="@+id/confirmPasswordTextview"
+        android:layout_alignStart="@+id/passwordTextview" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,27 +77,27 @@
         android:textSize="@dimen/textsize"
         android:text="@string/confirm_password"
         android:id="@+id/confirmPasswordTextview"
-        android:layout_below="@+id/firstPasswordTextfield"
-        android:layout_alignLeft="@+id/firstPasswordTextfield"
-        android:layout_alignStart="@+id/firstPasswordTextfield"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:layout_above="@+id/secondPasswordTextfield"
+        android:layout_alignStart="@+id/firstPasswordTextfield" />
 
     <EditText
         android:layout_width="320dp"
         android:textSize="@dimen/textsize"
         android:layout_height="wrap_content"
         android:id="@+id/secondPasswordTextfield"
-        android:layout_below="@+id/confirmPasswordTextview"
-        android:layout_alignLeft="@+id/confirmPasswordTextview"
-        android:layout_alignStart="@+id/confirmPasswordTextview"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_marginBottom="10.5dp"
+        android:layout_above="@+id/registerButton"
+        android:layout_alignStart="@+id/confirmPasswordTextview" />
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
         android:text="@string/register"
-        android:layout_below="@+id/secondPasswordTextfield"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

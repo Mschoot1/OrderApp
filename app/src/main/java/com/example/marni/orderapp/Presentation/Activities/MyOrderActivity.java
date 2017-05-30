@@ -1,5 +1,6 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +29,14 @@ import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
-import com.example.marni.orderapp.Presentation.Adapters.ProductsListviewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.MyOrderListViewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
@@ -47,8 +51,8 @@ import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryAct
 
 public class MyOrderActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsListviewAdapter.OnMethodAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, ProductsDeleteTask.SuccessListener,
+        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable,
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
         OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = getClass().getSimpleName();
@@ -56,17 +60,20 @@ public class MyOrderActivity extends AppCompatActivity implements
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
-    private ProductsListviewAdapter mAdapter;
+    private MyOrderListViewAdapter mAdapter;
 
     private double current_balance;
+
     private TextView textview_balance;
     private TextView account_email;
 
+    private TotalFromAssortment tfa;
+
     private Order order;
-    private double priceTotal;
 
     private JWT jwt;
     private int user;
+    private int quantity;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -117,9 +124,27 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
+        stickyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product p = products.get(position);
+                if (p.getQuantity() == 0) {
+                    p.setQuantity(increase(p.getQuantity()));
+                    postProduct("https://mysql-test-p4.herokuapp.com/product/quantity/add", p);
+                } else {
+                    p.setQuantity(increase(p.getQuantity()));
+                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+                }
+                mAdapter.notifyDataSetChanged();
 
-        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
-        account_email = (TextView)headerView.findViewById(R.id.nav_email);
+                tfa = new TotalFromAssortment(products);
+                onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal());
+            }
+        });
+
+        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
+        account_email = (TextView) headerView.findViewById(R.id.nav_email);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
@@ -137,9 +162,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onOrderAvailable(Order order) {
 
-        Boolean currentOrder = (order.getOrderId() == this.order.getOrderId());
-
-        mAdapter = new ProductsListviewAdapter(getApplicationContext(), getLayoutInflater(), products, order, currentOrder, this, this, jwt, user);
+        mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
@@ -151,11 +174,13 @@ public class MyOrderActivity extends AppCompatActivity implements
         getBalance.execute(urls);
     }
 
+    @Override
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
+        String s = "€" + formatter.format(current_balance);
+        textview_balance.setText(s);
         account_email.setText(bal.getEmail());
     }
 
@@ -169,82 +194,71 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
+        tfa = new TotalFromAssortment(products);
+        onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onTotalChanged(Double priceTotal, int quantity) {
-        this.priceTotal = priceTotal;
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
-        if(priceTotal == 0){
-            textViewTotal.setText("€ " + formatter.format(0));
+        String sPriceTotal;
+        if (priceTotal == 0) {
+            sPriceTotal = "€" + formatter.format(0);
         } else {
-            textViewTotal.setText("€ " + formatter.format(priceTotal));
+            sPriceTotal = "€" + formatter.format(priceTotal);
         }
-        if(quantity == 0){
-            textViewQuantity.setText("0");
-        } else{
-            textViewQuantity.setText(quantity + "");
+        textViewTotal.setText(sPriceTotal);
+
+        String sQuantity;
+        if (quantity == 0) {
+            sQuantity = "0";
+        } else {
+            sQuantity = quantity + "";
         }
+        textViewQuantity.setText(sQuantity);
+
         AccountStorage.SetAccount(this, "" + order.getOrderId(), current_balance, priceTotal);
+        if (this.quantity < quantity) {
+            setAnimation(getApplicationContext(), (ImageView) findViewById(R.id.imageView_orderdetail_cart));
+        }
+        this.quantity = quantity;
     }
 
-    @Override
-    public void onMethodAvailable(String method, Product product, Order order) {
-        switch (method) {
-            case "put":
-                String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/edit", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
-                ProductsPutTask putProduct = new ProductsPutTask(this);
-                putProduct.execute(urls);
+    public static void setAnimation(Context context, ImageView imageView) {
+        Animation animation;
+        animation = AnimationUtils.loadAnimation(context, R.anim.wiggle);
+        imageView.startAnimation(animation);
+    }
 
-                break;
-            case "post":
-                String[] urls2 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/add", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + "", Integer.toString(product.getQuantity())};
-                ProductsPostTask postProduct = new ProductsPostTask(this);
-                postProduct.execute(urls2);
-                break;
-            case "delete":
-                Log.i(TAG, "delete product");
-                String[] urls3 = new String[]{"https://mysql-test-p4.herokuapp.com/product/quantity/delete", jwt.toString(), Integer.toString(order.getOrderId()), Integer.toString(product.getProductId()), user + ""};
-                ProductsDeleteTask deleteProduct = new ProductsDeleteTask(this);
-                deleteProduct.execute(urls3);
-        }
+    public void putOrderPrice(String apiUrl, Double priceTotal) {
+        String[] urls = new String[]{apiUrl, jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
+        OrdersPutTask task = new OrdersPutTask(this);
+        task.execute(urls);
+    }
 
-        String[] urls = new String[]{"https://mysql-test-p4.herokuapp.com/order/price/edit", jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
-        OrdersPutTask putOrder = new OrdersPutTask(this);
-        putOrder.execute(urls);
+    private void putProduct(String apiUrl, Product p) {
+        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        ProductsPutTask task = new ProductsPutTask(this);
+        task.execute(urls);
+    }
+
+    private void postProduct(String apiUrl, Product p) {
+        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        ProductsPostTask task = new ProductsPostTask(this);
+        task.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
         if (successful) {
-            Toast.makeText(this, "Product amount changed", Toast.LENGTH_SHORT).show();
-
-            products.clear();
-            getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+            Log.i(TAG, "Product amount changed");
         } else {
-            Toast.makeText(this, "Product quantity couldn't be changed", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void successfulDeleted(Boolean successful) {
-        if (successful) {
-
-            if(products.size() == 1){
-                products.clear();
-                mAdapter.notifyDataSetChanged();
-            } else {
-                products.clear();
-                getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
-            }
-
-        } else {
-            Toast.makeText(this, "Product couldn't be removed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -297,6 +311,10 @@ public class MyOrderActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private int increase(int quantity) {
+        return quantity + 1;
     }
 
 }

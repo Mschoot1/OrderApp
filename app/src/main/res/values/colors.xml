@@ -2,12 +2,12 @@
 <resources>
     <color name="colorPrimary">#E91e63</color>
     <color name="colorPrimaryDark">#C2185B</color>
+    <color name="colorAccent">#FFC107</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="textprimarycolor">#212121</color>
     <color name="textsecondarycolor">#757575</color>
     <color name="colorGrey">#757575</color>
     <color name="backgroundcategoryheaders">#BDBDBD</color>
-
 
     <color name="productName">#000</color>
     <color name="black_text">#000</color>

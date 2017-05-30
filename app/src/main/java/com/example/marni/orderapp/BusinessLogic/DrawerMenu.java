@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.auth0.android.jwt.JWT;
+import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.Presentation.Activities.LogInActivity;
 import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
-import com.example.marni.orderapp.Presentation.Activities.OrderDetailActivity;
 import com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity;
 import com.example.marni.orderapp.Presentation.Activities.ProductsActivity;
 import com.example.marni.orderapp.Presentation.Activities.TopUpActivity;
@@ -20,11 +20,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
-/**
- * Created by marni on 11-5-2017.
- */
-
-public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
+public class DrawerMenu implements OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -93,13 +89,12 @@ public class DrawerMenu implements OrdersGetTask.OnOrderAvailable {
         Log.i(TAG, "getCurrent called.");
 
         String[] urls = new String[]{apiUrl, jwt.toString()};
-        OrdersGetTask task = new OrdersGetTask(this);
+        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
         task.execute(urls);
     }
 
     @Override
-    public void onOrderAvailable(Order order) {
-
+    public void onCurrentOrderAvailable(Order order) {
         intent.putExtra(ORDER, order);
         context.startActivity(intent);
     }

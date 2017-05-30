@@ -78,5 +78,10 @@
     <string name="service_name">CardEmulation Sample</string>
     <string name="card_title">Sample Loyalty Card</string>
     <string name="account_number">Account Number</string>
+    <string name="_2_00">$2.00</string>
+    <string name="_5_alc">5% Alc.</string>
+    <string name="beer">Beer</string>
+    <string name="_330ml">330ml</string>
+    <string name="_0">0</string>
 
 </resources>

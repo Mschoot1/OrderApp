@@ -1,12 +1,10 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,15 +12,9 @@ import android.widget.TextView;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-/**
- * Created by Wallaard on 4-5-2017.
- */
-
-public class AllergiesListviewAdapter extends BaseAdapter {
+public class AllergiesListViewAdapter extends BaseAdapter {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -30,7 +22,7 @@ public class AllergiesListviewAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ArrayList<Allergy> allergies;
 
-    public AllergiesListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Allergy> allergies) {
+    public AllergiesListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Allergy> allergies) {
 
         Log.i(TAG, "Size: " + allergies.size());
 

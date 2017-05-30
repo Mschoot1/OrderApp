@@ -27,7 +27,7 @@ import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
-import com.example.marni.orderapp.Presentation.Adapters.OrdersListviewAdapter;
+import com.example.marni.orderapp.Presentation.Adapters.OrdersListViewAdapter;
 import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
@@ -99,7 +99,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
-        ordersAdapter = new OrdersListviewAdapter(getApplicationContext(), getLayoutInflater(), orders);
+        ordersAdapter = new OrdersListViewAdapter(getApplicationContext(), getLayoutInflater(), orders);
 
         listView.setAdapter(ordersAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

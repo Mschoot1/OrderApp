@@ -1,10 +1,14 @@
 package com.example.marni.orderapp.DataAccess.Product;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Product;
+import com.example.marni.orderapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +29,19 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
     private OnProductAvailable listener = null;
     private String myorder;
 
+    private ProgressBar progressBar;
+
     private final String TAG = getClass().getSimpleName();
 
-    public ProductsGetTask(OnProductAvailable listener, String myorder) {
-        this.listener = listener;
+    public ProductsGetTask(Activity activity, String myorder) {
+        this.listener = (OnProductAvailable) activity;
         this.myorder = myorder;
+        this.progressBar = (ProgressBar) activity.findViewById(R.id.progress_bar);
+    }
+
+    @Override
+    public void onPreExecute() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     protected String doInBackground(String... params) {
@@ -82,7 +94,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String response) {
-
+        progressBar.setVisibility(View.INVISIBLE);
         Log.i(TAG, "onPostExecute " + response);
 
         if (response == null || response == "") {

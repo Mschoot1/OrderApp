@@ -17,17 +17,13 @@ import com.example.marni.orderapp.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-/**
- * Created by marni on 8-5-2017.
- */
-
-public class OrdersListviewAdapter extends BaseAdapter {
+public class OrdersListViewAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<Order> orders;
 
-    public OrdersListviewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Order> orders) {
+    public OrdersListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Order> orders) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;

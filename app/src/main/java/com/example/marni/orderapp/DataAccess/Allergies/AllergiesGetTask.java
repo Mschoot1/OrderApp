@@ -1,7 +1,10 @@
 package com.example.marni.orderapp.DataAccess.Allergies;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.R;
@@ -10,12 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
 import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,23 +24,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import java.net.URLConnection;
-import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
-
-/**
- * Created by Wallaard on 4-5-2017.
- */
-
 public class AllergiesGetTask extends AsyncTask<String, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
 
     private OnRandomUserAvailable listener = null;
 
-    public AllergiesGetTask(OnRandomUserAvailable listener) {
-        this.listener = listener;
+    private ProgressBar progressBar;
+
+    public AllergiesGetTask(Activity activity) {
+        this.listener = (OnRandomUserAvailable) activity;
+        this.progressBar = (ProgressBar) activity.findViewById(R.id.progress_bar);
+    }
+
+    @Override
+    public void onPreExecute() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -100,6 +97,7 @@ public class AllergiesGetTask extends AsyncTask<String, Void, String> {
 
 
     protected void onPostExecute(String response) {
+        progressBar.setVisibility(View.INVISIBLE);
         JSONArray jsonArray;
         JSONObject jsonObject;
         try {
