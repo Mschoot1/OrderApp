@@ -19,6 +19,7 @@ package com.example.marni.orderapp.cardemulation;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -39,6 +40,9 @@ import java.util.Arrays;
  * protocol support as needed.
  */
 public class CardService extends HostApduService {
+
+    private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
+
     private static final String TAG = "CardService";
     // AID for our loyalty card service.
     private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
@@ -88,9 +92,15 @@ public class CardService extends HostApduService {
         // send the loyalty card account number, followed by a SELECT_OK status trailer (0x9000).
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             String account = AccountStorage.GetAccount(this);
-            byte[] accountBytes = account.getBytes();
-            Log.i(TAG, "Sending account number: " + account);
-            return ConcatArrays(accountBytes, SELECT_OK_SW);
+
+            if(!account.equals(DEFAULT_ACCOUNT_NUMBER)){
+                byte[] accountBytes = account.getBytes();
+                Log.i(TAG, "Sending account number: " + account);
+                return ConcatArrays(accountBytes, SELECT_OK_SW);
+            } else {
+                Toast.makeText(this, "Your balance is too low", Toast.LENGTH_LONG).show();
+                return UNKNOWN_CMD_SW;
+            }
         } else {
             return UNKNOWN_CMD_SW;
         }

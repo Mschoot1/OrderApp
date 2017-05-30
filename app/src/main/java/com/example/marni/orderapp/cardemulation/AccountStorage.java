@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Utility class for persisting account numbers to disk.
@@ -36,12 +37,17 @@ public class AccountStorage {
     private static String sAccount = null;
     private static final Object sAccountLock = new Object();
 
-    public static void SetAccount(Context c, String s) {
+    public static void SetAccount(Context c, String s, double balance, double orderPriceTotal) {
         synchronized(sAccountLock) {
-            Log.i(TAG, "Setting account number: " + s);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
-            sAccount = s;
+            if(balance < orderPriceTotal){
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
+                sAccount = s;
+            } else {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
+                sAccount = DEFAULT_ACCOUNT_NUMBER;
+            }
         }
     }
 

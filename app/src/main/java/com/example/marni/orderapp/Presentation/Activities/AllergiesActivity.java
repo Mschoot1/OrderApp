@@ -36,7 +36,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        AllergiesGetTask.OnRandomUserAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        AllergiesGetTask.OnRandomUserAvailable, AccountGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -87,7 +87,6 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
         getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         textview_balance = (TextView)findViewById(R.id.toolbar_balance);
         account_email = (TextView)headerView.findViewById(R.id.nav_email);
@@ -155,13 +154,6 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         getRandomUser.execute(urls);
     }
 
-    private void getCurrentOrder(String apiUrl) {
-
-        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
-        task.execute(urls);
-    }
-
     public void getBalance(String apiUrl){
         String[] urls = new String[] { apiUrl, jwt.toString() };
 
@@ -175,10 +167,5 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
         account_email.setText(bal.getEmail());
-    }
-
-    @Override
-    public void onCurrentOrderAvailable(Order order) {
-        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 }

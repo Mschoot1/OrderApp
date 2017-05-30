@@ -107,7 +107,6 @@ public class ProductsActivity extends AppCompatActivity implements
         account_email = (TextView)headerView.findViewById(R.id.nav_email);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/" + user);
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
@@ -201,13 +200,6 @@ public class ProductsActivity extends AppCompatActivity implements
         account_email.setText(bal.getEmail());
     }
 
-    private void getCurrentOrder(String apiUrl) {
-
-        String[] urls = new String[]{apiUrl, jwt.toString()};
-        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        task.execute(urls);
-    }
-
     @Override
     public void onCurrentOrderAvailable(Order order) {
 
@@ -217,8 +209,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-
-        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 
     @Override

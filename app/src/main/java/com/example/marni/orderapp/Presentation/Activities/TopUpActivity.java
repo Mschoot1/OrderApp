@@ -41,7 +41,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, AccountGetTask.OnBalanceAvailable,
-        BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment, OrdersGetCurrentTask.OnCurrentOrderAvailable {
+        BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2;
@@ -85,7 +85,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         navigationView.setCheckedItem(R.id.nav_top_up);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         calculateBalance = new CalculateBalance(this, this, this);
 
@@ -241,18 +240,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
-    }
-
-    private void getCurrentOrder(String apiUrl) {
-
-        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
-        task.execute(urls);
-    }
-
-    @Override
-    public void onCurrentOrderAvailable(Order order) {
-        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 
     @Override

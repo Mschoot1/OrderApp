@@ -41,7 +41,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable, DevicePutTask.SuccessListener,
+        OrdersGetTask.OnOrderAvailable, DevicePutTask.SuccessListener,
         AccountGetTask.OnBalanceAvailable {
 
     private final String TAG = getClass().getSimpleName();
@@ -123,7 +123,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
     }
 
     @Override
@@ -176,13 +175,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         task.execute(urls);
     }
 
-    private void getCurrentOrder(String apiUrl) {
-
-        OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
-        task.execute(urls);
-    }
-
     @Override
     public void onOrderAvailable(Order order) {
 
@@ -206,11 +198,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
         account_email.setText(bal.getEmail());
-    }
-
-    @Override
-    public void onCurrentOrderAvailable(Order order) {
-        AccountStorage.SetAccount(this, "" + order.getOrderId());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)

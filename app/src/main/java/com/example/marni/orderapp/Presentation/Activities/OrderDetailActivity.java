@@ -88,10 +88,6 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
-
-        if (savedInstanceState == null) {
-            AccountStorage.SetAccount(this, "" + order.getOrderId());
-        }
     }
 
     private void getCurrentOrder(String apiUrl) {
