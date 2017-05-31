@@ -53,7 +53,7 @@ public class MyOrderActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
-        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener {
+        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener, ProductsGetTask.OnEmptyList {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -80,6 +80,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
+        isEmpty(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
@@ -108,7 +109,6 @@ public class MyOrderActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
-
         navigationView.setCheckedItem(R.id.nav_my_order);
 
         ImageView imageView = (ImageView) findViewById(R.id.additem_orderdetail);
@@ -127,6 +127,7 @@ public class MyOrderActivity extends AppCompatActivity implements
         stickyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Clicked item: " + position);
                 Product p = products.get(position);
                 if (p.getQuantity() == 0) {
                     p.setQuantity(increase(p.getQuantity()));
@@ -136,7 +137,6 @@ public class MyOrderActivity extends AppCompatActivity implements
                     putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                 }
                 mAdapter.notifyDataSetChanged();
-
                 tfa = new TotalFromAssortment(products);
                 onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
                 putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal());
@@ -149,7 +149,6 @@ public class MyOrderActivity extends AppCompatActivity implements
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
         getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
-
     }
 
     private void getCurrentOrder(String apiUrl) {
@@ -164,11 +163,9 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
     }
 
     public void getBalance(String ApiUrl) {
-
         String[] urls = new String[]{ApiUrl, jwt.toString()};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
@@ -177,7 +174,6 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
-
         current_balance = bal.getBalance();
         String s = "€" + formatter.format(current_balance);
         textview_balance.setText(s);
@@ -185,7 +181,6 @@ public class MyOrderActivity extends AppCompatActivity implements
     }
 
     public void getProducts(String ApiUrl) {
-
         ProductsGetTask task = new ProductsGetTask(this, "myorder");
         String[] urls = new String[]{ApiUrl, jwt.toString()};
         task.execute(urls);
@@ -271,7 +266,6 @@ public class MyOrderActivity extends AppCompatActivity implements
         }
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -317,4 +311,16 @@ public class MyOrderActivity extends AppCompatActivity implements
         return quantity + 1;
     }
 
+    @Override
+    public void isEmpty(Boolean b) {
+        TextView textView = (TextView) findViewById(R.id.textView_add_items);
+        ImageView imageView = (ImageView) findViewById(R.id.imageViewArrow);
+        if (b) {
+            textView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.INVISIBLE);
+        }
+    }
 }

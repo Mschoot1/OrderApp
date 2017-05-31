@@ -55,7 +55,7 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged, ProductsGetTask.OnProductAvailable,
         AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener {
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener, ProductsGetTask.OnEmptyList {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -282,6 +282,11 @@ public class ProductsActivity extends AppCompatActivity implements
         } else {
             Log.i(TAG, "Error while updating totalprice");
         }
+    }
+
+    @Override
+    public void isEmpty(Boolean b) {
+
     }
 }
 

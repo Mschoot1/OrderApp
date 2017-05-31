@@ -32,7 +32,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.U
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
 
 public class OrderDetailActivity extends AppCompatActivity implements TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable {
+        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsGetTask.OnEmptyList {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -142,5 +142,10 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         textViewTotal.setText("€ " + formatter.format(priceTotal));
         textViewQuantity.setText(quantity + "");
+    }
+
+    @Override
+    public void isEmpty(Boolean b) {
+
     }
 }

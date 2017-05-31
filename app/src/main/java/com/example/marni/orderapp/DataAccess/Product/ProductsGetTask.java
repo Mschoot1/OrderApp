@@ -26,7 +26,8 @@ import java.util.ArrayList;
 
 public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
-    private OnProductAvailable listener = null;
+    private OnProductAvailable opa = null;
+    private OnEmptyList oel = null;
     private String myorder;
 
     private ProgressBar progressBar;
@@ -34,7 +35,8 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
     private final String TAG = getClass().getSimpleName();
 
     public ProductsGetTask(Activity activity, String myorder) {
-        this.listener = (OnProductAvailable) activity;
+        this.opa = (OnProductAvailable) activity;
+        this.oel = (OnEmptyList) activity;
         this.myorder = myorder;
         this.progressBar = (ProgressBar) activity.findViewById(R.id.progress_bar);
     }
@@ -157,8 +159,10 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 p.setCategoryName(categoryName);
                 p.setAllergies(as);
 
-                listener.onProductAvailable(p);
-
+                opa.onProductAvailable(p);
+            }
+            if (jsonArray.length() == 0) {
+                oel.isEmpty(true);
             }
         } catch (JSONException ex) {
             Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
@@ -195,5 +199,9 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
     public interface OnProductAvailable {
         void onProductAvailable(Product product);
+    }
+
+    public interface OnEmptyList {
+        void isEmpty(Boolean b);
     }
 }

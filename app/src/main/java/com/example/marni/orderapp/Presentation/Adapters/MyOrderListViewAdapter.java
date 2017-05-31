@@ -18,11 +18,13 @@ import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
+import com.example.marni.orderapp.DataAccess.Product.ProductsGetTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
+import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
@@ -51,15 +53,17 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     private Order order;
 
     private TotalFromAssortment.OnTotalChanged otc;
+    private ProductsGetTask.OnEmptyList oel;
 
-    public MyOrderListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, JWT jwt, int user, TotalFromAssortment.OnTotalChanged otc) {
+    public MyOrderListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, JWT jwt, int user, MyOrderActivity listener) {
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.order = order;
         this.jwt = jwt;
         this.user = user;
-        this.otc = otc;
+        this.otc = listener;
+        this.oel = listener;
     }
 
     @Override
@@ -140,6 +144,9 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
                     products.remove(position);
                     notifyDataSetChanged();
                     deleteProduct("https://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
+                    if(products.size() == 0) {
+                        oel.isEmpty(true);
+                    }
                 } else {
                     p.setQuantity(decrease(p.getQuantity()));
                     putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
