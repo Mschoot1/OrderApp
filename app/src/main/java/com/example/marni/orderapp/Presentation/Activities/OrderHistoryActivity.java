@@ -23,14 +23,12 @@ import android.widget.TextView;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.DeviceInfo.DevicePutTask;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListViewAdapter;
-import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
+import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

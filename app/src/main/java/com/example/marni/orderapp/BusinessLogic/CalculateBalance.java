@@ -9,9 +9,9 @@ import android.util.Log;
 public class CalculateBalance {
 
     private final String TAG = getClass().getSimpleName();
-    OnBalanceChanged listener;
-    OnResetBalance listener2;
-    OnCheckPayment listener3;
+    private OnBalanceChanged listener;
+    private OnResetBalance listener2;
+    private OnCheckPayment listener3;
 
     private double balance;
     private int addedBalance;
@@ -29,7 +29,6 @@ public class CalculateBalance {
         setAddedBalance(added_balance);
 
         listener.onBalanceChanged(newBalance);
-
     }
 
     public void checkPayment(){

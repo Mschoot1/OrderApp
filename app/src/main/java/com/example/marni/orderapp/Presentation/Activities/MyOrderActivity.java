@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
+import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
@@ -36,7 +36,6 @@ import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.MyOrderListViewAdapter;
-import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
@@ -137,9 +136,9 @@ public class MyOrderActivity extends AppCompatActivity implements
                     putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                 }
                 mAdapter.notifyDataSetChanged();
-                tfa = new TotalFromAssortment(products);
-                onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal());
+                tfa = new TotalFromAssortment();
+                onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
             }
         });
 
@@ -189,8 +188,8 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
-        tfa = new TotalFromAssortment(products);
-        onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
+        tfa = new TotalFromAssortment();
+        onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
     }
 

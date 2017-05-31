@@ -2,7 +2,6 @@ package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,15 +19,12 @@ import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Allergy;
-import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.DataAccess.Allergies.AllergiesGetTask;
 import com.example.marni.orderapp.Presentation.Adapters.AllergiesListViewAdapter;
-import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
+import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

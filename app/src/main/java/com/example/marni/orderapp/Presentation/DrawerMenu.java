@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.BusinessLogic;
+package com.example.marni.orderapp.Presentation;
 
 import android.content.Context;
 import android.content.Intent;

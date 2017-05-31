@@ -27,12 +27,9 @@ import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.BusinessLogic.CalculateBalance;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.DataAccess.Account.BalancePostTask;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersGetCurrentTask;
 import com.example.marni.orderapp.Domain.Account;
-import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
-import com.example.marni.orderapp.Domain.Order;
+import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 

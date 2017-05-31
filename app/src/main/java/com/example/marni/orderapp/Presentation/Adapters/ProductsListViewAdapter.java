@@ -1,6 +1,5 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,29 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.BusinessLogic.CalculateQuantity;
 import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPostTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Allergy;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
-import com.example.marni.orderapp.Presentation.Activities.ProductsActivity;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
@@ -154,9 +145,9 @@ public class ProductsListViewAdapter extends BaseAdapter implements
                 String amount = p.getQuantity() + "";
                 viewHolder.textViewAmount.setText(amount);
 
-                TotalFromAssortment tfa = new TotalFromAssortment(products);
-                otc.onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal());
+                TotalFromAssortment tfa = new TotalFromAssortment();
+                otc.onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
             }
         });
 

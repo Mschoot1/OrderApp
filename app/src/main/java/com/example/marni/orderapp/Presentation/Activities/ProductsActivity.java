@@ -1,7 +1,6 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -16,10 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,9 +32,8 @@ import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
-import com.example.marni.orderapp.BusinessLogic.DrawerMenu;
+import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -132,9 +126,9 @@ public class ProductsActivity extends AppCompatActivity implements
                 }
                 mAdapter.notifyDataSetChanged();
 
-                tfa = new TotalFromAssortment(products);
-                onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal());
+                tfa = new TotalFromAssortment();
+                onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
             }
         });
 
@@ -215,8 +209,8 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
-        tfa = new TotalFromAssortment(products);
-        onTotalChanged(tfa.getPriceTotal(), tfa.getQuanitity());
+        tfa = new TotalFromAssortment();
+        onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
     }
 
