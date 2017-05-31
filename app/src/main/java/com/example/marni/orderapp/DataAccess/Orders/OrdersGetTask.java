@@ -106,12 +106,14 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
                 int status = order.getInt("status");
                 String timestamp = order.getString("timestamp");
                 Double price_total = order.getDouble("price_total");
+                int pending = order.getInt("pending");
 
                 Order o = new Order();
                 o.setOrderId(id);
                 o.setStatus(status);
                 o.setTimestamp(getFormattedDate(timestamp));
                 o.setPriceTotal(price_total);
+                o.setPending(pending);
 
                 listener.onOrderAvailable(o);
             }

@@ -37,7 +37,7 @@ public class AccountStorage {
 
     public static void SetAccount(Context c, String s, double balance, double orderPriceTotal) {
         synchronized(sAccountLock) {
-            if(balance < orderPriceTotal){
+            if(balance >= orderPriceTotal){
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
                 prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
                 sAccount = s;

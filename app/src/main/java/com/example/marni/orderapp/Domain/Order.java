@@ -13,6 +13,15 @@ public class Order implements Serializable {
     private int Status;
     private String timestamp;
     private double price_total;
+    private int pending;
+
+    public int getPending() {
+        return pending;
+    }
+
+    public void setPending(int pending) {
+        this.pending = pending;
+    }
 
     public int getOrderId() {
         return orderId;
