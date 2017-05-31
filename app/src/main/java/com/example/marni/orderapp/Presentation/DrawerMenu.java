@@ -39,13 +39,6 @@ public class DrawerMenu implements OrdersGetCurrentTask.OnCurrentOrderAvailable 
         this.user = user;
 
         switch (id) {
-            case R.id.nav_assortment:
-                intent = new Intent(context, ProductsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
-                context.startActivity(intent);
-                break;
             case R.id.nav_my_order:
                 intent = new Intent(context, MyOrderActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

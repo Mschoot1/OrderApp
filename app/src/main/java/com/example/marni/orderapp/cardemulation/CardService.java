@@ -91,7 +91,10 @@ public class CardService extends HostApduService {
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             String account = AccountStorage.GetAccount(this);
 
-            if(!account.equals("00000000")){
+            if(account.equals("0000")){
+                Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
+                return UNKNOWN_CMD_SW;
+            } else if(!account.equals("00000000")){
                 byte[] accountBytes = account.getBytes();
                 Log.i(TAG, "Sending account number: " + account);
                 return ConcatArrays(accountBytes, SELECT_OK_SW);

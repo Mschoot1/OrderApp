@@ -29,7 +29,7 @@
     <string name="description">description</string>
     <string name="total">Total</string>
     <string name="menu">menu</string>
-    <string name="order_history">Home</string>
+    <string name="order_history">Order history</string>
     <string name="top_up">Top Up</string>
     <string name="my_order">My Order</string>
     <string name="Assortment">Assortment</string>
@@ -73,6 +73,7 @@
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>
     <string name="topup_topayment">Checkout</string>
+
     <string name="view_chart">VIEW ORDER</string>
 
     <string name="service_name">CardEmulation Sample</string>

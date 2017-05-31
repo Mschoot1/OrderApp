@@ -34,6 +34,7 @@ import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
 import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -81,6 +82,8 @@ public class ProductsActivity extends AppCompatActivity implements
         jwt = bundle.getParcelable(JWT_STR);
         user = bundle.getInt(USER);
 
+        AccountStorage.ResetAccount(this);
+
         // hide title
         getSupportActionBar().setTitle("Assortment");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
@@ -102,7 +105,6 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_assortment);
 
         textview_balance = (TextView) findViewById(R.id.toolbar_balance);
         account_email = (TextView) headerView.findViewById(R.id.nav_email);

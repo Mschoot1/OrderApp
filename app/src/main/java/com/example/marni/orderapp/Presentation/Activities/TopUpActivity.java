@@ -30,6 +30,7 @@ import com.example.marni.orderapp.DataAccess.Account.BalancePostTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 
@@ -41,7 +42,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
 
     private final String TAG = getClass().getSimpleName();
-    private RadioButton button1, button2;
+    private RadioButton button1, button2, button3;
     private TextView textview_balance, textview_newbalance;
     private EditText edittext_value;
     private TextView account_email;
@@ -64,6 +65,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        AccountStorage.ResetAccount(this);
 
         // hide title
         getSupportActionBar().setTitle("Top Up");
@@ -88,6 +91,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         button1 = (RadioButton)findViewById(R.id.topup_radiobutton1);
         button1.setChecked(true);
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
+        button3 = (RadioButton)findViewById(R.id.topup_radiobutton3);
 
         payment = (Button)findViewById(R.id.topup_button_topayment);
         payment.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +216,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             case R.id.topup_radiobutton1:
                 if (checked)
                     button2.setChecked(false);
+                    button3.setChecked(false);
                     calculateBalance.resetBalance(true);
                     edittext_value.setEnabled(true);
 
@@ -219,6 +224,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             case R.id.topup_radiobutton2:
                 if (checked)
                     button1.setChecked(false);
+                    button3.setChecked(false);
                     calculateBalance.resetBalance(false);
                     edittext_value.setText("");
                     edittext_value.setEnabled(false);
@@ -227,6 +233,17 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                     String balance = spinner.getSelectedItem().toString();
                     Integer add_balance = Integer.parseInt(balance);
                     addBalance(add_balance);
+
+                    break;
+            case R.id.topup_radiobutton3:
+                if (checked)
+                    button1.setChecked(false);
+                    button2.setChecked(false);
+                    calculateBalance.resetBalance(false);
+                    edittext_value.setText("");
+                    edittext_value.setEnabled(false);
+
+                    addBalance(calculateBalance.maxBalance(current_balance));
 
                     break;
         }
@@ -245,7 +262,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         calculateBalance.checkPayment();
 
-        if(calculateBalance.getAddedBalance() != 0){
+        if(current_balance <= 150){
             textview_newbalance.setText("€ " + formatter.format(newBalance));
         }
     }
@@ -257,15 +274,16 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         payment.setEnabled(false);
     }
 
-    public void addBalance(int balance){
-        calculateBalance.newBalance(current_balance, balance);
+    public void addBalance(double added_balance){
+        calculateBalance.newBalance(current_balance, added_balance);
     }
 
     public void onBalanceAvailable(Account bal){
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
+        //textview_balance.setText("€ " + formatter.format(current_balance));
+        textview_balance.setText("Checkout");
         account_email.setText(bal.getEmail());
     }
 
@@ -281,6 +299,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         edittext_value.setEnabled(true);
         button1.setChecked(true);
         button2.setChecked(false);
+        button3.setChecked(false);
         spinner.setSelection(0);
     }
 

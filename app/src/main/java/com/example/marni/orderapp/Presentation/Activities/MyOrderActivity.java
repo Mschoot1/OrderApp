@@ -2,8 +2,10 @@ package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -47,6 +49,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
+import static com.example.marni.orderapp.R.layout.toolbar;
 
 public class MyOrderActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
@@ -87,6 +90,19 @@ public class MyOrderActivity extends AppCompatActivity implements
         jwt = bundle.getParcelable(JWT_STR);
         user = bundle.getInt(USER);
         order = (Order) bundle.get(ORDER);
+
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+
+        if(mNfcAdapter != null) {
+            if (!mNfcAdapter.isEnabled()) {
+                Toast.makeText(this, "Please activate NFC and press Back to return to the application!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
+            }
+        } else {
+            Log.i(TAG, "Nfc adapter isn't working correctly");
+        }
+
 
         getSupportActionBar().setTitle("My Order");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
@@ -147,7 +163,7 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
-        getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+
     }
 
     private void getCurrentOrder(String apiUrl) {
@@ -159,9 +175,8 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     @Override
     public void onOrderAvailable(Order order) {
-
-        mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
-        stickyList.setAdapter(mAdapter);
+        this.order = order;
+        getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
     }
 
     public void getBalance(String ApiUrl) {
@@ -188,8 +203,11 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
-        tfa = new TotalFromAssortment();
-        onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
+
+        mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
+        stickyList.setAdapter(mAdapter);
+
+        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
     }
 

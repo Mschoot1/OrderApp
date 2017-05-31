@@ -29,6 +29,7 @@ import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Presentation.Adapters.OrdersListViewAdapter;
 import com.example.marni.orderapp.Presentation.DrawerMenu;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         Bundle bundle = getIntent().getExtras();
         jwt = bundle.getParcelable(JWT_STR);
         user = bundle.getInt(USER);
+
+        AccountStorage.ResetAccount(this);
 
         // hide title
         getSupportActionBar().setTitle("Home");

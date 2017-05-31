@@ -4,18 +4,15 @@
     <group
         android:id="@+id/menutop"
         android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_order_history"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/order_history" />
+
         <item
             android:id="@+id/nav_my_order"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="@string/my_order" />
         <item
-            android:id="@+id/nav_assortment"
-            android:icon="@drawable/ic_list_black_24dp"
-            android:title="@string/Assortment" />
+            android:id="@+id/nav_order_history"
+            android:icon="@drawable/ic_history_black_24dp"
+            android:title="@string/order_history" />
         <item
             android:id="@+id/nav_top_up"
             android:icon="@drawable/ic_account_balance_wallet_black_24dp"

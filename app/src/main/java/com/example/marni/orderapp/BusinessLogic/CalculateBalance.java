@@ -14,7 +14,7 @@ public class CalculateBalance {
     private OnCheckPayment listener3;
 
     private double balance;
-    private int addedBalance;
+    private double addedBalance;
 
     public CalculateBalance(OnBalanceChanged listener, OnResetBalance listener2, OnCheckPayment listener3) {
         this.listener = listener;
@@ -22,13 +22,19 @@ public class CalculateBalance {
         this.listener3 = listener3;
     }
 
-    public void newBalance(double current_balance,int added_balance){
+    public void newBalance(double current_balance, double added_balance){
         double newBalance = current_balance + added_balance;
 
         setBalance(newBalance);
         setAddedBalance(added_balance);
 
         listener.onBalanceChanged(newBalance);
+    }
+
+    public double maxBalance(double current_balance){
+        double newBalance = (150 - current_balance);
+
+        return newBalance;
     }
 
     public void checkPayment(){
@@ -80,7 +86,7 @@ public class CalculateBalance {
         return addedBalance;
     }
 
-    public void setAddedBalance(int addedBalance) {
+    public void setAddedBalance(double addedBalance) {
         this.addedBalance = addedBalance;
     }
 

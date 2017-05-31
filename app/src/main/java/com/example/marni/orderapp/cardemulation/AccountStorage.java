@@ -31,6 +31,7 @@ import android.preference.PreferenceManager;
 public class AccountStorage {
     private static final String PREF_ACCOUNT_NUMBER = "account_number";
     private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
+    private static final String ERROR_CODE = "0000";
     private static final String TAG = "AccountStorage";
     private static String sAccount = null;
     private static final Object sAccountLock = new Object();
@@ -46,6 +47,14 @@ public class AccountStorage {
                 prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
                 sAccount = DEFAULT_ACCOUNT_NUMBER;
             }
+        }
+    }
+
+    public static void ResetAccount(Context c) {
+        synchronized(sAccountLock) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+            prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).commit();
+            sAccount = ERROR_CODE;
         }
     }
 

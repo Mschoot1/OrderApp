@@ -114,7 +114,7 @@ public class LogInActivity extends AppCompatActivity implements
 
             JWT jwt = new JWT(response);
             Claim user = jwt.getClaim("user");
-            Intent intent = new Intent(getApplicationContext(), OrderHistoryActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
             intent.putExtra(JWT_STR, jwt);
             intent.putExtra(USER, user.asInt());
 

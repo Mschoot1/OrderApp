@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.marni.orderapp.Domain.Order;
@@ -60,6 +61,7 @@ public class OrdersListViewAdapter extends BaseAdapter {
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
             viewHolder.textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
             viewHolder.textViewTotalPrice = (TextView) convertView.findViewById(R.id.textViewTotalPrice);
+            viewHolder.imageView_check = (ImageView)convertView.findViewById(R.id.imageView_check);
 
             convertView.setTag(viewHolder);
         } else {
@@ -80,13 +82,15 @@ public class OrdersListViewAdapter extends BaseAdapter {
              viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
 
              viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
+             viewHolder.imageView_check.setVisibility(View.INVISIBLE);
              viewHolder.cardView.setElevation(8);
          } else {
              viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
              viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.colorGrey));
              viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
 
-             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.paid));
+             viewHolder.textViewStatus.setText("");
+             viewHolder.imageView_check.setVisibility(View.VISIBLE);
              viewHolder.cardView.setElevation(5);
          }
 
@@ -103,5 +107,7 @@ public class OrdersListViewAdapter extends BaseAdapter {
         TextView textViewStatus;
         TextView textViewDateTime;
         TextView textViewTotalPrice;
+
+        ImageView imageView_check;
     }
 }

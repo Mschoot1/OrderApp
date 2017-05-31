@@ -6,8 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
-        android:name="android.hardware.nfc.hce"
-        android:required="true" />
+        android:name="android.hardware.nfc.hce" android:required="true" />
 
     <uses-permission android:name="android.permission.NFC" />
 
@@ -35,7 +34,6 @@
         </activity>
         <activity
             android:name=".Presentation.Activities.OrderHistoryActivity"
-            android:exported="true"
             android:launchMode="singleTop" />
         <activity android:name=".Presentation.Activities.AllergiesActivity" />
         <activity android:name=".Presentation.Activities.OrderDetailActivity">
@@ -43,8 +41,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Presentation.Activities.OrderHistoryActivity" />
         </activity>
-        <activity android:name=".Presentation.Activities.TopUpActivity" />
+        <activity android:name=".Presentation.Activities.TopUpActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".Presentation.Activities.ProductsActivity" />
+        <activity android:name=".Presentation.Activities.MyOrderActivity"/>
+        <activity android:name=".Presentation.Activities.PaymentSuccessfulActivity"/>
 
         <!-- BEGIN_INCLUDE(CardEmulationManifest) -->
         <!-- Service for handling communication with NFC terminal. -->
@@ -68,7 +69,7 @@
                 android:resource="@xml/aid_list" />
         </service>
         <!-- END_INCLUDE(CardEmulationManifest) -->
-        <activity android:name=".Presentation.Activities.MyOrderActivity"></activity>
+
     </application>
 
 </manifest>

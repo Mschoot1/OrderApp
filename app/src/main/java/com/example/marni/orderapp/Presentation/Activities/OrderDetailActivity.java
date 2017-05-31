@@ -64,6 +64,8 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        AccountStorage.ResetAccount(this);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
