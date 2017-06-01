@@ -232,7 +232,8 @@ public class MyOrderActivity extends AppCompatActivity implements
         }
         textViewQuantity.setText(sQuantity);
 
-        AccountStorage.SetAccount(this, "" + order.getOrderId(), current_balance, priceTotal);
+        AccountStorage.SetAccount(this, "" + order.getOrderId(), current_balance, priceTotal, order.getPending());
+
         if (this.quantity < quantity) {
             setAnimation(getApplicationContext(), (ImageView) findViewById(R.id.imageView_orderdetail_cart));
         }

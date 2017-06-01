@@ -92,6 +92,7 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
 
                 int id = order.getInt("id");
                 int status = order.getInt("status");
+                int pending = order.getInt("pending");
                 String timestamp = order.getString("timestamp");
                 Double price_total = order.getDouble("price_total");
 
@@ -100,6 +101,7 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
                 o.setStatus(status);
                 o.setTimestamp(getFormattedDate(timestamp));
                 o.setPriceTotal(price_total);
+                o.setPending(pending);
 
                 listener.onCurrentOrderAvailable(o);
             }
