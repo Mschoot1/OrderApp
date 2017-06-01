@@ -27,7 +27,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="information_allergy_symbol">Information allergy symbol</string>
     <string name="description">description</string>
-    <string name="total">Total</string>
+    <string name="total">€0,00</string>
     <string name="menu">menu</string>
     <string name="order_history">Order history</string>
     <string name="top_up">Top Up</string>
@@ -85,5 +85,7 @@
     <string name="_330ml">330ml</string>
     <string name="_0">0</string>
     <string name="click_on_the_add_items_icon_to_start_adding_items">Your order is empty. Click below to add items!</string>
+    <string name="category">category</string>
+    <string name="categories">Categories</string>
 
 </resources>

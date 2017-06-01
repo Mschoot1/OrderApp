@@ -69,8 +69,6 @@ public class MyOrderActivity extends AppCompatActivity implements
     private TextView textview_balance;
     private TextView account_email;
 
-    private TotalFromAssortment tfa;
-
     private Order order;
 
     private JWT jwt;
@@ -152,9 +150,8 @@ public class MyOrderActivity extends AppCompatActivity implements
                     putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                 }
                 mAdapter.notifyDataSetChanged();
-                tfa = new TotalFromAssortment();
-                onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
+                onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 
@@ -203,6 +200,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
+        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
 
         mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);

@@ -1,16 +1,22 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +26,11 @@ import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
 import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Allergy;
+import com.example.marni.orderapp.Domain.Category;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
+import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
 import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
@@ -44,6 +52,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
     private final JWT jwt;
     private final int user;
 
+    private Activity activity;
     private Context context;
     private LayoutInflater layoutInflater;
 
@@ -52,8 +61,9 @@ public class ProductsListViewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged otc;
 
-    public ProductsListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, JWT jwt, int user, TotalFromAssortment.OnTotalChanged otc) {
-        this.context = context;
+    public ProductsListViewAdapter(Activity activity, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, JWT jwt, int user, TotalFromAssortment.OnTotalChanged otc) {
+        this.activity = activity;
+        this.context = activity.getApplicationContext();
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.order = order;
@@ -145,9 +155,8 @@ public class ProductsListViewAdapter extends BaseAdapter implements
                 String amount = p.getQuantity() + "";
                 viewHolder.textViewAmount.setText(amount);
 
-                TotalFromAssortment tfa = new TotalFromAssortment();
-                otc.onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
+                otc.onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 
@@ -244,28 +253,43 @@ public class ProductsListViewAdapter extends BaseAdapter implements
     }
 
     @Override
-    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+    public View getHeaderView(final int position, View convertView, final ViewGroup parent) {
         HeaderViewHolder holder;
         if (convertView == null) {
             holder = new HeaderViewHolder();
             convertView = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
-            holder.textViewCategoryTitle = (TextView) convertView.findViewById(R.id.listViewOrders_categoryname);
+            holder.textViewTitle = (TextView) convertView.findViewById(R.id.listViewOrders_categoryname);
+            holder.imageViewIcon = (ImageView) convertView.findViewById(R.id.imageView_filter);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
         }
-        Product product = products.get(position);
-        holder.textViewCategoryTitle.setText(product.getCategoryName());
+        final Product product = products.get(position);
+        holder.textViewTitle.setText(product.getCategoryName());
+        holder.imageViewIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Item clicked: " + product.getCategoryName());
+                showEditDialog();
+            }
+        });
 
         return convertView;
     }
 
     private class HeaderViewHolder {
-        TextView textViewCategoryTitle;
+        TextView textViewTitle;
+        ImageView imageViewIcon;
     }
 
     @Override
     public long getHeaderId(int position) {
         return products.get(position).getCategoryId();
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = activity.getFragmentManager();
+        CategoryFragment alertDialog = CategoryFragment.newInstance(jwt);
+        alertDialog.show(fm, "fragment_alert");
     }
 }

@@ -31,8 +31,10 @@ import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
+import com.example.marni.orderapp.Presentation.Adapters.CategoriesAdapter;
 import com.example.marni.orderapp.Presentation.Adapters.ProductsListViewAdapter;
 import com.example.marni.orderapp.Presentation.DrawerMenu;
+import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
@@ -50,7 +52,8 @@ public class ProductsActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TotalFromAssortment.OnTotalChanged, ProductsGetTask.OnProductAvailable,
         AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable,
-        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener, ProductsGetTask.OnEmptyList {
+        ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener, ProductsGetTask.OnEmptyList,
+        CategoryFragment.OnItemSelected {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -62,8 +65,6 @@ public class ProductsActivity extends AppCompatActivity implements
     private TextView account_email;
 
     private Order order = null;
-
-    private TotalFromAssortment tfa;
 
     private JWT jwt;
     private int user;
@@ -128,9 +129,8 @@ public class ProductsActivity extends AppCompatActivity implements
                 }
                 mAdapter.notifyDataSetChanged();
 
-                tfa = new TotalFromAssortment();
-                onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", tfa.getPriceTotal(products));
+                onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 
@@ -211,8 +211,7 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onProductAvailable(Product product) {
         products.add(product);
-        tfa = new TotalFromAssortment();
-        onTotalChanged(tfa.getPriceTotal(products), tfa.getQuanitity(products));
+        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -226,7 +225,8 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
         double current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
+        String balance = "€" + formatter.format(current_balance);
+        textview_balance.setText(balance);
         account_email.setText(bal.getEmail());
     }
 
@@ -239,7 +239,7 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onCurrentOrderAvailable(Order order) {
         this.order = order;
-        mAdapter = new ProductsListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
+        mAdapter = new ProductsListViewAdapter(this, getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
     }
@@ -283,6 +283,21 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void isEmpty(Boolean b) {
 
+    }
+
+    @Override
+    public void onItemSelected(int i) {
+        Log.i(TAG, "i: " + i);
+        int j = 0;
+        for (Product p : products) {
+
+            if (p.getCategoryId() == i) {
+
+                stickyList.setSelection(j);
+                break;
+            }
+            j++;
+        }
     }
 }
 

@@ -86,7 +86,6 @@ public class LogInActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-
                 startActivity(intent);
             }
         });

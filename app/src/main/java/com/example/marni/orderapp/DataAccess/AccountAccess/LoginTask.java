@@ -43,6 +43,8 @@ public class LoginTask extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         dialog.setMessage("Authenticating. Please wait..");
         dialog.show();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
     }
 
     @Override
