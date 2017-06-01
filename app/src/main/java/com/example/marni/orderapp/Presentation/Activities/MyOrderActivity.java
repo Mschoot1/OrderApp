@@ -2,9 +2,11 @@ package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -74,6 +76,9 @@ public class MyOrderActivity extends AppCompatActivity implements
     private JWT jwt;
     private int user;
     private int quantity;
+
+    private static final String PREF_PENDING_NUMBER = "pending_number";
+    private static final String DEFAULT_PENDING_NUMBER = "0";
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -160,6 +165,10 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
 
     }
 

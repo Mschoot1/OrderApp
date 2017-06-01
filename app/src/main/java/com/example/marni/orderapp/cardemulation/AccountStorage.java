@@ -42,16 +42,13 @@ public class AccountStorage {
         synchronized(sAccountLock) {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            if( prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals("0")) {
+            if( prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals(DEFAULT_PENDING_NUMBER)) {
                 if(balance >= orderPriceTotal){
-                    // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
                     prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
-                    prefs.edit().putString(PREF_PENDING_NUMBER, "1").commit();
                     sAccount = s;
                 } else {
                     //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
                     prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
-                    prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
                     sAccount = DEFAULT_ACCOUNT_NUMBER;
                 }
             } else {

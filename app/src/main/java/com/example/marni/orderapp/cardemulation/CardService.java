@@ -16,8 +16,10 @@
 
 package com.example.marni.orderapp.cardemulation;
 
+import android.content.SharedPreferences;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -52,6 +54,11 @@ public class CardService extends HostApduService {
     // "UNKNOWN" status word sent in response to invalid APDU command (0x0000)
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
+
+
+    private static final String PREF_PENDING_NUMBER = "pending_number";
+    private static final String DEFAULT_PENDING_NUMBER = "0";
+
 
     /**
      * Called if the connection to the NFC card is lost, in order to let the application know the
@@ -96,10 +103,16 @@ public class CardService extends HostApduService {
                 return UNKNOWN_CMD_SW;
             } else if(account.equals("111")) {
                 Toast.makeText(this, "111", Toast.LENGTH_LONG).show();
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
                 return UNKNOWN_CMD_SW;
              } else if(!account.equals("00000000")){
                 byte[] accountBytes = account.getBytes();
                 Log.i(TAG, "Sending account number: " + account);
+
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                prefs.edit().putString(PREF_PENDING_NUMBER, "1").commit();
                 return ConcatArrays(accountBytes, SELECT_OK_SW);
             } else {
                 Toast.makeText(this, "Your balance is too low", Toast.LENGTH_LONG).show();
