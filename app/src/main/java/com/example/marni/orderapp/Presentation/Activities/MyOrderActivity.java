@@ -64,7 +64,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
-    private MyOrderListViewAdapter mAdapter;
+    public MyOrderListViewAdapter mAdapter;
 
     private double current_balance;
 
@@ -89,6 +89,21 @@ public class MyOrderActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.registerOnSharedPreferenceChangeListener(
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    public void onSharedPreferenceChanged(
+                            SharedPreferences prefs, String key) {
+
+                        if(key.equals(PREF_PENDING_NUMBER) && prefs.getString(PREF_PENDING_NUMBER, "1").equals("0")) {
+
+                            Intent intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
+                            startActivity(intent);
+                        }
+                        Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
+                    }
+                });
+
         Bundle bundle = getIntent().getExtras();
         jwt = bundle.getParcelable(JWT_STR);
         user = bundle.getInt(USER);
@@ -97,7 +112,7 @@ public class MyOrderActivity extends AppCompatActivity implements
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 
-        if(mNfcAdapter != null) {
+        if (mNfcAdapter != null) {
             if (!mNfcAdapter.isEnabled()) {
                 Toast.makeText(this, "Please activate NFC and press Back to return to the application!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
@@ -167,7 +182,6 @@ public class MyOrderActivity extends AppCompatActivity implements
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
 
     }
@@ -347,5 +361,9 @@ public class MyOrderActivity extends AppCompatActivity implements
             textView.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void mAdapterNotifyDataSetChanged() {
+
     }
 }

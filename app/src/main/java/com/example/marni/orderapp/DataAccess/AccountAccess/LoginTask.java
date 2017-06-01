@@ -86,7 +86,6 @@ public class LoginTask extends AsyncTask<String, Void, String> {
 
             responseCode = httpConnection.getResponseCode();
 
-
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream).replace("\"", "");

@@ -19,13 +19,14 @@ package com.example.marni.orderapp.cardemulation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Utility class for persisting account numbers to disk.
- *
+ * <p>
  * <p>The default SharedPreferences instance is used as the backing storage. Values are cached
  * in memory for performance.
- *
+ * <p>
  * <p>This class is thread-safe.
  */
 public class AccountStorage {
@@ -39,11 +40,12 @@ public class AccountStorage {
     private static final Object sAccountLock = new Object();
 
     public static void SetAccount(Context c, String s, double balance, double orderPriceTotal, int pending) {
-        synchronized(sAccountLock) {
+        synchronized (sAccountLock) {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            if( prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals(DEFAULT_PENDING_NUMBER)) {
-                if(balance >= orderPriceTotal){
+            Log.i(TAG, "prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER): " + prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER));
+            if (prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals(DEFAULT_PENDING_NUMBER)) {
+                if (balance >= orderPriceTotal) {
                     prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
                     sAccount = s;
                 } else {
@@ -60,7 +62,7 @@ public class AccountStorage {
     }
 
     public static void ResetAccount(Context c) {
-        synchronized(sAccountLock) {
+        synchronized (sAccountLock) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
             prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).commit();
             sAccount = ERROR_CODE;
