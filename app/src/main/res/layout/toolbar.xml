@@ -17,11 +17,11 @@
             android:id="@+id/toolbar_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:layout_gravity="center|end"
-            android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"
-            android:textColor="#FFF"/>
+            android:layout_marginRight="25dp"
+            android:textColor="#FFF"
+            android:textSize="20sp" />
 
     </android.support.v7.widget.Toolbar>
 

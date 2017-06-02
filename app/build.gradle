@@ -32,5 +32,6 @@ dependencies {
     compile 'com.auth0.android:jwtdecode:1.1.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:palette-v7:25.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.0'
     testCompile 'junit:junit:4.12'
 }

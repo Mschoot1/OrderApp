@@ -30,7 +30,8 @@
                 android:padding="@dimen/paddingProduct"
                 android:text="@string/category"
                 android:textSize="@dimen/textsizeProduct"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                />
 
         </RelativeLayout>
 

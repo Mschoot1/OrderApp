@@ -26,6 +26,7 @@ import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
 import com.example.marni.orderapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -122,6 +123,9 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
             alcohol = p.getAlcohol_percentage() + "% Alc.";
         }
         String amount = p.getQuantity() + "";
+
+        Product product = products.get(position);
+        Picasso.with(context).load(product.getImagesrc()).into((ImageView) convertView.findViewById(R.id.imageView_productimage));
 
         viewHolder.textViewName.setText(name);
         viewHolder.textViewPrice.setText(price);

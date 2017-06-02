@@ -19,6 +19,15 @@ public class Product implements Serializable {
     private int quantity;
     private String categoryName;
     private int orderId;
+    private String imagesrc;
+
+    public String getImagesrc() {
+        return imagesrc;
+    }
+
+    public void setImagesrc(String imagesrc) {
+        this.imagesrc = imagesrc;
+    }
 
     public int getProductId() {
         return productId;
