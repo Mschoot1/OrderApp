@@ -283,7 +283,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         current_balance = bal.getBalance();
         //textview_balance.setText("€ " + formatter.format(current_balance));
-        textview_balance.setText("Checkout");
+        textview_balance.setText("Checkout ");
         account_email.setText(bal.getEmail());
     }
 

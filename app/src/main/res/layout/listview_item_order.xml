@@ -34,17 +34,6 @@
                 android:textSize="@dimen/textsizeProduct"
                 android:layout_alignParentTop="true" />
 
-            <TextView
-                android:id="@+id/textViewStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="13dp"
-                android:padding="@dimen/paddingProduct"
-                android:text="Paid"
-                android:textSize="@dimen/textsizeProduct" />
-
             <ImageView
                 android:id="@+id/imageView_check"
                 android:layout_width="32dp"

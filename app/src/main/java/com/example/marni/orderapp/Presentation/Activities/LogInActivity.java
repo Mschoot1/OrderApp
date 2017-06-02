@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -118,6 +119,9 @@ public class LogInActivity extends AppCompatActivity implements
             intent.putExtra(USER, user.asInt());
 
             Log.i(TAG, "user.asInt(): " + user.asInt());
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            prefs.edit().putString(JWT_STR, jwt.toString()).apply();
+
             startActivity(intent);
         }
     }

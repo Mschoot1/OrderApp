@@ -78,13 +78,16 @@ public class MyOrderActivity extends AppCompatActivity implements
     private int quantity;
 
     private static final String PREF_PENDING_NUMBER = "pending_number";
-    private static final String DEFAULT_PENDING_NUMBER = "0";
+    private SharedPreferences prefs;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         isEmpty(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -196,7 +199,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     }
 
     public void getBalance(String ApiUrl) {
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, prefs.getString(JWT_STR, "")};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }

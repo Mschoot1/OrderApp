@@ -59,7 +59,6 @@ public class OrdersListViewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.cardView = (CardView) convertView.findViewById(R.id.cardView);
             viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
-            viewHolder.textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
             viewHolder.textViewTotalPrice = (TextView) convertView.findViewById(R.id.textViewTotalPrice);
             viewHolder.imageView_check = (ImageView)convertView.findViewById(R.id.imageView_check);
 
@@ -76,23 +75,11 @@ public class OrdersListViewAdapter extends BaseAdapter {
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-         if (order.getStatus() == 0) {
-             viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
-             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.colorPrimary));
-             viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.textprimarycolor));
+        viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
+        viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
 
-             viewHolder.textViewStatus.setText(context.getResources().getString(R.string.open));
-             viewHolder.imageView_check.setVisibility(View.INVISIBLE);
-             viewHolder.cardView.setElevation(8);
-         } else {
-             viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
-             viewHolder.textViewStatus.setTextColor(ContextCompat.getColor(context,  R.color.colorGrey));
-             viewHolder.textViewTotalPrice.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
+        viewHolder.cardView.setElevation(5);
 
-             viewHolder.textViewStatus.setText("");
-             viewHolder.imageView_check.setVisibility(View.VISIBLE);
-             viewHolder.cardView.setElevation(5);
-         }
 
         viewHolder.textViewTotalPrice.setText("€ " + formatter.format(order.getPriceTotal()));
 
@@ -104,7 +91,6 @@ public class OrdersListViewAdapter extends BaseAdapter {
     private static class ViewHolder {
         CardView cardView;
 
-        TextView textViewStatus;
         TextView textViewDateTime;
         TextView textViewTotalPrice;
 
