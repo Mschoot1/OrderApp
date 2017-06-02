@@ -180,10 +180,6 @@ public class MyOrderActivity extends AppCompatActivity implements
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
-
-
-        prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
-
     }
 
     private void getCurrentOrder(String apiUrl) {
