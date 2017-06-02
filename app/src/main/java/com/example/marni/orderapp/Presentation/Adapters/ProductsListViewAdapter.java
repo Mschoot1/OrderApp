@@ -32,6 +32,7 @@ import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
 import com.example.marni.orderapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -129,6 +130,9 @@ public class ProductsListViewAdapter extends BaseAdapter implements
         }
         String amount = p.getQuantity() + "";
 
+        Product product = products.get(position);
+        Picasso.with(context).load(product.getImagesrc()).into((ImageView) convertView.findViewById(R.id.imageView_productimage));
+
         viewHolder.textViewName.setText(name);
         viewHolder.textViewPrice.setText(price);
         viewHolder.textViewSize.setText(size);
@@ -162,6 +166,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
 
         viewHolder.linearLayout.setOnClickListener(this);
         viewHolder.linearLayout.removeAllViews();
+
         for (Allergy allergy : p.getAllergies()) {
             viewHolder.linearLayout.addView(getImageView(allergy));
         }
@@ -265,6 +270,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
             holder = (HeaderViewHolder) convertView.getTag();
         }
         final Product product = products.get(position);
+
         holder.textViewTitle.setText(product.getCategoryName());
         holder.imageViewIcon.setOnClickListener(new View.OnClickListener() {
             @Override

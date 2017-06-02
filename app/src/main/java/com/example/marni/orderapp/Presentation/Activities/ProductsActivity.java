@@ -192,7 +192,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
         String t = "€" + formatter.format(priceTotal);
         String q = quantity + "";
-
         textViewTotal.setText(t);
         textViewQuantity.setText(q);
 

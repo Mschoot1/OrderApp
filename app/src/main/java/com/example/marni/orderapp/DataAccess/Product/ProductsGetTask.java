@@ -144,6 +144,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 int categoryId = product.getInt("category_id");
                 String categoryName = product.getString("category_name");
                 int quantity = product.getInt("quantity");
+                String imagesrc = product.getString("product_image");
 
                 if(product.has("order_id")) {
                     int orderId = product.getInt("order_id");
@@ -158,6 +159,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 p.setQuantity(quantity);
                 p.setCategoryName(categoryName);
                 p.setAllergies(as);
+                p.setImagesrc(imagesrc);
 
                 opa.onProductAvailable(p);
             }
