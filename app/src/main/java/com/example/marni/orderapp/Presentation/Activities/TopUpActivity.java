@@ -43,7 +43,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2, button3;
-    private TextView textview_balance, textview_newbalance;
+    private TextView textview_newbalance;
     private EditText edittext_value;
     private TextView account_email;
     private double current_balance;
@@ -93,7 +93,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
         button3 = (RadioButton)findViewById(R.id.topup_radiobutton3);
 
-        payment = (Button)findViewById(R.id.topup_button_topayment);
+        payment = (Button)findViewById(R.id.toolbar_topup);
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +101,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
         account_email = (TextView)headerView.findViewById(R.id.nav_email);
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
 
@@ -283,7 +282,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         current_balance = bal.getBalance();
         //textview_balance.setText("€ " + formatter.format(current_balance));
-        textview_balance.setText("Checkout ");
         account_email.setText(bal.getEmail());
     }
 

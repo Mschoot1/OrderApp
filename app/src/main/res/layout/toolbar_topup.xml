@@ -14,7 +14,7 @@
         app:popupTheme="@style/ActionBarPopupThemeOverlay">
 
         <Button
-            android:id="@+id/toolbar_balance"
+            android:id="@+id/toolbar_topup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"

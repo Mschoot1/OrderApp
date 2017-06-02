@@ -21,21 +21,21 @@
         <TextView
             android:id="@+id/topup_addbalance"
             android:layout_width="match_parent"
-            android:layout_above="@+id/topup_linearlayout"
+            android:layout_below="@+id/toolbar_include"
             android:layout_height="wrap_content"
             android:text="@string/topup_name"
             android:textSize="40sp"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginTop="10dp"/>
 
         <LinearLayout
             android:id="@+id/topup_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_above="@+id/topup_button_topayment"
-            android:layout_marginBottom="20dp">
+            android:layout_below="@+id/topup_addbalance"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -142,23 +142,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="50dp"
                 android:orientation="vertical"
                 android:layout_marginRight="50dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/customborder">
-
-                <TextView
-                    android:id="@+id/topup_textview_newbalance"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/topup_newbalance"
-                    android:enabled="false"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black"
-                    android:layout_weight="1"/>
 
                 <TextView
                     android:id="@+id/topup_edittext_newbalance"
@@ -172,19 +161,6 @@
                     android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
-
-
-    <Button
-        android:id="@+id/topup_button_topayment"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/backgroundcategoryheaders"
-        android:enabled="false"
-        android:layout_alignParentBottom="true"
-        android:text="@string/topup_topayment"
-        android:textSize="25sp"
-        android:textColor="@color/colorWhite"/>
-
 </RelativeLayout>
 
     <include layout="@layout/nav_view" />
