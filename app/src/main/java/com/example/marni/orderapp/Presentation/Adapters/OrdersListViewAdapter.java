@@ -70,9 +70,6 @@ public class OrdersListViewAdapter extends BaseAdapter {
 
         Order order = orders.get(position);
 
-        if (order.getStatus() == 0) {
-        }
-
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         viewHolder.textViewDateTime.setTextColor(ContextCompat.getColor(context, R.color.colorGrey));
