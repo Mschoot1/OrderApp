@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.marni.orderapp.Presentation.Activities.PaymentPendingActivity">
+
     <TextView
         android:id="@+id/payment_pending_text"
         android:layout_width="wrap_content"
@@ -17,12 +18,24 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/payment_pending_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:text="Cancel"
-        android:layout_below="@+id/payment_pending_text"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="144dp" />
 </RelativeLayout>
