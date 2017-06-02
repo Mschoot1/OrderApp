@@ -43,7 +43,6 @@ public class AccountStorage {
         synchronized (sAccountLock) {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            Log.i(TAG, "prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER): " + prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER));
             if (prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals(DEFAULT_PENDING_NUMBER)) {
                 if (balance >= orderPriceTotal) {
                     prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();

@@ -16,10 +16,6 @@
 
 package com.example.marni.orderapp.cardemulation;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
@@ -27,10 +23,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
-import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
+import com.example.marni.orderapp.DataAccess.Orders.PendingPutTask;
 
 import java.util.Arrays;
+
+import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 
 /**
  * This is a sample APDU Service which demonstrates how to interface with the card emulation support
@@ -48,7 +45,7 @@ import java.util.Arrays;
  * byte-array based communication channel. It is left to developers to implement higher level
  * protocol support as needed.
  */
-public class CardService extends HostApduService {
+public class CardService extends HostApduService implements PendingPutTask.PutSuccessListener{
 
     private static final String TAG = "CardService";
     // AID for our loyalty card service.
@@ -108,22 +105,25 @@ public class CardService extends HostApduService {
             String account = AccountStorage.GetAccount(this);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            String pending = prefs.getString(PREF_PENDING_NUMBER, "0");
+            String pending = prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER);
 
             if (account.equals("0000")) {
                 Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
                 return UNKNOWN_CMD_SW;
             } else if (!account.equals("00000000")) {
-                if (pending.equals("0")) {
+                if (pending.equals(DEFAULT_PENDING_NUMBER)) {
                     Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
                     byte[] accountBytes = account.getBytes();
                     Log.i(TAG, "Sending account number: " + account);
 
+                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", "1", account );
                     prefs.edit().putString(PREF_PENDING_NUMBER, "1").commit();
                     return ConcatArrays(accountBytes, SELECT_OK_SW);
+
                 } else {
                     Toast.makeText(this, "111", Toast.LENGTH_LONG).show();
 
+                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", DEFAULT_PENDING_NUMBER, account );
                     prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
                     return SELECT_OK_SW;
                 }
@@ -210,5 +210,21 @@ public class CardService extends HostApduService {
             offset += array.length;
         }
         return result;
+    }
+
+    public void putOrderPending(String apiUrl, String pending, String orderId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] urls = new String[]{apiUrl, prefs.getString(JWT_STR, ""), pending, orderId};
+        PendingPutTask task = new PendingPutTask(this);
+        task.execute(urls);
+    }
+
+    @Override
+    public void putSuccessful(Boolean successful) {
+        if (successful) {
+            Log.i(TAG, "Totalprice succesfully edited");
+        } else {
+            Log.i(TAG, "Error while updating totalprice");
+        }
     }
 }
