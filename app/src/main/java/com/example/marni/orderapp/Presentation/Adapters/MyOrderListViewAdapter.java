@@ -60,9 +60,9 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     private ProductsGetTask.OnEmptyList oel;
     private Activity activity;
 
-    public MyOrderListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
-//        this.activity = activity;
-        this.context = context;
+    public MyOrderListViewAdapter(Activity activity, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
+        this.activity = activity;
+        this.context = activity.getApplicationContext();
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.order = order;

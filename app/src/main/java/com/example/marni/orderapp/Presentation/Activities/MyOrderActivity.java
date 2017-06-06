@@ -225,7 +225,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         products.add(product);
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
 
-        mAdapter = new MyOrderListViewAdapter(getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
+        mAdapter = new MyOrderListViewAdapter(this, getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
 
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
