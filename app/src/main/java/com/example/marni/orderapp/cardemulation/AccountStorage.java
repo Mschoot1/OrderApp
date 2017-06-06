@@ -32,8 +32,6 @@ import android.util.Log;
 public class AccountStorage {
     private static final String PREF_ACCOUNT_NUMBER = "account_number";
     private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
-    private static final String PREF_PENDING_NUMBER = "pending_number";
-    private static final String DEFAULT_PENDING_NUMBER = "0";
     private static final String ERROR_CODE = "0000";
     private static final String TAG = "AccountStorage";
     private static String sAccount = null;
@@ -43,19 +41,12 @@ public class AccountStorage {
         synchronized (sAccountLock) {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            if (prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).equals(DEFAULT_PENDING_NUMBER)) {
-                if (balance >= orderPriceTotal) {
-                    prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
-                    sAccount = s;
-                } else {
-                    //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-                    prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
-                    sAccount = DEFAULT_ACCOUNT_NUMBER;
-                }
+            if (balance >= orderPriceTotal) {
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
+                sAccount = s;
             } else {
-                //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-                prefs.edit().putString(PREF_ACCOUNT_NUMBER, "111").commit();
-                sAccount = "111";
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
+                sAccount = DEFAULT_ACCOUNT_NUMBER;
             }
         }
     }

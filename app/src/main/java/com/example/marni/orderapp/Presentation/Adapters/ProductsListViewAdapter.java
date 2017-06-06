@@ -50,7 +50,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
         OrdersPutTask.PutSuccessListener {
 
     private final String TAG = getClass().getSimpleName();
-    private final JWT jwt;
+    private final String jwt;
     private final int user;
 
     private Activity activity;
@@ -62,7 +62,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged otc;
 
-    public ProductsListViewAdapter(Activity activity, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, JWT jwt, int user, TotalFromAssortment.OnTotalChanged otc) {
+    public ProductsListViewAdapter(Activity activity, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, TotalFromAssortment.OnTotalChanged otc) {
         this.activity = activity;
         this.context = activity.getApplicationContext();
         this.layoutInflater = layoutInflater;
@@ -175,19 +175,19 @@ public class ProductsListViewAdapter extends BaseAdapter implements
     }
 
     private void putOrderPrice(String apiUrl, double priceTotal) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
+        String[] urls = new String[]{apiUrl, jwt, priceTotal + "", Integer.toString(order.getOrderId())};
         OrdersPutTask task = new OrdersPutTask(this);
         task.execute(urls);
     }
 
     private void deleteProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + ""};
         ProductsDeleteTask task = new ProductsDeleteTask(this);
         task.execute(urls);
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
         ProductsPutTask task = new ProductsPutTask(this);
         task.execute(urls);
     }

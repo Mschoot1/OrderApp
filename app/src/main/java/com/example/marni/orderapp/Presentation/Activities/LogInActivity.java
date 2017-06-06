@@ -121,6 +121,7 @@ public class LogInActivity extends AppCompatActivity implements
             Log.i(TAG, "user.asInt(): " + user.asInt());
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             prefs.edit().putString(JWT_STR, jwt.toString()).apply();
+            prefs.edit().putInt(USER, user.asInt()).apply();
 
             startActivity(intent);
         }

@@ -1,7 +1,9 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -47,7 +49,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     public static final String ORDER = "ORDER";
 
-    public JWT jwt;
+    public String jwt;
     public int user;
 
     private BaseAdapter ordersAdapter;
@@ -64,9 +66,9 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt =  prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
 
         AccountStorage.ResetAccount(this);
 
@@ -172,7 +174,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     public void getOrders(String ApiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, jwt};
         task.execute(urls);
     }
 
@@ -187,7 +189,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     }
 
     public void getBalance(String apiUrl) {
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
 
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
@@ -223,7 +225,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         DevicePutTask task = new DevicePutTask(this);
         String[] urls = new String[]{
                 apiUrl,
-                jwt.toString(),
+                jwt,
                 this.user + "",
                 hardware,
                 type,

@@ -38,10 +38,10 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
         // Use `newInstance` instead as shown below
     }
 
-    public static CategoryFragment newInstance(JWT jwt) {
+    public static CategoryFragment newInstance(String jwt) {
         CategoryFragment frag = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putString(JWT_STR, jwt.toString());
+        args.putString(JWT_STR, jwt);
         frag.setArguments(args);
         return frag;
     }

@@ -1,5 +1,7 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -51,7 +53,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     private Spinner spinner;
     private Button payment;
 
-    private JWT jwt;
+    private String jwt;
     private int user;
 
     @Override
@@ -59,9 +61,9 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_up);
 
-        Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);

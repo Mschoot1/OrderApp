@@ -1,7 +1,9 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -66,7 +68,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     private Order order = null;
 
-    private JWT jwt;
+    private String jwt;
     private int user;
 
     private int quantity;
@@ -79,9 +81,9 @@ public class ProductsActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
 
         AccountStorage.ResetAccount(this);
 
@@ -112,7 +114,6 @@ public class ProductsActivity extends AppCompatActivity implements
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
-        getProducts("https://mysql-test-p4.herokuapp.com/products/" + user);
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -202,7 +203,7 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     public void getProducts(String ApiUrl) {
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, jwt};
         ProductsGetTask task = new ProductsGetTask(this, "assortment");
         task.execute(urls);
     }
@@ -215,7 +216,7 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     public void getBalance(String apiUrl) {
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
@@ -230,7 +231,7 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     private void getCurrentOrder(String apiUrl) {
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
         OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
         task.execute(urls);
     }
@@ -241,22 +242,23 @@ public class ProductsActivity extends AppCompatActivity implements
         mAdapter = new ProductsListViewAdapter(this, getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
+        getProducts("https://mysql-test-p4.herokuapp.com/products/" + user);
     }
 
     public void putOrderPrice(String apiUrl, Double priceTotal) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
+        String[] urls = new String[]{apiUrl, jwt, priceTotal + "", Integer.toString(order.getOrderId())};
         OrdersPutTask task = new OrdersPutTask(this);
         task.execute(urls);
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
         ProductsPutTask task = new ProductsPutTask(this);
         task.execute(urls);
     }
 
     private void postProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
         ProductsPostTask task = new ProductsPostTask(this);
         task.execute(urls);
     }

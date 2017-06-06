@@ -59,10 +59,10 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
 
-
-    private static final String PREF_PENDING_NUMBER = "pending_number";
-    private static final String DEFAULT_PENDING_NUMBER = "0";
-
+    public static final String PREF_PENDING_NUMBER = "pending_number";
+    public static final String PENDING_NUMBER_OPEN = "0";
+    public static final String PENDING_NUMBER_PENDING = "1";
+    public static final String PENDING_NUMBER_CANCELED = "2";
 
     /**
      * Called if the connection to the NFC card is lost, in order to let the application know the
@@ -105,26 +105,25 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
             String account = AccountStorage.GetAccount(this);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            String pending = prefs.getString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER);
+            String pending = prefs.getString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN);
 
             if (account.equals("0000")) {
                 Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
                 return UNKNOWN_CMD_SW;
             } else if (!account.equals("00000000")) {
-                if (pending.equals(DEFAULT_PENDING_NUMBER)) {
+                if (pending.equals(PENDING_NUMBER_OPEN)) {
                     Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
                     byte[] accountBytes = account.getBytes();
                     Log.i(TAG, "Sending account number: " + account);
 
-                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", "1", account );
-                    prefs.edit().putString(PREF_PENDING_NUMBER, "1").commit();
+                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account );
+                    prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
                     return ConcatArrays(accountBytes, SELECT_OK_SW);
 
                 } else {
-                    Toast.makeText(this, "111", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "pending_number is not 0", Toast.LENGTH_LONG).show();
 
-                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", DEFAULT_PENDING_NUMBER, account );
-                    prefs.edit().putString(PREF_PENDING_NUMBER, DEFAULT_PENDING_NUMBER).commit();
+                    prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
                     return SELECT_OK_SW;
                 }
             } else {
@@ -222,9 +221,9 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Totalprice succesfully edited");
+            Log.i(TAG, "pending status succesfully edited");
         } else {
-            Log.i(TAG, "Error while updating totalprice");
+            Log.i(TAG, "Error while updating pending status");
         }
     }
 }

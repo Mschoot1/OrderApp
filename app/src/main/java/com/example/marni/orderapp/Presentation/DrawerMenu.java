@@ -27,16 +27,14 @@ public class DrawerMenu implements OrdersGetCurrentTask.OnCurrentOrderAvailable 
     private Context context;
     private Intent intent;
 
-    private JWT jwt;
-    private int user;
+    private String jwt;
 
-    public DrawerMenu(Context context, int id, JWT jwt, int user) {
+    public DrawerMenu(Context context, int id, String jwt, int user) {
 
         Log.i(TAG, "user: " + user);
 
         this.context = context;
         this.jwt = jwt;
-        this.user = user;
 
         switch (id) {
             case R.id.nav_my_order:
@@ -81,7 +79,7 @@ public class DrawerMenu implements OrdersGetCurrentTask.OnCurrentOrderAvailable 
 
         Log.i(TAG, "getCurrent called.");
 
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
         OrdersGetCurrentTask task = new OrdersGetCurrentTask(this);
         task.execute(urls);
     }

@@ -40,7 +40,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
 
     @Override
     public void onPreExecute() {
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
     }
 
     protected String doInBackground(String... params) {
@@ -85,7 +85,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String response) {
-        progressBar.setVisibility(View.INVISIBLE);
+//        progressBar.setVisibility(View.INVISIBLE);
         Log.i(TAG, "onPostExecute " + response);
 
         if (response == null || response == "") {

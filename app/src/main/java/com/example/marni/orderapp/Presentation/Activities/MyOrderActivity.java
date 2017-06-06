@@ -7,7 +7,6 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
@@ -51,7 +50,8 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
-import static com.example.marni.orderapp.R.layout.toolbar;
+import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
+import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
 public class MyOrderActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged,
@@ -73,11 +73,10 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     private Order order;
 
-    private JWT jwt;
+    private String jwt;
     private int user;
     private int quantity;
 
-    private static final String PREF_PENDING_NUMBER = "pending_number";
     private SharedPreferences prefs;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -98,18 +97,18 @@ public class MyOrderActivity extends AppCompatActivity implements
                     public void onSharedPreferenceChanged(
                             SharedPreferences prefs, String key) {
 
-                        if(key.equals(PREF_PENDING_NUMBER) && prefs.getString(PREF_PENDING_NUMBER, "1").equals("0")) {
+                        if (key.equals(PREF_PENDING_NUMBER) && prefs.getString(PREF_PENDING_NUMBER, "").equals(PENDING_NUMBER_PENDING)) {
+                            Intent intent = new Intent(getApplicationContext(), PaymentPendingActivity.class);
 
-                            Intent intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
                             startActivity(intent);
+                            Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
                         }
-                        Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
                     }
                 });
 
         Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
         order = (Order) bundle.get(ORDER);
 
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -188,7 +187,7 @@ public class MyOrderActivity extends AppCompatActivity implements
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
         task.execute(urls);
     }
 
@@ -215,7 +214,7 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     public void getProducts(String ApiUrl) {
         ProductsGetTask task = new ProductsGetTask(this, "myorder");
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, jwt};
         task.execute(urls);
     }
 
@@ -269,19 +268,19 @@ public class MyOrderActivity extends AppCompatActivity implements
     }
 
     public void putOrderPrice(String apiUrl, Double priceTotal) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), priceTotal + "", Integer.toString(order.getOrderId())};
+        String[] urls = new String[]{apiUrl, jwt, priceTotal + "", Integer.toString(order.getOrderId())};
         OrdersPutTask task = new OrdersPutTask(this);
         task.execute(urls);
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
         ProductsPutTask task = new ProductsPutTask(this);
         task.execute(urls);
     }
 
     private void postProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt.toString(), Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
         ProductsPostTask task = new ProductsPostTask(this);
         task.execute(urls);
     }

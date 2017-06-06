@@ -1,7 +1,9 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,11 +42,10 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     private BaseAdapter allergiesAdapter;
     private TextView textview_balance;
     private TextView account_email;
-    private double current_balance;
 
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
-    private JWT jwt;
+    private String jwt;
     private int user;
 
     @Override
@@ -54,9 +55,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
 
 
         getSupportActionBar().setTitle("Allergy Information");
@@ -144,7 +145,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
 
     public void getAllergies(String apiUrl) {
 
-        String[] urls = new String[] { apiUrl, jwt.toString()};
+        String[] urls = new String[] { apiUrl, jwt};
 
         // Connect and pass self for callback
         AllergiesGetTask getRandomUser = new AllergiesGetTask(this);
@@ -152,7 +153,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     }
 
     public void getBalance(String apiUrl){
-        String[] urls = new String[] { apiUrl, jwt.toString() };
+        String[] urls = new String[] { apiUrl, jwt };
 
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
@@ -161,7 +162,7 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     public void onBalanceAvailable(Account bal){
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        current_balance = bal.getBalance();
+        double current_balance = bal.getBalance();
         textview_balance.setText("€ " + formatter.format(current_balance));
         account_email.setText(bal.getEmail());
     }
