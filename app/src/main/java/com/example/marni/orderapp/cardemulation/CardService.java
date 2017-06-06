@@ -111,20 +111,22 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                 Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
                 return UNKNOWN_CMD_SW;
             } else if (!account.equals("00000000")) {
-                if (pending.equals(PENDING_NUMBER_OPEN)) {
-                    Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
-                    byte[] accountBytes = account.getBytes();
-                    Log.i(TAG, "Sending account number: " + account);
-
-                    putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account );
-                    prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
-                    return ConcatArrays(accountBytes, SELECT_OK_SW);
-
-                } else {
-                    Toast.makeText(this, "pending_number is not 0", Toast.LENGTH_LONG).show();
-
-                    prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
-                    return SELECT_OK_SW;
+                switch (pending) {
+                    case PENDING_NUMBER_OPEN :
+                        Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
+                        byte[] accountBytes = account.getBytes();
+                        Log.i(TAG, "Sending account number: " + account);
+                        putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account );
+                        prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
+                        return ConcatArrays(accountBytes, SELECT_OK_SW);
+                    case PENDING_NUMBER_CANCELED :
+                        return UNKNOWN_CMD_SW;
+                    case PENDING_NUMBER_PENDING :
+                        Toast.makeText(this, "Your order was canceled", Toast.LENGTH_LONG).show();
+                        prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
+                        return UNKNOWN_CMD_SW;
+                    default :
+                        return UNKNOWN_CMD_SW;
                 }
             } else {
                 Toast.makeText(this, "Your balance is too low", Toast.LENGTH_LONG).show();

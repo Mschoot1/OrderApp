@@ -19,7 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Account.AccountGetTask;
 import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Allergy;

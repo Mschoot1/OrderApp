@@ -51,6 +51,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
+import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_OPEN;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
@@ -58,11 +59,10 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
-        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener, ProductsGetTask.OnEmptyList {
+        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener, ProductsGetTask.OnEmptyList, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final String TAG = getClass().getSimpleName();
 
-    private int j;
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
@@ -94,24 +94,13 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         setSupportActionBar(toolbar);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.registerOnSharedPreferenceChangeListener(
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    public void onSharedPreferenceChanged(
-                            SharedPreferences prefs, String key) {
+        prefs.registerOnSharedPreferenceChangeListener(this);
+        prefs.unregisterOnSharedPreferenceChangeListener(this);
+        prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN);
+        prefs.registerOnSharedPreferenceChangeListener(this);
 
-                        if (key.equals(PREF_PENDING_NUMBER) && prefs.getString(PREF_PENDING_NUMBER, "").equals(PENDING_NUMBER_PENDING)) {
-                            Intent intent = new Intent(getApplicationContext(), PaymentPendingActivity.class);
-
-                            startActivity(intent);
-                            Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
-                        }
-                    }
-                });
-
-        Bundle bundle = getIntent().getExtras();
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
-        order = (Order) bundle.get(ORDER);
 
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -369,7 +358,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onItemSelected(int i) {
-        j = 0;
+        int j = 0;
 
         for(Product p : products){
             j++;
@@ -379,6 +368,16 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
                 stickyList.setSelection(j);
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
+        if (prefs.getString(PREF_PENDING_NUMBER, "").equals(PENDING_NUMBER_PENDING)) {
+            Intent intent = new Intent(getApplicationContext(), PaymentPendingActivity.class);
+            startActivity(intent);
+            Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
         }
     }
 }
