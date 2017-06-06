@@ -266,12 +266,19 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
         }
         Product product = products.get(position);
         holder.textViewCategoryTitle.setText(product.getCategoryName());
+        holder.imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
 
         return convertView;
     }
 
     private class HeaderViewHolder {
         TextView textViewCategoryTitle;
+        ImageView imageView;
     }
 
     @Override
