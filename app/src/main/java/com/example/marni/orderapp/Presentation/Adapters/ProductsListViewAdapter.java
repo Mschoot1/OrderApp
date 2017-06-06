@@ -296,4 +296,5 @@ public class ProductsListViewAdapter extends BaseAdapter implements
         CategoryFragment alertDialog = CategoryFragment.newInstance(jwt);
         alertDialog.show(fm, "fragment_alert");
     }
+    //
 }
