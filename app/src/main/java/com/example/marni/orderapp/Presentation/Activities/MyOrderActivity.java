@@ -63,7 +63,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     private final String TAG = getClass().getSimpleName();
 
-    private int j;
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
@@ -359,7 +358,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onItemSelected(int i) {
-        j = 0;
+        int j = 0;
 
         for(Product p : products){
             j++;
