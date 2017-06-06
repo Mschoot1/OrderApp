@@ -1,5 +1,7 @@
 package com.example.marni.orderapp.Presentation.Adapters;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -25,6 +27,7 @@ import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.Presentation.Activities.MyOrderActivity;
+import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
 import com.example.marni.orderapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -55,8 +58,10 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
 
     private TotalFromAssortment.OnTotalChanged otc;
     private ProductsGetTask.OnEmptyList oel;
+    private Activity activity;
 
     public MyOrderListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
+//        this.activity = activity;
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
@@ -260,22 +265,36 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
             holder = new HeaderViewHolder();
             convertView = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
             holder.textViewCategoryTitle = (TextView) convertView.findViewById(R.id.listViewOrders_categoryname);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imageView_filter);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
         }
         Product product = products.get(position);
         holder.textViewCategoryTitle.setText(product.getCategoryName());
+        holder.imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showEditDialog();
+            }
+        });
 
         return convertView;
     }
 
     private class HeaderViewHolder {
         TextView textViewCategoryTitle;
+        ImageView imageView;
     }
 
     @Override
     public long getHeaderId(int position) {
         return products.get(position).getCategoryId();
+    }
+
+    private void showEditDialog() {
+        FragmentManager fm = activity.getFragmentManager();
+        CategoryFragment alertDialog = CategoryFragment.newInstance(jwt);
+        alertDialog.show(fm, "fragment_alert");
     }
 }

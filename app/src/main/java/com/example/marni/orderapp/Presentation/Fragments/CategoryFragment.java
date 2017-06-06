@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.auth0.android.jwt.JWT;
@@ -60,6 +61,15 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
         activity = getActivity();
         final OnItemSelected listener = (OnItemSelected) activity;
         ListView listView = (ListView) view.findViewById(R.id.dialog_list_view);
+
+        ImageView iv = (ImageView) view.findViewById(R.id.imageView_cancelbuttoncategories);
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "GELUKT");
+                dismiss();
+            }
+        });
 
         adapter = new CategoriesAdapter(this, activity.getLayoutInflater(), categories);
         listView.setAdapter(adapter);

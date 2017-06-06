@@ -39,6 +39,7 @@ import com.example.marni.orderapp.Domain.Account;
 import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Adapters.MyOrderListViewAdapter;
+import com.example.marni.orderapp.Presentation.Fragments.CategoryFragment;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
@@ -54,7 +55,7 @@ import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBE
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
-public class MyOrderActivity extends AppCompatActivity implements
+public class MyOrderActivity extends AppCompatActivity implements CategoryFragment.OnItemSelected,
         TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
@@ -62,6 +63,7 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     private final String TAG = getClass().getSimpleName();
 
+    private int j;
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
@@ -353,6 +355,21 @@ public class MyOrderActivity extends AppCompatActivity implements
 
     public void mAdapterNotifyDataSetChanged() {
 
+    }
+
+    @Override
+    public void onItemSelected(int i) {
+        j = 0;
+
+        for(Product p : products){
+            j++;
+            Log.i(TAG, "j: " + j);
+            Log.i(TAG, "i: " + i);
+            if(p.getCategoryId()==i){
+                stickyList.setSelection(j);
+                break;
+            }
+        }
     }
 
     @Override
