@@ -28,7 +28,11 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
 
     private final String TAG = getClass().getSimpleName();
 
+    public static String CANCELED = "CANCELED";
+
     private SharedPreferences prefs;
+
+    private String account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        final String account = AccountStorage.GetAccount(this);
+        account = AccountStorage.GetAccount(this);
 
         Button button = (Button) findViewById(R.id.payment_pending_cancel);
         button.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +50,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Order canceled", Toast.LENGTH_LONG).show();
                 prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
-                putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_OPEN + "", account );
+                putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_OPEN, account );
                 Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 startActivity(intent);
             }
@@ -62,7 +66,6 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
     @Override
     public void onOrderAvailable(Order order) {
         order.getPending();
-
         Log.i(TAG, "order.getPending(): " + order.getPending());
         Intent intent;
         switch (order.getPending() + "") {
@@ -70,14 +73,11 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
             case PENDING_NUMBER_OPEN:
                 ConfirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
                 intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
-                prefs.edit().putString(JWT_STR, prefs.getString(JWT_STR, "")).apply();
-                prefs.edit().putInt(USER, prefs.getInt(USER, 0));
                 startActivity(intent);
                 break;
             case PENDING_NUMBER_CANCELED:
                 intent = new Intent(getApplicationContext(), MyOrderActivity.class);
-                prefs.edit().putString(JWT_STR, prefs.getString(JWT_STR, "")).apply();
-                prefs.edit().putInt(USER, prefs.getInt(USER, 0));
+                intent.putExtra(CANCELED, true);
                 startActivity(intent);
                 break;
         }
@@ -111,7 +111,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "pending status succesfully edited");
+            Log.i(TAG, "pending status successfully edited");
         } else {
             Log.i(TAG, "Error while updating pending status");
         }

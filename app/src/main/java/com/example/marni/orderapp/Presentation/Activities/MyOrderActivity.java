@@ -51,6 +51,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.Presentation.Activities.OrderHistoryActivity.ORDER;
+import static com.example.marni.orderapp.Presentation.Activities.PaymentPendingActivity.CANCELED;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_OPEN;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
@@ -98,6 +99,14 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         prefs.unregisterOnSharedPreferenceChangeListener(this);
         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN);
         prefs.registerOnSharedPreferenceChangeListener(this);
+
+        Bundle bundle = new Bundle();
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+        }
+        if(bundle.getBoolean(CANCELED, false)) {
+            Toast.makeText(this, "Your order was canceled", Toast.LENGTH_LONG).show();
+        }
 
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
@@ -214,7 +223,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         products.add(product);
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
 
-        mAdapter = new MyOrderListViewAdapter(this, getLayoutInflater(), products, order, jwt, user, this);
+        mAdapter = new MyOrderListViewAdapter(this, getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
 
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
@@ -350,10 +359,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
             textView.setVisibility(View.INVISIBLE);
             imageView.setVisibility(View.INVISIBLE);
         }
-    }
-
-    public void mAdapterNotifyDataSetChanged() {
-
     }
 
     @Override

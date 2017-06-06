@@ -45,7 +45,7 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
  * byte-array based communication channel. It is left to developers to implement higher level
  * protocol support as needed.
  */
-public class CardService extends HostApduService implements PendingPutTask.PutSuccessListener{
+public class CardService extends HostApduService implements PendingPutTask.PutSuccessListener {
 
     private static final String TAG = "CardService";
     // AID for our loyalty card service.
@@ -111,21 +111,20 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                 Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
                 return UNKNOWN_CMD_SW;
             } else if (!account.equals("00000000")) {
+                byte[] accountBytes;
                 switch (pending) {
-                    case PENDING_NUMBER_OPEN :
+                    case PENDING_NUMBER_OPEN:
                         Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
-                        byte[] accountBytes = account.getBytes();
+                        accountBytes = account.getBytes();
                         Log.i(TAG, "Sending account number: " + account);
-                        putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account );
+                        putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
                         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
                         return ConcatArrays(accountBytes, SELECT_OK_SW);
-                    case PENDING_NUMBER_CANCELED :
-                        return UNKNOWN_CMD_SW;
-                    case PENDING_NUMBER_PENDING :
-                        Toast.makeText(this, "Your order was canceled", Toast.LENGTH_LONG).show();
+                    case PENDING_NUMBER_PENDING:
                         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
-                        return UNKNOWN_CMD_SW;
-                    default :
+                        accountBytes = account.getBytes();
+                        return ConcatArrays(accountBytes, SELECT_OK_SW);
+                    default:
                         return UNKNOWN_CMD_SW;
                 }
             } else {

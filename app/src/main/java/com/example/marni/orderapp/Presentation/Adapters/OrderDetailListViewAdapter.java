@@ -12,15 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.auth0.android.jwt.JWT;
-import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.DataAccess.Orders.OrdersPutTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsDeleteTask;
-import com.example.marni.orderapp.DataAccess.Product.ProductsPutTask;
 import com.example.marni.orderapp.Domain.Allergy;
-import com.example.marni.orderapp.Domain.Order;
 import com.example.marni.orderapp.Domain.Product;
 import com.example.marni.orderapp.Presentation.Activities.AllergiesActivity;
 import com.example.marni.orderapp.R;
@@ -31,29 +24,22 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
-
 public class OrderDetailListViewAdapter extends BaseAdapter implements
         StickyListHeadersAdapter,
         View.OnClickListener {
 
     private final String TAG = getClass().getSimpleName();
-    private final JWT jwt;
 
     private Context context;
     private LayoutInflater layoutInflater;
 
     private ArrayList<Product> products;
 
-    private int user;
 
-    public OrderDetailListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products, JWT jwt, int user) {
+    public OrderDetailListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products) {
         this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
-        this.jwt = jwt;
-        this.user = user;
     }
 
     @Override
@@ -149,8 +135,6 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(context, AllergiesActivity.class);
-        intent.putExtra(JWT_STR, jwt);
-        intent.putExtra(USER, user);
         context.startActivity(intent);
     }
 

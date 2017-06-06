@@ -1,7 +1,9 @@
 package com.example.marni.orderapp.Presentation.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,10 +46,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     private double current_balance;
     private TextView textview_balance;
 
-    private Order order;
-    private double priceTotal;
-
-    private JWT jwt;
+    private String jwt;
     private int user;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -56,10 +55,12 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
+
         Bundle bundle = getIntent().getExtras();
-        jwt = bundle.getParcelable(JWT_STR);
-        user = bundle.getInt(USER);
-        order = (Order) bundle.get(ORDER);
+        Order order = (Order) bundle.get(ORDER);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -93,14 +94,14 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     private void getCurrentOrder(String apiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
         task.execute(urls);
     }
 
     @Override
     public void onOrderAvailable(Order order) {
 
-        mAdapter = new OrderDetailListViewAdapter(getApplicationContext(), getLayoutInflater(), products, jwt, user);
+        mAdapter = new OrderDetailListViewAdapter(getApplicationContext(), getLayoutInflater(), products);
 
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -108,7 +109,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
 
     public void getBalance(String ApiUrl) {
 
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, jwt};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
@@ -123,7 +124,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     public void getProducts(String ApiUrl) {
 
         ProductsGetTask task = new ProductsGetTask(this, "myorder");
-        String[] urls = new String[]{ApiUrl, jwt.toString()};
+        String[] urls = new String[]{ApiUrl, jwt};
         task.execute(urls);
     }
 
@@ -136,8 +137,6 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
 
     @Override
     public void onTotalChanged(Double priceTotal, int quantity) {
-        this.priceTotal = priceTotal;
-
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);

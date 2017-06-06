@@ -60,9 +60,9 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     private ProductsGetTask.OnEmptyList oel;
     private Activity activity;
 
-    public MyOrderListViewAdapter(Activity activity, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
+    public MyOrderListViewAdapter(Activity activity, Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
         this.activity = activity;
-        this.context = activity.getApplicationContext();
+        this.context = context;
         this.layoutInflater = layoutInflater;
         this.products = products;
         this.order = order;
@@ -215,8 +215,8 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(context, AllergiesActivity.class);
-        context.startActivity(intent);
+//        Intent intent = new Intent(context, AllergiesActivity.class);
+//        context.startActivity(intent);
     }
 
     @Override
