@@ -42,10 +42,10 @@ public class AccountStorage {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
             if (balance >= orderPriceTotal) {
-                prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).apply();
                 sAccount = s;
             } else {
-                prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).commit();
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).apply();
                 sAccount = DEFAULT_ACCOUNT_NUMBER;
             }
         }
@@ -54,17 +54,16 @@ public class AccountStorage {
     public static void ResetAccount(Context c) {
         synchronized (sAccountLock) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).commit();
+            prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).apply();
             sAccount = ERROR_CODE;
         }
     }
 
-    public static String GetAccount(Context c) {
+    static String GetAccount(Context c) {
         synchronized (sAccountLock) {
             if (sAccount == null) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-                String account = prefs.getString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER);
-                sAccount = account;
+                sAccount = prefs.getString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER);
             }
             return sAccount;
         }

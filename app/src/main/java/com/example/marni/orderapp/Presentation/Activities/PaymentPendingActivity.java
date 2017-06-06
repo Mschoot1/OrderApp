@@ -6,8 +6,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
-import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.DataAccess.Account.ConfirmAsync;
 import com.example.marni.orderapp.DataAccess.Orders.OrdersGetTask;
 import com.example.marni.orderapp.Domain.Order;
@@ -17,7 +18,6 @@ import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.J
 import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.USER;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_CANCELED;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_OPEN;
-import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
 public class PaymentPendingActivity extends AppCompatActivity implements OrdersGetTask.OnOrderAvailable, ConfirmAsync.SuccessListener {
@@ -42,6 +42,15 @@ public class PaymentPendingActivity extends AppCompatActivity implements OrdersG
                         }
                     }
                 });
+
+        Button button = (Button) findViewById(R.id.payment_pending_cancel);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getCurrentOrder(String apiUrl) {

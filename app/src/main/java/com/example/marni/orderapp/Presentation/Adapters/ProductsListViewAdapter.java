@@ -213,8 +213,6 @@ public class ProductsListViewAdapter extends BaseAdapter implements
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(context, AllergiesActivity.class);
-        intent.putExtra(JWT_STR, jwt);
-        intent.putExtra(USER, user);
         context.startActivity(intent);
     }
 

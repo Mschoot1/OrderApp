@@ -115,14 +115,11 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                     Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
                     byte[] accountBytes = account.getBytes();
                     Log.i(TAG, "Sending account number: " + account);
-
                     putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account );
                     prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
                     return ConcatArrays(accountBytes, SELECT_OK_SW);
-
                 } else {
                     Toast.makeText(this, "pending_number is not 0", Toast.LENGTH_LONG).show();
-
                     prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
                     return SELECT_OK_SW;
                 }
