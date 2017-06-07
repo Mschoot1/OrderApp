@@ -68,7 +68,7 @@
 
     <!--Top up -->
 
-    <string name="topup_name">Add balance</string>
+    <string name="topup_name">Balance: </string>
     <string name="topup_newbalance">New balance</string>
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>

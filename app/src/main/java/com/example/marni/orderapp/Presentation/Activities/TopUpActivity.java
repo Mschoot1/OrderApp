@@ -45,13 +45,13 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     private final String TAG = getClass().getSimpleName();
     private RadioButton button1, button2, button3;
-    private TextView textview_newbalance;
+    private TextView textview_newbalance, textview_currentbalance;
     private EditText edittext_value;
     private TextView account_email;
     private double current_balance;
     private CalculateBalance calculateBalance;
     private Spinner spinner;
-    private Button payment;
+    private TextView payment;
 
     private String jwt;
     private int user;
@@ -95,7 +95,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         button2 = (RadioButton)findViewById(R.id.topup_radiobutton2);
         button3 = (RadioButton)findViewById(R.id.topup_radiobutton3);
 
-        payment = (Button)findViewById(R.id.toolbar_topup);
+        payment = (TextView) findViewById(R.id.toolbar_topup);
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +105,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         account_email = (TextView)headerView.findViewById(R.id.nav_email);
         textview_newbalance = (TextView)findViewById(R.id.topup_edittext_newbalance);
+        textview_currentbalance = (TextView)findViewById(R.id.topup_currentbalance);
 
         edittext_value = (EditText)findViewById(R.id.topup_edittext_value);
         edittext_value.setFilters(new InputFilter[]{
@@ -271,7 +272,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onResetBalance(double balance) {
         textview_newbalance.setText("");
-        payment.setBackgroundColor(getResources().getColor(R.color.backgroundcategoryheaders));
+        payment.setTextColor(getResources().getColor(R.color.colorWhite));
         payment.setEnabled(false);
     }
 
@@ -283,7 +284,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         current_balance = bal.getBalance();
-        //textview_balance.setText("€ " + formatter.format(current_balance));
+        textview_currentbalance.setText("Balance: €" + formatter.format(current_balance));
         account_email.setText(bal.getEmail());
     }
 
@@ -318,15 +319,12 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onCheckPayment(String check) {
         if(check.equals("succes")) {
-            payment.setBackgroundColor(getResources().getColor(R.color.colorGrey));
-            payment.setTextColor(getResources().getColor(R.color.colorWhite));
+            payment.setTextColor(getResources().getColor(R.color.black_text));
             payment.setEnabled(true);
         } else if (check.equals("zero")){
-            payment.setBackgroundColor(getResources().getColor(R.color.backgroundcategoryheaders));
             payment.setEnabled(false);
         } else {
             Toast.makeText(this, "Max account balance is 150", Toast.LENGTH_SHORT).show();
-            payment.setBackgroundColor(getResources().getColor(R.color.backgroundcategoryheaders));
             payment.setEnabled(false);
         }
     }

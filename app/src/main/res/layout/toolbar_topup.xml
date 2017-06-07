@@ -13,11 +13,11 @@
         android:theme="@style/ActionBarThemeOverlay"
         app:popupTheme="@style/ActionBarPopupThemeOverlay">
 
-        <Button
+        <TextView
             android:id="@+id/toolbar_topup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="20sp"
             android:layout_gravity="center|end"
             android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"

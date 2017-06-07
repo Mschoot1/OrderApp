@@ -20,12 +20,12 @@
         android:layout_height="?attr/actionBarSize" />
 
         <TextView
-            android:id="@+id/topup_addbalance"
+            android:id="@+id/topup_currentbalance"
             android:layout_width="match_parent"
             android:layout_below="@+id/toolbar_include"
             android:layout_height="wrap_content"
             android:text="@string/topup_name"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textColor="@android:color/black"
             android:gravity="center"
             android:layout_marginTop="10dp"/>
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@+id/topup_addbalance"
+            android:layout_below="@+id/topup_currentbalance"
             android:layout_marginTop="10dp">
 
             <LinearLayout
