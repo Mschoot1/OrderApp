@@ -272,7 +272,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onResetBalance(double balance) {
         textview_newbalance.setText("");
-        payment.setTextColor(getResources().getColor(R.color.colorWhite));
+        payment.setTextColor(getResources().getColor(R.color.backgroundcategoryheaders));
         payment.setEnabled(false);
     }
 
@@ -319,7 +319,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public void onCheckPayment(String check) {
         if(check.equals("succes")) {
-            payment.setTextColor(getResources().getColor(R.color.black_text));
+            payment.setTextColor(getResources().getColor(R.color.colorWhite));
             payment.setEnabled(true);
         } else if (check.equals("zero")){
             payment.setEnabled(false);

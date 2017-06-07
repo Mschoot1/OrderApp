@@ -22,7 +22,7 @@
             android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"
             android:text="Checkout"
-            android:textColor="#FFF"/>
+            android:textColor="@color/backgroundcategoryheaders"/>
 
     </android.support.v7.widget.Toolbar>
 
