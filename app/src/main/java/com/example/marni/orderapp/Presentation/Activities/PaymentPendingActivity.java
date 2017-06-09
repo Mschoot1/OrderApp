@@ -110,6 +110,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
                 startActivity(intent);
                 break;
             case PENDING_NUMBER_CANCELED:
+                putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_OPEN, account );
                 intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 intent.putExtra(CANCELED, true);
                 startActivity(intent);
