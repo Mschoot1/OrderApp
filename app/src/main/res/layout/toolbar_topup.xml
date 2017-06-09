@@ -13,15 +13,15 @@
         android:theme="@style/ActionBarThemeOverlay"
         app:popupTheme="@style/ActionBarPopupThemeOverlay">
 
-        <Button
+        <TextView
             android:id="@+id/toolbar_topup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="20sp"
             android:layout_gravity="center|end"
             android:layout_marginEnd="25dp"
             android:text="Checkout"
-            android:textColor="#FFF"/>
+            android:textColor="@color/backgroundcategoryheaders"/>
 
     </android.support.v7.widget.Toolbar>
 
