@@ -210,6 +210,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
     @Override
     public void onProductAvailable(Product product) {
+        Log.i(TAG, "product.getProductId(): " + product.getProductId());
         products.add(product);
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
