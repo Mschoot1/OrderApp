@@ -220,6 +220,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onProductAvailable(Product product) {
+        isEmpty(false);
         products.add(product);
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
 
