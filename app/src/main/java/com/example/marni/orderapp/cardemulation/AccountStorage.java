@@ -19,7 +19,6 @@ package com.example.marni.orderapp.cardemulation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Utility class for persisting account numbers to disk.
@@ -33,11 +32,14 @@ public class AccountStorage {
     private static final String PREF_ACCOUNT_NUMBER = "account_number";
     private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
     private static final String ERROR_CODE = "0000";
-    private static final String TAG = "AccountStorage";
     private static String sAccount = null;
     private static final Object sAccountLock = new Object();
 
-    public static void SetAccount(Context c, String s, double balance, double orderPriceTotal, int pending) {
+    private AccountStorage() {
+
+    }
+
+    public static void setAccount(Context c, String s, double balance, double orderPriceTotal) {
         synchronized (sAccountLock) {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
@@ -51,7 +53,7 @@ public class AccountStorage {
         }
     }
 
-    public static void ResetAccount(Context c) {
+    public static void resetAccount(Context c) {
         synchronized (sAccountLock) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
             prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).apply();
@@ -59,7 +61,7 @@ public class AccountStorage {
         }
     }
 
-    public static String GetAccount(Context c) {
+    public static String getAccount(Context c) {
         synchronized (sAccountLock) {
             if (sAccount == null) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);

@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/OrderAppTheme">
         <activity
-            android:name=".Presentation.Activities.LogInActivity"
+            android:name=".presentation.activities.LogInActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,27 +28,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Presentation.Activities.RegisterActivity"
+            android:name=".presentation.activities.RegisterActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Presentation.Activities.LogInActivity" />
+                android:value=".presentation.activities.LogInActivity" />
         </activity>
         <activity
-            android:name=".Presentation.Activities.OrderHistoryActivity"
+            android:name=".presentation.activities.OrderHistoryActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".Presentation.Activities.AllergiesActivity" />
-        <activity android:name=".Presentation.Activities.OrderDetailActivity">
+        <activity android:name=".presentation.activities.AllergiesActivity" />
+        <activity android:name=".presentation.activities.OrderDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Presentation.Activities.OrderHistoryActivity" />
+                android:value=".presentation.activities.OrderHistoryActivity" />
         </activity>
         <activity
-            android:name=".Presentation.Activities.TopUpActivity"
+            android:name=".presentation.activities.TopUpActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Presentation.Activities.ProductsActivity" />
-        <activity android:name=".Presentation.Activities.MyOrderActivity" />
-        <activity android:name=".Presentation.Activities.PaymentSuccessfulActivity" />
+        <activity android:name=".presentation.activities.ProductsActivity" />
+        <activity android:name=".presentation.activities.MyOrderActivity" />
+        <activity android:name=".presentation.activities.PaymentSuccessfulActivity" />
 
         <!-- BEGIN_INCLUDE(CardEmulationManifest) -->
         <!-- Service for handling communication with NFC terminal. -->
@@ -73,7 +73,7 @@
         </service>
         <!-- END_INCLUDE(CardEmulationManifest) -->
 
-        <activity android:name=".Presentation.Activities.PaymentPendingActivity"></activity>
+        <activity android:name=".presentation.activities.PaymentPendingActivity"></activity>
     </application>
 
 </manifest>

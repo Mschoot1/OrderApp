@@ -23,11 +23,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.marni.orderapp.DataAccess.Orders.PendingPutTask;
+import com.example.marni.orderapp.dataaccess.orders.PendingPutTask;
 
 import java.util.Arrays;
 
-import static com.example.marni.orderapp.Presentation.Activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
 
 /**
  * This is a sample APDU Service which demonstrates how to interface with the card emulation support
@@ -54,10 +54,10 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
     // Format: [Class | Instruction | Parameter 1 | Parameter 2]
     private static final String SELECT_APDU_HEADER = "00A40400";
     // "OK" status word sent in response to SELECT AID command (0x9000)
-    private static final byte[] SELECT_OK_SW = HexStringToByteArray("9000");
+    private static final byte[] SELECT_OK_SW = hexStringToByteArray("9000");
     // "UNKNOWN" status word sent in response to invalid APDU command (0x0000)
-    private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
-    private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
+    private static final byte[] UNKNOWN_CMD_SW = hexStringToByteArray("0000");
+    private static final byte[] SELECT_APDU = buildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
 
     public static final String PREF_PENDING_NUMBER = "pending_number";
     public static final String PENDING_NUMBER_OPEN = "0";
@@ -73,6 +73,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
      */
     @Override
     public void onDeactivated(int reason) {
+        // Do nothing
     }
 
     /**
@@ -97,12 +98,12 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
     // BEGIN_INCLUDE(processCommandApdu)
     @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {
-        Log.i(TAG, "Received APDU: " + ByteArrayToHexString(commandApdu));
+        Log.i(TAG, "Received APDU: " + byteArrayToHexString(commandApdu));
 
         // If the APDU matches the SELECT AID command for this service,
         // send the loyalty card account number, followed by a SELECT_OK status trailer (0x9000).
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
-            String account = AccountStorage.GetAccount(this);
+            String account = AccountStorage.getAccount(this);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             String pending = prefs.getString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN);
@@ -119,11 +120,11 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                         Log.i(TAG, "Sending account number: " + account);
                         putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
                         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
-                        return ConcatArrays(accountBytes, SELECT_OK_SW);
+                        return concatArrays(accountBytes, SELECT_OK_SW);
                     case PENDING_NUMBER_PENDING:
                         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
                         accountBytes = account.getBytes();
-                        return ConcatArrays(accountBytes, SELECT_OK_SW);
+                        return concatArrays(accountBytes, SELECT_OK_SW);
                     default:
                         return UNKNOWN_CMD_SW;
                 }
@@ -144,9 +145,9 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
      * @param aid Application ID (AID) to select
      * @return APDU for SELECT AID command
      */
-    public static byte[] BuildSelectApdu(String aid) {
+    public static byte[] buildSelectApdu(String aid) {
         // Format: [CLASS | INSTRUCTION | PARAMETER 1 | PARAMETER 2 | LENGTH | DATA]
-        return HexStringToByteArray(SELECT_APDU_HEADER + String.format("%02X",
+        return hexStringToByteArray(SELECT_APDU_HEADER + String.format("%02X",
                 aid.length() / 2) + aid);
     }
 
@@ -156,7 +157,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
      * @param bytes Bytes to convert
      * @return String, containing hexadecimal representation.
      */
-    public static String ByteArrayToHexString(byte[] bytes) {
+    public static String byteArrayToHexString(byte[] bytes) {
         final char[] hexArray = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         char[] hexChars = new char[bytes.length * 2]; // Each byte has two hex characters (nibbles)
         int v;
@@ -177,7 +178,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
      * @return Byte array generated from input
      * @throws IllegalArgumentException if input length is incorrect
      */
-    public static byte[] HexStringToByteArray(String s) throws IllegalArgumentException {
+    public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         if (len % 2 == 1) {
             throw new IllegalArgumentException("Hex string must have even number of characters");
@@ -198,7 +199,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
      * @param rest  Any remaining arrays
      * @return Concatenated copy of input arrays
      */
-    public static byte[] ConcatArrays(byte[] first, byte[]... rest) {
+    public static byte[] concatArrays(byte[] first, byte[]... rest) {
         int totalLength = first.length;
         for (byte[] array : rest) {
             totalLength += array.length;

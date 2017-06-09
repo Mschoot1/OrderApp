@@ -1,7 +1,7 @@
 package com.example.marni.orderapp;
 
-import com.example.marni.orderapp.BusinessLogic.TotalFromAssortment;
-import com.example.marni.orderapp.Domain.Product;
+import com.example.marni.orderapp.businesslogic.TotalFromAssortment;
+import com.example.marni.orderapp.domain.Product;
 
 import org.junit.Test;
 
