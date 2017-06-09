@@ -72,7 +72,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         AccountStorage.resetAccount(this);
 
         // hide title
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Order History");
         toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
