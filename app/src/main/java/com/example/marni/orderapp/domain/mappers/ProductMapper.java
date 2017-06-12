@@ -3,17 +3,14 @@ package com.example.marni.orderapp.domain.mappers;
 import android.util.Log;
 
 import com.example.marni.orderapp.domain.Allergy;
-import com.example.marni.orderapp.domain.Order;
 import com.example.marni.orderapp.domain.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import static com.example.marni.orderapp.domain.mappers.OrderMapper.ID;
 import static com.example.marni.orderapp.domain.mappers.OrderMapper.RESULTS;
@@ -35,7 +32,10 @@ public class ProductMapper {
     public static final String IMAGE = "image";
     public static final String DESCRIPTION = "description";
 
-    public static ArrayList<Product> mapProductsList(JSONObject response) throws JSONException {
+    private ProductMapper() {
+        // empty constructor
+    }
+    public static List<Product> mapProductsList(JSONObject response) throws JSONException {
 
         ArrayList<Product> result = new ArrayList<>();
 

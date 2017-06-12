@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OrderMapper {
 
@@ -22,7 +23,11 @@ public class OrderMapper {
     public static final String TIMESTAMP = "timestamp";
     public static final String PRICE_TOTAL = "price_total";
 
-    public static ArrayList<Order> mapOrderList(JSONObject response) throws JSONException {
+    private OrderMapper() {
+        // empty
+    }
+
+    public static List<Order> mapOrderList(JSONObject response) throws JSONException {
 
         ArrayList<Order> result = new ArrayList<>();
 

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
 public class TotalFromAssortmentTest {
@@ -27,11 +28,13 @@ public class TotalFromAssortmentTest {
 
     @Test
     public void totalFromAssortment_correctPriceTotal_isCorrect() throws Exception {
+        assertThat(price, instanceOf(Double.class));
         assertEquals(TotalFromAssortment.getPriceTotal(products), price, 0.01);
     }
 
     @Test
     public void totalFromAssortment_correctQuantity_isCorrect() throws Exception {
+        assertThat(quantity, instanceOf(Integer.class));
         assertEquals(TotalFromAssortment.getQuanitity(products), quantity);
     }
 }

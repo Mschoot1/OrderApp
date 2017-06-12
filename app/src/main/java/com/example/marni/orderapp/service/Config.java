@@ -1,6 +1,10 @@
 package com.example.marni.orderapp.service;
 
 public class Config {
+
+    private Config() {
+        // empty constructor
+    }
     public static final String URL_LOGIN            = "https://mysql-test-p4.herokuapp.com/loginAuth";
     public static final String URL_CURRENT_ORDER    = "https://mysql-test-p4.herokuapp.com/order/current/";
     public static final String URL_PUT_PRICE_ORDER    = "https://mysql-test-p4.herokuapp.com/order/price/edit";

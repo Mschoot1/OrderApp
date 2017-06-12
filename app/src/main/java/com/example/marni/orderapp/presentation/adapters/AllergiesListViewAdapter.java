@@ -69,7 +69,7 @@ public class AllergiesListViewAdapter extends BaseAdapter {
 
         Allergy allergy = allergies.get(position);
 
-        viewHolder.textViewInformation.setText(allergy.getInformationtext());
+        viewHolder.textViewInformation.setText(allergy.getInformationText());
 
         String imageName = "@mipmap/" + allergy.getImageUrl();
         int imageId = context.getResources().getIdentifier(imageName, null, context.getPackageName());

@@ -1,28 +1,30 @@
 package com.example.marni.orderapp.domain;
 
-public class Allergy {
-    private String imageUrl;
-    private String informationtext;
+import java.io.Serializable;
 
-    public Allergy(String imageUrl, String informationtext){
+public class Allergy implements Serializable {
+    private String imageUrl;
+    private String informationText;
+
+    public Allergy(String imageUrl, String informationText){
         this.imageUrl = imageUrl;
-        this.informationtext = informationtext;
+        this.informationText = informationText;
     }
 
     public String getImageUrl(){
         return imageUrl;
     }
 
-    public String getInformationtext(){
-        return informationtext;
+    public String getInformationText(){
+        return informationText;
     }
 
     public void setImage(String imageid){
         this.imageUrl = imageid;
     }
 
-    public void setInformationtext(String informationtext){
-        this.informationtext = informationtext;
+    public void setInformationText(String informationText){
+        this.informationText = informationText;
     }
 
 }

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
@@ -33,13 +34,18 @@ public class MyOrderActivityRequests {
     private Context context;
     public final String tag = this.getClass().getSimpleName();
 
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String BEARER = "Bearer ";
+
     private MyOrderActivityListener listener;
 
     /**
      * Constructor
      *
-     * @param context
-     * @param listener
+     * @param context a description
+     * @param listener a description
      */
     public MyOrderActivityRequests(Context context, MyOrderActivity listener) {
         this.context = context;
@@ -78,8 +84,8 @@ public class MyOrderActivityRequests {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "Bearer " + jwt);
+                headers.put(CONTENT_TYPE, APPLICATION_JSON);
+                headers.put(AUTHORIZATION, BEARER + jwt);
                 Log.i(tag, "headers: " + headers.toString());
                 return headers;
             }
@@ -119,8 +125,8 @@ public class MyOrderActivityRequests {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", "Bearer " + jwt);
+                    headers.put(CONTENT_TYPE, APPLICATION_JSON);
+                    headers.put(AUTHORIZATION, BEARER + jwt);
                     return headers;
                 }
             };
@@ -144,7 +150,7 @@ public class MyOrderActivityRequests {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(tag, response.toString());
-                        ArrayList<Product> result = new ArrayList<>();
+                        List<Product> result = new ArrayList<>();
                         try {
                             result = ProductMapper.mapProductsList(response);
                         } catch (JSONException e) {
@@ -162,8 +168,8 @@ public class MyOrderActivityRequests {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "Bearer " + jwt);
+                headers.put(CONTENT_TYPE, APPLICATION_JSON);
+                headers.put(AUTHORIZATION, BEARER + jwt);
                 Log.i(tag, "headers: " + headers.toString());
                 return headers;
             }
@@ -176,7 +182,7 @@ public class MyOrderActivityRequests {
     public interface MyOrderActivityListener {
         void onCurrentOrderAvailable(Order order);
         void onOrderPutPriceSuccess();
-        void onProductsAvailable(ArrayList<Product> products);
+        void onProductsAvailable(List<Product> products);
         void onError(String message);
     }
 }

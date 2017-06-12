@@ -180,11 +180,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Log.i(tag, item.toString() + " clicked.");
@@ -221,8 +216,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                 editTextValue.setEnabled(false);
                 spinner.setFocusable(true);
                 String balance = spinner.getSelectedItem().toString();
-                Integer add_balance = Integer.parseInt(balance);
-                addBalance(add_balance);
+                Integer addBalance = Integer.parseInt(balance);
+                addBalance(addBalance);
                 break;
             case R.id.topup_radiobutton3:
                 if (checked) {

@@ -12,15 +12,12 @@ import com.android.volley.toolbox.HurlStack;
 
 public class VolleyRequestQueue {
 
-    private static VolleyRequestQueue mInstance;
     private RequestQueue mRequestQueue;
-    private static Context mCtx;
+    private Context mCtx;
 
     /**
-     * private constructor - kan niet van 'buiten af' worden aangeroepen
-     * Deze constructie hoort bij het Singleton pattern.
      *
-     * @param context
+     * @param context a description
      */
     private VolleyRequestQueue(Context context) {
         mCtx = context;
@@ -28,26 +25,21 @@ public class VolleyRequestQueue {
     }
 
     /**
-     * Static methode die één enkele instantie van deze class beheert.
      *
-     * @param context
-     * @return
+     * @param context a description
+     * @return VolleyRequestQueue
      */
     public static synchronized VolleyRequestQueue getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = new VolleyRequestQueue(context);
-        }
-        return mInstance;
+        return new VolleyRequestQueue(context);
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
 
             Cache cache = new DiskBasedCache(mCtx.getCacheDir(), 10 * 1024 * 1024);
             Network network = new BasicNetwork(new HurlStack());
-            // mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
             mRequestQueue = new RequestQueue(cache, network);
             mRequestQueue.start();
         }

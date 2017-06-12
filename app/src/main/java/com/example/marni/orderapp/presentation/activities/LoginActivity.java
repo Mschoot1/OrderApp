@@ -15,24 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.dataaccess.LoginActivityRequests;
-import com.example.marni.orderapp.dataaccess.MyOrderActivityRequests;
-import com.example.marni.orderapp.service.Config;
 import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.service.VolleyRequestQueue;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements
         DevicePutTask.SuccessListener,
@@ -48,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     private CheckBox checkBox;
 
-    private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
     public static final String PREF_NAME = "prefs";
@@ -63,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();
 
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);

@@ -45,6 +45,7 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
@@ -71,8 +72,8 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     private double currentBalance;
 
-    public TextView textViewBalance;
-    public TextView accountEmail;
+    private TextView textViewBalance;
+    private TextView accountEmail;
 
     private Order mOrder;
 
@@ -231,12 +232,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         imageView.startAnimation(animation);
     }
 
-    public void putOrderPrice(String apiUrl, Double priceTotal) {
-//        String[] urls = new String[]{apiUrl, jwt, Double.toString(priceTotal), Integer.toString(mOrder.getOrderId())};
-//        OrdersPutTask task = new OrdersPutTask(this);
-//        task.execute(urls);
-    }
-
     private void putProduct(String apiUrl, Product p) {
         String[] urls = new String[]{apiUrl, jwt, Integer.toString(mOrder.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user), Integer.toString(p.getQuantity())};
         ProductsPutTask task = new ProductsPutTask(this);
@@ -354,11 +349,11 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     }
 
     @Override
-    public void onProductsAvailable(ArrayList<Product> products) {
+    public void onProductsAvailable(List<Product> products) {
         progressBar.setVisibility(View.INVISIBLE);
         Log.i(tag, "products.size(): " + products.size());
         isEmpty(products.isEmpty());
-        this.products = products;
+        this.products = (ArrayList<Product>) products;
 
         mAdapter = new MyOrderListViewAdapter(this, getApplicationContext(), getLayoutInflater(), products, mOrder, this);
         stickyList.setAdapter(mAdapter);

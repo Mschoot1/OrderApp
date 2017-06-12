@@ -117,10 +117,9 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     }
 
     public void getProducts(String apiUrl) {
-
-//        ProductsGetTask task = new ProductsGetTask(this, "myorder");
-//        String[] urls = new String[]{apiUrl, jwt};
-//        task.execute(urls);
+        ProductsGetTask task = new ProductsGetTask(this, "myorder");
+        String[] urls = new String[]{apiUrl, jwt};
+        task.execute(urls);
     }
 
     @Override
