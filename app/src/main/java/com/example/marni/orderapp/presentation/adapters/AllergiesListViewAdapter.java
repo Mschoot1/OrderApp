@@ -13,22 +13,23 @@ import com.example.marni.orderapp.domain.Allergy;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllergiesListViewAdapter extends BaseAdapter {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<Allergy> allergies;
 
-    public AllergiesListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Allergy> allergies) {
+    public AllergiesListViewAdapter(Context context, LayoutInflater layoutInflater, List<Allergy> allergies) {
 
-        Log.i(TAG, "Size: " + allergies.size());
+        Log.i(tag, "Size: " + allergies.size());
 
         this.context = context;
         this.layoutInflater = layoutInflater;
-        this.allergies = allergies;
+        this.allergies = (ArrayList<Allergy>) allergies;
     }
 
     @Override
@@ -49,34 +50,35 @@ public class AllergiesListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        View view = convertView;
         final ViewHolder viewHolder;
 
-        if (convertView == null) {
+        if (view == null) {
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_allergies, parent, false);
+            view = layoutInflater.inflate(R.layout.listview_item_allergies, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.textViewInformation = (TextView) convertView.findViewById(R.id.textViewAllergyTitle);
-            viewHolder.imageViewAllergyIcon = (ImageView) convertView.findViewById(R.id.imageViewAllergyIcon);
+            viewHolder.textViewInformation = (TextView) view.findViewById(R.id.textViewAllergyTitle);
+            viewHolder.imageViewAllergyIcon = (ImageView) view.findViewById(R.id.imageViewAllergyIcon);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
         } else {
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
 
         Allergy allergy = allergies.get(position);
 
         viewHolder.textViewInformation.setText(allergy.getInformationtext());
 
-        String imageName = "@mipmap/" + String.valueOf(allergy.getImage_url());
+        String imageName = "@mipmap/" + allergy.getImageUrl();
         int imageId = context.getResources().getIdentifier(imageName, null, context.getPackageName());
         viewHolder.imageViewAllergyIcon.setImageResource(imageId);
 
-        Log.i(TAG, "Image url: " + imageName );
-        Log.i(TAG, "Image id: " + imageId );
+        Log.i(tag, "Image url: " + imageName );
+        Log.i(tag, "Image id: " + imageId );
 
-        return convertView;
+        return view;
     }
 
     private static class ViewHolder {

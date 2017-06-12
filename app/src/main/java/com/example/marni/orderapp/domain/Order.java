@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class Order implements Serializable {
 
     private int orderId;
-    private int Status;
+    private int status;
     private String timestamp;
-    private double price_total;
+    private double priceTotal;
     private int pending;
 
     public int getPending() {
@@ -31,11 +31,11 @@ public class Order implements Serializable {
     }
 
     public int getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(int status) {
-        Status = status;
+        this.status = status;
     }
 
     public String getTimestamp() {
@@ -47,10 +47,10 @@ public class Order implements Serializable {
     }
 
     public double getPriceTotal() {
-        return price_total;
+        return priceTotal;
     }
 
-    public void setPriceTotal(double price_total) {
-        this.price_total = price_total;
+    public void setPriceTotal(double priceTotal) {
+        this.priceTotal = priceTotal;
     }
 }

@@ -18,7 +18,7 @@ import java.net.URLConnection;
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class RegisterTask extends AsyncTask<String, Void, Boolean> {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private SuccessListener listener;
 
@@ -31,17 +31,17 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
 
         int responseCode;
-        String MovieUrl = params[0];
+        String movieUrl = params[0];
 
         Boolean response = null;
 
-        Log.i(TAG, "doInBackground - " + MovieUrl);
+        Log.i(tag, "doInBackground - " + movieUrl);
         try {
-            URL url = new URL(MovieUrl);
+            URL url = new URL(movieUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
+                return false;
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
@@ -55,7 +55,7 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
             jsonParam.put("email", params[1]);
             jsonParam.put("password", params[2]);
 
-            Log.i(TAG, String.valueOf(jsonParam));
+            Log.i(tag, String.valueOf(jsonParam));
 
             DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
             localDataOutputStream.writeBytes(jsonParam.toString());
@@ -66,20 +66,20 @@ public class RegisterTask extends AsyncTask<String, Void, Boolean> {
             responseCode = httpConnection.getResponseCode();
             response = (responseCode == HttpURLConnection.HTTP_OK);
         } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            return false;
         } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
+            return false;
         } catch (JSONException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
         }
 
         return response;
     }
 
+    @Override
     protected void onPostExecute(Boolean response) {
-
         listener.successful(response);
     }
 

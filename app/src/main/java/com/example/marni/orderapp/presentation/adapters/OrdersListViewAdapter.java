@@ -17,6 +17,7 @@ import com.example.marni.orderapp.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrdersListViewAdapter extends BaseAdapter {
 
@@ -24,11 +25,11 @@ public class OrdersListViewAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ArrayList<Order> orders;
 
-    public OrdersListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Order> orders) {
+    public OrdersListViewAdapter(Context context, LayoutInflater layoutInflater, List<Order> orders) {
 
         this.context = context;
         this.layoutInflater = layoutInflater;
-        this.orders = orders;
+        this.orders = (ArrayList<Order>) orders;
     }
 
     @Override
@@ -50,22 +51,23 @@ public class OrdersListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        View view = convertView;
         final ViewHolder viewHolder;
 
-        if (convertView == null) {
+        if (view == null) {
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_order, parent, false);
+            view = layoutInflater.inflate(R.layout.listview_item_order, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.cardView = (CardView) convertView.findViewById(R.id.cardView);
-            viewHolder.textViewDateTime = (TextView) convertView.findViewById(R.id.textViewDateTime);
-            viewHolder.textViewTotalPrice = (TextView) convertView.findViewById(R.id.textViewTotalPrice);
-            viewHolder.imageView_check = (ImageView)convertView.findViewById(R.id.imageView_check);
+            viewHolder.cardView = (CardView) view.findViewById(R.id.cardView);
+            viewHolder.textViewDateTime = (TextView) view.findViewById(R.id.textViewDateTime);
+            viewHolder.textViewTotalPrice = (TextView) view.findViewById(R.id.textViewTotalPrice);
+            viewHolder.imageViewCheck = (ImageView)view.findViewById(R.id.imageView_check);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
         } else {
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
 
         Order order = orders.get(position);
@@ -82,7 +84,7 @@ public class OrdersListViewAdapter extends BaseAdapter {
 
         viewHolder.textViewDateTime.setText(order.getTimestamp());
 
-        return convertView;
+        return view;
     }
 
     private static class ViewHolder {
@@ -91,6 +93,6 @@ public class OrdersListViewAdapter extends BaseAdapter {
         TextView textViewDateTime;
         TextView textViewTotalPrice;
 
-        ImageView imageView_check;
+        ImageView imageViewCheck;
     }
 }

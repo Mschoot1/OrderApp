@@ -23,15 +23,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.marni.orderapp.dataaccess.MyOrderActivityRequests;
+import com.example.marni.orderapp.dataaccess.product.ProductsGetTask;
 import com.example.marni.orderapp.presentation.DrawerMenu;
 import com.example.marni.orderapp.businesslogic.TotalFromAssortment;
 import com.example.marni.orderapp.dataaccess.account.AccountGetTask;
-import com.example.marni.orderapp.dataaccess.orders.OrdersGetTask;
 import com.example.marni.orderapp.dataaccess.orders.OrdersPutTask;
-import com.example.marni.orderapp.dataaccess.product.ProductsGetTask;
 import com.example.marni.orderapp.dataaccess.product.ProductsPostTask;
 import com.example.marni.orderapp.dataaccess.product.ProductsPutTask;
 import com.example.marni.orderapp.domain.Account;
@@ -47,32 +48,33 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
 import static com.example.marni.orderapp.presentation.activities.PaymentPendingActivity.CANCELED;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_OPEN;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_PENDING;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
 public class MyOrderActivity extends AppCompatActivity implements CategoryFragment.OnItemSelected,
-        TotalFromAssortment.OnTotalChanged,
-        ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable,
+        TotalFromAssortment.OnTotalChanged, AccountGetTask.OnBalanceAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
-        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener, ProductsGetTask.OnEmptyList, SharedPreferences.OnSharedPreferenceChangeListener {
+        OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener, ProductsGetTask.OnEmptyList, AdapterView.OnItemClickListener,
+        MyOrderActivityRequests.MyOrderActivityListener {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
     private MyOrderListViewAdapter mAdapter;
 
-    private double current_balance;
+    private double currentBalance;
 
-    private TextView textview_balance;
-    private TextView account_email;
+    public TextView textViewBalance;
+    public TextView accountEmail;
 
-    private Order order;
+    private Order mOrder;
 
     private String jwt;
     private int user;
@@ -80,17 +82,27 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     private SharedPreferences prefs;
 
+    private ProgressBar progressBar;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+        setupToolbar(this, "Home");
+        setupDrawer(this);
         isEmpty(false);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        navigationView.setCheckedItem(R.id.nav_my_order);
+        textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
+        accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
 
         prefs.registerOnSharedPreferenceChangeListener(this);
         prefs.unregisterOnSharedPreferenceChangeListener(this);
@@ -101,15 +113,20 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         if (getIntent().getExtras() != null) {
             bundle = getIntent().getExtras();
         }
-        if(bundle.getBoolean(CANCELED, false)) {
+        if (bundle.getBoolean(CANCELED, false)) {
             Toast.makeText(this, "Your order was canceled", Toast.LENGTH_LONG).show();
         }
 
-        jwt = prefs.getString(JWT_STR, "");
-        user = prefs.getInt(USER, 0);
+        ImageView imageView = (ImageView) findViewById(R.id.additem_orderdetail);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
 
         if (mNfcAdapter != null) {
             if (!mNfcAdapter.isEnabled()) {
@@ -117,85 +134,53 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
                 startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
             }
         } else {
-            Log.i(TAG, "Nfc adapter isn't working correctly");
+            Log.i(tag, "Nfc adapter isn't working correctly");
         }
-
-
-        getSupportActionBar().setTitle("My Order");
-        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
-                startActivity(intent);
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_my_order);
-
-        ImageView imageView = (ImageView) findViewById(R.id.additem_orderdetail);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
-                startActivity(intent);
-            }
-        });
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
-        stickyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        stickyList.setOnItemClickListener(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        getCurrentOrder();
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+    }
+
+    private void getCurrentOrder() {
+        progressBar.setVisibility(View.VISIBLE);
+        MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
+        request.handleGetCurrentOrder();
+    }
+
+    public static void setupToolbar(final AppCompatActivity activity, String title) {
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.my_toolbar);
+        activity.setSupportActionBar(toolbar);
+
+        activity.getSupportActionBar().setTitle(title);
+        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(TAG, "Clicked item: " + position);
-                Product p = products.get(position);
-                if (p.getQuantity() == 0) {
-                    p.setQuantity(increase(p.getQuantity()));
-                    postProduct("https://mysql-test-p4.herokuapp.com/product/quantity/add", p);
-                } else {
-                    p.setQuantity(increase(p.getQuantity()));
-                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
-                }
-                mAdapter.notifyDataSetChanged();
-                onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
+            public void onClick(View v) {
+                Intent intent = new Intent(activity.getApplicationContext(), TopUpActivity.class);
+                activity.startActivity(intent);
             }
         });
-
-        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
-        account_email = (TextView) headerView.findViewById(R.id.nav_email);
-
-        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
     }
 
-    private void getCurrentOrder(String apiUrl) {
+    public static void setupDrawer(final AppCompatActivity activity) {
+        DrawerLayout drawer = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
+        Toolbar toolbar = (Toolbar) activity.findViewById(R.id.my_toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                activity, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{apiUrl, jwt};
-        task.execute(urls);
+        NavigationView navigationView = (NavigationView) activity.findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) activity);
     }
 
-    @Override
-    public void onOrderAvailable(Order order) {
-        this.order = order;
-        getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
-    }
-
-    public void getBalance(String ApiUrl) {
-        String[] urls = new String[]{ApiUrl, prefs.getString(JWT_STR, "")};
+    public void getBalance(String apiUrl) {
+        String[] urls = new String[]{apiUrl, prefs.getString(JWT_STR, "")};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
@@ -203,29 +188,10 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     @Override
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
-        current_balance = bal.getBalance();
-        String s = "€" + formatter.format(current_balance);
-        textview_balance.setText(s);
-        account_email.setText(bal.getEmail());
-    }
-
-    public void getProducts(String ApiUrl) {
-        ProductsGetTask task = new ProductsGetTask(this, "myorder");
-        String[] urls = new String[]{ApiUrl, jwt};
-        task.execute(urls);
-    }
-
-    @Override
-    public void onProductAvailable(Product product) {
-        isEmpty(false);
-        products.add(product);
-        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-
-        mAdapter = new MyOrderListViewAdapter(this, getApplicationContext(), getLayoutInflater(), products, order, jwt, user, this);
-        stickyList.setAdapter(mAdapter);
-
-        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-        mAdapter.notifyDataSetChanged();
+        currentBalance = bal.getBalance();
+        String s = "€" + formatter.format(currentBalance);
+        textViewBalance.setText(s);
+        accountEmail.setText(bal.getEmail());
     }
 
     @Override
@@ -247,11 +213,11 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         if (quantity == 0) {
             sQuantity = "0";
         } else {
-            sQuantity = quantity + "";
+            sQuantity = Integer.toString(quantity);
         }
         textViewQuantity.setText(sQuantity);
 
-        AccountStorage.setAccount(this, "" + order.getOrderId(), current_balance, priceTotal);
+        AccountStorage.setAccount(this, Integer.toString(mOrder.getOrderId()), currentBalance, priceTotal);
 
         if (this.quantity < quantity) {
             setAnimation(getApplicationContext(), (ImageView) findViewById(R.id.imageView_orderdetail_cart));
@@ -266,27 +232,21 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     }
 
     public void putOrderPrice(String apiUrl, Double priceTotal) {
-        String[] urls = new String[]{apiUrl, jwt, priceTotal + "", Integer.toString(order.getOrderId())};
-        OrdersPutTask task = new OrdersPutTask(this);
-        task.execute(urls);
+//        String[] urls = new String[]{apiUrl, jwt, Double.toString(priceTotal), Integer.toString(mOrder.getOrderId())};
+//        OrdersPutTask task = new OrdersPutTask(this);
+//        task.execute(urls);
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(mOrder.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user), Integer.toString(p.getQuantity())};
         ProductsPutTask task = new ProductsPutTask(this);
-        task.execute(urls);
-    }
-
-    private void postProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
-        ProductsPostTask task = new ProductsPostTask(this);
         task.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Product amount changed");
+            Log.i(tag, "Product amount changed");
         } else {
             Toast.makeText(this, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
         }
@@ -295,9 +255,9 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Totalprice succesfully edited");
+            Log.i(tag, "Total price successfully edited");
         } else {
-            Log.i(TAG, "Error while updating totalprice");
+            Log.i(tag, "Error while updating total price");
         }
     }
 
@@ -319,19 +279,8 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.i(TAG, item.toString() + " clicked.");
+        Log.i(tag, item.toString() + " clicked.");
 
         int id = item.getItemId();
 
@@ -346,7 +295,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         return quantity + 1;
     }
 
-    @Override
     public void isEmpty(Boolean b) {
         TextView textView = (TextView) findViewById(R.id.textView_add_items);
         ImageView imageView = (ImageView) findViewById(R.id.imageViewArrow);
@@ -363,11 +311,11 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     public void onItemSelected(int i) {
         int j = 0;
 
-        for(Product p : products){
+        for (Product p : products) {
             j++;
-            Log.i(TAG, "j: " + j);
-            Log.i(TAG, "i: " + i);
-            if(p.getCategoryId()==i){
+            Log.i(tag, "j: " + j);
+            Log.i(tag, "i: " + i);
+            if (p.getCategoryId() == i) {
                 stickyList.setSelection(j);
                 break;
             }
@@ -376,11 +324,62 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
+        Log.i(tag, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
         if (prefs.getString(PREF_PENDING_NUMBER, "").equals(PENDING_NUMBER_PENDING)) {
             Intent intent = new Intent(getApplicationContext(), PaymentPendingActivity.class);
             startActivity(intent);
-            Log.i(TAG, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
+            Log.i(tag, "prefs.getString(" + key + ", defaultvalue): " + prefs.getString(key, "defaultvalue"));
         }
+    }
+
+
+    @Override
+    public void onCurrentOrderAvailable(Order order) {
+        mOrder = order;
+        Log.i(tag, Integer.toString(order.getOrderId()));
+
+        MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
+        Log.i(tag, "mOrder.getOrderId(): " + mOrder.getOrderId());
+        request.handleGetProducts(order.getOrderId());
+    }
+
+    @Override
+    public void onOrderPutPriceSuccess() {
+        // empty
+    }
+
+    @Override
+    public void onError(String message) {
+        // empty
+    }
+
+    @Override
+    public void onProductsAvailable(ArrayList<Product> products) {
+        progressBar.setVisibility(View.INVISIBLE);
+        Log.i(tag, "products.size(): " + products.size());
+        isEmpty(products.isEmpty());
+        this.products = products;
+
+        mAdapter = new MyOrderListViewAdapter(this, getApplicationContext(), getLayoutInflater(), products, mOrder, this);
+        stickyList.setAdapter(mAdapter);
+
+        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.i(tag, "Clicked item: " + position);
+
+        Product p = products.get(position);
+        p.setQuantity(increase(p.getQuantity()));
+
+        putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+
+        mAdapter.notifyDataSetChanged();
+        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+
+        MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
+        request.handlePutOrder(TotalFromAssortment.getPriceTotal(products), mOrder.getOrderId());
     }
 }

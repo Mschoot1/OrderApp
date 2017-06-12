@@ -19,7 +19,7 @@ import com.example.marni.orderapp.R;
 public class RegisterActivity extends AppCompatActivity implements
         RegisterTask.SuccessListener {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private EditText editTextEmail;
     private EditText editTextPasswordOne;
@@ -64,20 +64,20 @@ public class RegisterActivity extends AppCompatActivity implements
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    void register(String ApiUrl) {
+    void register(String apiUrl) {
 
         RegisterTask task = new RegisterTask(this);
-        String[] urls = new String[]{ApiUrl, editTextEmail.getText().toString(), editTextPasswordOne.getText().toString()};
+        String[] urls = new String[]{apiUrl, editTextEmail.getText().toString(), editTextPasswordOne.getText().toString()};
         task.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
 
-        Log.i(TAG, successful.toString());
+        Log.i(tag, successful.toString());
         if(successful){
 
-            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
             startActivity(intent);
         } else {

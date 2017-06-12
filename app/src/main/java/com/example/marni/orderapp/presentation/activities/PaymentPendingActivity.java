@@ -17,15 +17,15 @@ import com.example.marni.orderapp.domain.Order;
 import com.example.marni.orderapp.R;
 import com.example.marni.orderapp.cardemulation.AccountStorage;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_CANCELED;
 import static com.example.marni.orderapp.cardemulation.CardService.PENDING_NUMBER_OPEN;
 import static com.example.marni.orderapp.cardemulation.CardService.PREF_PENDING_NUMBER;
 
 public class PaymentPendingActivity extends AppCompatActivity implements ConfirmAsync.SuccessListener, SharedPreferences.OnSharedPreferenceChangeListener, PendingPutTask.PutSuccessListener, OrdersGetCurrentTask.OnCurrentOrderAvailable {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     public static final String CANCELED = "CANCELED";
 
@@ -62,22 +62,22 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
         task.execute(urls);
     }
 
-    public void ConfirmAsyncTask(String apiUrl, String status, int orderId, int userId) {
+    public void confirmAsyncTask(String apiUrl, String status, int orderId, int userId) {
         ConfirmAsync confirmAsync = new ConfirmAsync(this);
-        String[] urls = new String[]{apiUrl, status, orderId + "", userId + ""};
+        String[] urls = new String[]{apiUrl, status, Integer.toString(orderId), Integer.toString(userId)};
         confirmAsync.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
-
+        // empty
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(PREF_PENDING_NUMBER)) {
             getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + prefs.getInt(USER, 0));
-            Log.i(TAG, "prefs.getString(PREF_PENDING_NUMBER, \"pendingNumber\"): " + prefs.getString(PREF_PENDING_NUMBER, "pendingNumber"));
+            Log.i(tag, "prefs.getString(PREF_PENDING_NUMBER, \"pendingNumber\"): " + prefs.getString(PREF_PENDING_NUMBER, "pendingNumber"));
         }
     }
 
@@ -90,20 +90,20 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "pending status successfully edited");
+            Log.i(tag, "pending status successfully edited");
         } else {
-            Log.i(TAG, "Error while updating pending status");
+            Log.i(tag, "Error while updating pending status");
         }
     }
 
     @Override
     public void onCurrentOrderAvailable(Order order) {
         order.getPending();
-        Log.i(TAG, "order.getPending(): " + order.getPending());
+        Log.i(tag, "order.getPending(): " + order.getPending());
         Intent intent;
-        switch (order.getPending() + "") {
+        switch (Integer.toString(order.getPending())) {
             case PENDING_NUMBER_OPEN:
-                ConfirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
+                confirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
                 intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
                 startActivity(intent);
                 break;
@@ -111,6 +111,8 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
                 intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 intent.putExtra(CANCELED, true);
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }

@@ -30,19 +30,13 @@ public class AccountGetTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
-        InputStream inputStream = null;
-        int responsCode = -1;
-        // De URL die we via de .execute() meegeleverd krijgen
+        InputStream inputStream;
+        int responseCode;
         String balanceUrl = params[0];
-        // Het resultaat dat we gaan retourneren
         String response = "";
 
-        Log.i(tag, "doInBackground - " + balanceUrl);
         try {
-            // Maak een URL object
             URL url = new URL(balanceUrl);
-            // Open een connection op de URL
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
@@ -53,21 +47,20 @@ public class AccountGetTask extends AsyncTask<String, Void, String> {
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
-
             httpConnection.connect();
 
-            responsCode = httpConnection.getResponseCode();
-            if (responsCode == HttpURLConnection.HTTP_OK) {
+            responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
             } else {
-                Log.e(tag, "Error, invalid response");
+                Log.e("", "Error, invalid response");
             }
         } catch (MalformedURLException e) {
-            Log.e(tag, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            Log.e("", "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
         } catch (IOException e) {
-            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
+            Log.e("", "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
 
@@ -117,7 +110,7 @@ public class AccountGetTask extends AsyncTask<String, Void, String> {
         }
     }
 
-    private static String getStringFromInputStream(InputStream is) {
+    public static String getStringFromInputStream(InputStream is) {
 
         StringBuilder sb = new StringBuilder();
         String line;

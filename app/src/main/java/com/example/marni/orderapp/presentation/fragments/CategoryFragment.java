@@ -19,15 +19,14 @@ import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
 
 public class CategoryFragment extends DialogFragment implements CategoriesGetTask.OnCategoryAvailable {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private CategoriesAdapter adapter;
     private ArrayList<Category> categories = new ArrayList<>();
-    private Activity activity;
     private View view;
 
     public CategoryFragment() {
@@ -55,7 +54,7 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         getCategories("https://mysql-test-p4.herokuapp.com/product/categories", getArguments().getString(JWT_STR));
-        activity = getActivity();
+        Activity activity = getActivity();
         final OnItemSelected listener = (OnItemSelected) activity;
         ListView listView = (ListView) view.findViewById(R.id.dialog_list_view);
 
@@ -63,12 +62,12 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "GELUKT");
+                Log.i(tag, "GELUKT");
                 dismiss();
             }
         });
 
-        adapter = new CategoriesAdapter(this, activity.getLayoutInflater(), categories);
+        adapter = new CategoriesAdapter(activity.getLayoutInflater(), categories);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -1,6 +1,5 @@
 package com.example.marni.orderapp.presentation.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,17 +27,19 @@ import com.example.marni.orderapp.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.MyOrderActivity.setupDrawer;
+import static com.example.marni.orderapp.presentation.activities.MyOrderActivity.setupToolbar;
 
 public class AllergiesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         AllergiesGetTask.OnRandomUserAvailable, AccountGetTask.OnBalanceAvailable {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private BaseAdapter allergiesAdapter;
-    private TextView textview_balance;
-    private TextView account_email;
+    private TextView textViewBalance;
+    private TextView accountEmail;
 
     private ArrayList<Allergy> allergies = new ArrayList<>();
 
@@ -51,42 +50,22 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allergies);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+
+        setupToolbar(this, "Allergies");
+        setupDrawer(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
 
-
-        getSupportActionBar().setTitle("Allergy Information");
-        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
-                startActivity(intent);
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.setCheckedItem(R.id.nav_allergy_information);
-
         getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
 
-        textview_balance = (TextView)findViewById(R.id.toolbar_balance);
-        account_email = (TextView)headerView.findViewById(R.id.nav_email);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        navigationView.setCheckedItem(R.id.nav_allergy_information);
+        textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
+        accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
 
         ListView listViewAllergies = (ListView) findViewById(R.id.allergies_listview);
         allergiesAdapter = new AllergiesListViewAdapter(this, getLayoutInflater(), allergies);
@@ -111,20 +90,9 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.i(TAG, item.toString() + " clicked.");
+        Log.i(tag, item.toString() + " clicked.");
 
         int id = item.getItemId();
 
@@ -138,31 +106,31 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     @Override
     public void onRandomUserAvailable(Allergy allergy) {
         allergies.add(allergy);
-        Log.i(TAG, "Size: " + allergies.size());
+        Log.i(tag, "Size: " + allergies.size());
         allergiesAdapter.notifyDataSetChanged();
     }
 
     public void getAllergies(String apiUrl) {
 
-        String[] urls = new String[] { apiUrl, jwt};
+        String[] urls = new String[]{apiUrl, jwt};
 
         // Connect and pass self for callback
         AllergiesGetTask getRandomUser = new AllergiesGetTask(this);
         getRandomUser.execute(urls);
     }
 
-    public void getBalance(String apiUrl){
-        String[] urls = new String[] { apiUrl, jwt };
+    public void getBalance(String apiUrl) {
+        String[] urls = new String[]{apiUrl, jwt};
 
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
 
-    public void onBalanceAvailable(Account bal){
+    public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        double current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
-        account_email.setText(bal.getEmail());
+        double currentBalance = bal.getBalance();
+        textViewBalance.setText("€ " + formatter.format(currentBalance));
+        accountEmail.setText(bal.getEmail());
     }
 }

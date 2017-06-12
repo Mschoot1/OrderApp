@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.dataaccess.deviceInfo;
+package com.example.marni.orderapp.dataaccess.deviceinfo;
 
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,7 +18,7 @@ import java.net.URLConnection;
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class DevicePutTask extends AsyncTask<String, Void, Boolean> {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private SuccessListener listener;
 
@@ -35,13 +35,13 @@ public class DevicePutTask extends AsyncTask<String, Void, Boolean> {
 
         Boolean response = null;
 
-        Log.i(TAG, "doInBackground - " + balanceUrl);
+        Log.i(tag, "doInBackground - " + balanceUrl);
         try {
             URL url = new URL(balanceUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
+                return false;
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
@@ -66,7 +66,7 @@ public class DevicePutTask extends AsyncTask<String, Void, Boolean> {
             jsonParam.put("board", params[14]);
             jsonParam.put("display", params[15]);
 
-            Log.i(TAG, String.valueOf(jsonParam));
+            Log.i(tag, String.valueOf(jsonParam));
 
             DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
             localDataOutputStream.writeBytes(jsonParam.toString());
@@ -77,19 +77,20 @@ public class DevicePutTask extends AsyncTask<String, Void, Boolean> {
             responseCode = httpConnection.getResponseCode();
             response = (responseCode == HttpURLConnection.HTTP_OK);
         } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            return false;
         } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
+            return false;
         } catch (JSONException e) {
-            Log.e(TAG, "doInBackground JSONException " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground JSONException " + e.getLocalizedMessage());
+            return false;
         }
 
         return response;
     }
 
+    @Override
     protected void onPostExecute(Boolean response) {
 
         listener.successfulPut(response);

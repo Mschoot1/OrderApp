@@ -3,19 +3,15 @@ package com.example.marni.orderapp.dataaccess.orders;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import com.example.marni.orderapp.domain.Order;
-import com.example.marni.orderapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,23 +20,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.example.marni.orderapp.dataaccess.account.AccountGetTask.getStringFromInputStream;
+
 public class OrdersGetTask extends AsyncTask<String, Void, String> {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private OnOrderAvailable listener = null;
 
-    private ProgressBar progressBar;
-
     public OrdersGetTask(Activity activity) {
         this.listener = (OnOrderAvailable) activity;
-        this.progressBar = (ProgressBar) activity.findViewById(R.id.progress_bar);
     }
 
-    @Override
-    public void onPreExecute() {
-//        progressBar.setVisibility(View.VISIBLE);
-    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -50,7 +41,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
         String personUrl = params[0];
         String response = "";
 
-        Log.i(TAG, "doInBackground - " + personUrl);
+        Log.i(tag, "doInBackground - " + personUrl);
         try {
             URL url = new URL(personUrl);
             URLConnection urlConnection = url.openConnection();
@@ -71,25 +62,25 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
             } else {
-                Log.e(TAG, "Error, invalid response");
+                Log.e(tag, "Error, invalid response");
             }
         } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            Log.e(tag, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
         } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
 
         return response;
     }
 
+    @Override
     protected void onPostExecute(String response) {
-//        progressBar.setVisibility(View.INVISIBLE);
-        Log.i(TAG, "onPostExecute " + response);
+        Log.i(tag, "onPostExecute " + response);
 
         if (response == null || response == "") {
-            Log.e(TAG, "onPostExecute kreeg een lege response!");
+            Log.e(tag, "onPostExecute kreeg een lege response!");
             return;
         }
 
@@ -97,7 +88,7 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-            Log.i(TAG, "results.length(): " + jsonArray.length());
+            Log.i(tag, "results.length(): " + jsonArray.length());
 
             for (int idx = 0; idx < jsonArray.length(); idx++) {
                 JSONObject order = jsonArray.getJSONObject(idx);
@@ -105,51 +96,23 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
                 int id = order.getInt("id");
                 int status = order.getInt("status");
                 String timestamp = order.getString("timestamp");
-                Double price_total = order.getDouble("price_total");
+                Double priceTotal = order.getDouble("price_total");
                 int pending = order.getInt("pending");
 
                 Order o = new Order();
                 o.setOrderId(id);
                 o.setStatus(status);
                 o.setTimestamp(getFormattedDate(timestamp));
-                o.setPriceTotal(price_total);
+                o.setPriceTotal(priceTotal);
                 o.setPending(pending);
 
                 listener.onOrderAvailable(o);
             }
         } catch (JSONException ex) {
-            Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
+            Log.e(tag, "onPostExecute JSONException " + ex.getLocalizedMessage());
         } catch (ParseException e) {
-            Log.e(TAG, "onPostExecute ParseException " + e.getLocalizedMessage());
+            Log.e(tag, "onPostExecute ParseException " + e.getLocalizedMessage());
         }
-    }
-
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            Log.e("", "getStringFromInputStream " + e.getLocalizedMessage());
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    Log.e("", "getStringFromInputStream " + e.getLocalizedMessage());
-                }
-            }
-        }
-
-        return sb.toString();
     }
 
     private String getFormattedDate(String s) throws ParseException {
@@ -158,9 +121,8 @@ public class OrdersGetTask extends AsyncTask<String, Void, String> {
         sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsedDate = sdf.parse(s);
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String formattedDate = sdf.format(parsedDate);
 
-        return formattedDate;
+        return sdf.format(parsedDate);
     }
 
     public interface OnOrderAvailable {

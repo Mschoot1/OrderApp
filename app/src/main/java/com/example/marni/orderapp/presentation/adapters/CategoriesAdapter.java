@@ -1,6 +1,5 @@
 package com.example.marni.orderapp.presentation.adapters;
 
-import android.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +11,18 @@ import com.example.marni.orderapp.domain.Category;
 import com.example.marni.orderapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesAdapter extends BaseAdapter {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
-    private DialogFragment dialogFragment;
     private LayoutInflater layoutInflater;
     private ArrayList<Category> categories;
 
-    public CategoriesAdapter(DialogFragment dialogFragment, LayoutInflater layoutInflater, ArrayList<Category> categories) {
-        this.dialogFragment = dialogFragment;
+    public CategoriesAdapter(LayoutInflater layoutInflater, List<Category> categories) {
         this.layoutInflater = layoutInflater;
-        this.categories = categories;
+        this.categories = (ArrayList<Category>) categories;
     }
 
     @Override
@@ -45,26 +43,27 @@ public class CategoriesAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        Log.i(TAG, "Getting item: " + position);
+        Log.i(tag, "Getting item: " + position);
 
+        View view = convertView;
         final ViewHolder viewHolder;
 
-        if (convertView == null) {
+        if (view == null) {
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_category, parent, false);
+            view = layoutInflater.inflate(R.layout.listview_item_category, parent, false);
 
             viewHolder = new ViewHolder();
-            viewHolder.textViewTitle = (TextView) convertView.findViewById(R.id.textViewTitle);
+            viewHolder.textViewTitle = (TextView) view.findViewById(R.id.textViewTitle);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
         } else {
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
         Category c = categories.get(position);
         viewHolder.textViewTitle.setText(c.getCategoryName());
 
-        return convertView;
+        return view;
     }
 
     private static class ViewHolder {

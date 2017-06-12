@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -28,7 +29,7 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
         StickyListHeadersAdapter,
         View.OnClickListener {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private Context context;
     private LayoutInflater layoutInflater;
@@ -36,10 +37,10 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
     private ArrayList<Product> products;
 
 
-    public OrderDetailListViewAdapter(Context context, LayoutInflater layoutInflater, ArrayList<Product> products) {
+    public OrderDetailListViewAdapter(Context context, LayoutInflater layoutInflater, List<Product> products) {
         this.context = context;
         this.layoutInflater = layoutInflater;
-        this.products = products;
+        this.products = (ArrayList<Product>) products;
     }
 
     @Override
@@ -60,32 +61,33 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        View view = convertView;
         final ViewHolder viewHolder;
 
         final Product p = products.get(position);
 
-        if (convertView == null) {
+        if (view == null) {
 
-            Log.i(TAG, "ViewHolder maken. Position: " + position);
+            Log.i(tag, "ViewHolder maken. Position: " + position);
 
             viewHolder = new ViewHolder();
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
+            view = layoutInflater.inflate(R.layout.listview_item_product, null);
 
-            viewHolder.textViewName = (TextView) convertView.findViewById(R.id.listViewProducts_productname);
-            viewHolder.textViewPrice = (TextView) convertView.findViewById(R.id.listViewProducts_productprice);
-            viewHolder.textViewSize = (TextView) convertView.findViewById(R.id.listViewProducts_productsize);
-            viewHolder.textViewAlcohol = (TextView) convertView.findViewById(R.id.listViewProducts_product_alcoholpercentage);
-            viewHolder.textViewAmount = (TextView) convertView.findViewById(R.id.listViewProducts_amount);
-            viewHolder.imageViewRemove = (ImageView) convertView.findViewById(R.id.listViewProduct_remove);
-            viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.iconHolder);
+            viewHolder.textViewName = (TextView) view.findViewById(R.id.listViewProducts_productname);
+            viewHolder.textViewPrice = (TextView) view.findViewById(R.id.listViewProducts_productprice);
+            viewHolder.textViewSize = (TextView) view.findViewById(R.id.listViewProducts_productsize);
+            viewHolder.textViewAlcohol = (TextView) view.findViewById(R.id.listViewProducts_product_alcoholpercentage);
+            viewHolder.textViewAmount = (TextView) view.findViewById(R.id.listViewProducts_amount);
+            viewHolder.imageViewRemove = (ImageView) view.findViewById(R.id.listViewProduct_remove);
+            viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.iconHolder);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
         } else {
 
-            Log.i(TAG, "ViewHolder meegekregen. Position: " + position);
+            Log.i(tag, "ViewHolder meegekregen. Position: " + position);
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
@@ -94,13 +96,13 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
         String price = "€" + formatter.format(p.getPrice());
         String size = p.getSize() + " ml";
         String alcohol = "";
-        if(Double.compare(p.getAlcohol_percentage(), 0.0) == 0) {
-            alcohol = p.getAlcohol_percentage() + "% Alc.";
+        if(Double.compare(p.getAlcoholPercentage(), 0.0) == 0) {
+            alcohol = p.getAlcoholPercentage() + "% Alc.";
         }
-        String amount = p.getQuantity() + "";
+        String amount = Integer.toString(p.getQuantity());
 
         Product product = products.get(position);
-        Picasso.with(context).load(product.getImagesrc()).into((ImageView) convertView.findViewById(R.id.imageView_productimage));
+        Picasso.with(context).load(product.getImagesrc()).into((ImageView) view.findViewById(R.id.imageView_productimage));
 
         viewHolder.textViewName.setText(name);
         viewHolder.textViewPrice.setText(price);
@@ -115,7 +117,7 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
             viewHolder.linearLayout.addView(getImageView(allergy));
         }
 
-        return convertView;
+        return view;
     }
 
     private ImageView getImageView(Allergy allergy) {
@@ -125,8 +127,8 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
         lp.setMargins(5, 0, 0, 0);
         imageView.setLayoutParams(lp);
 
-        int id = context.getResources().getIdentifier(allergy.getImage_url(), "mipmap", context.getPackageName());
-        Log.i(TAG, "id: " + id);
+        int id = context.getResources().getIdentifier(allergy.getImageUrl(), "mipmap", context.getPackageName());
+        Log.i(tag, "id: " + id);
         imageView.setImageResource(id);
 
         return imageView;
@@ -152,19 +154,20 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
         HeaderViewHolder holder;
-        if (convertView == null) {
+        if (view == null) {
             holder = new HeaderViewHolder();
-            convertView = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
-            holder.textViewCategoryTitle = (TextView) convertView.findViewById(R.id.listViewOrders_categoryname);
-            convertView.setTag(holder);
+            view = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
+            holder.textViewCategoryTitle = (TextView) view.findViewById(R.id.listViewOrders_categoryname);
+            view.setTag(holder);
         } else {
-            holder = (HeaderViewHolder) convertView.getTag();
+            holder = (HeaderViewHolder) view.getTag();
         }
         Product product = products.get(position);
         holder.textViewCategoryTitle.setText(product.getCategoryName());
 
-        return convertView;
+        return view;
     }
 
     private class HeaderViewHolder {

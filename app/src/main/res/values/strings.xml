@@ -65,9 +65,10 @@
     <string name="information_allergies">Information Allergies</string>
     <string name="scanorder">Scan order</string>
 
+    <!--JWT-->
+    <string name="jwt">JWT</string>
 
     <!--Top up -->
-
     <string name="topup_name">Balance: </string>
     <string name="topup_newbalance">New balance</string>
     <string name="topup_concurrency">€</string>
@@ -87,5 +88,6 @@
     <string name="click_on_the_add_items_icon_to_start_adding_items">Your order is empty. Click below to add items!</string>
     <string name="category">category</string>
     <string name="categories">Categories</string>
+    <string name="user">USER</string>
 
 </resources>

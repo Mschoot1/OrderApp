@@ -2,7 +2,6 @@ package com.example.marni.orderapp.businesslogic;
 
 import com.example.marni.orderapp.domain.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TotalFromAssortment {

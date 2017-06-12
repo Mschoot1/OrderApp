@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,19 +35,24 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 
 import java.text.DecimalFormat;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
 
 public class TopUpActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         CalculateBalance.OnBalanceChanged, CalculateBalance.OnResetBalance, AccountGetTask.OnBalanceAvailable,
         BalancePostTask.SuccessListener, CalculateBalance.OnCheckPayment {
 
-    private final String TAG = getClass().getSimpleName();
-    private RadioButton button1, button2, button3;
-    private TextView textview_newbalance, textview_currentbalance;
-    private EditText edittext_value;
-    private TextView account_email;
-    private double current_balance;
+    private final String tag = getClass().getSimpleName();
+
+    private RadioButton button1;
+    private RadioButton button2;
+    private RadioButton button3;
+
+    private TextView textViewNewBalance;
+    private TextView textViewCurrentBalance;
+    private EditText editTextValue;
+    private TextView accountEmail;
+    private double currentBalance;
     private CalculateBalance calculateBalance;
     private Spinner spinner;
     private TextView payment;
@@ -63,26 +69,10 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+        setupToolbar("Top Up");
+        setupDrawer();
 
         AccountStorage.resetAccount(this);
-
-        // hide title
-        getSupportActionBar().setTitle("Top Up");
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // set current menu item checked
-        navigationView.setCheckedItem(R.id.nav_top_up);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
 
@@ -93,20 +83,11 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         button2 = (RadioButton) findViewById(R.id.topup_radiobutton2);
         button3 = (RadioButton) findViewById(R.id.topup_radiobutton3);
 
-        payment = (TextView) findViewById(R.id.toolbar_topup);
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postBalance("https://mysql-test-p4.herokuapp.com/topup");
-            }
-        });
+        textViewNewBalance = (TextView) findViewById(R.id.topup_edittext_newbalance);
+        textViewCurrentBalance = (TextView) findViewById(R.id.topup_currentbalance);
 
-        account_email = (TextView) headerView.findViewById(R.id.nav_email);
-        textview_newbalance = (TextView) findViewById(R.id.topup_edittext_newbalance);
-        textview_currentbalance = (TextView) findViewById(R.id.topup_currentbalance);
-
-        edittext_value = (EditText) findViewById(R.id.topup_edittext_value);
-        edittext_value.setFilters(new InputFilter[]{
+        editTextValue = (EditText) findViewById(R.id.topup_edittext_value);
+        editTextValue.setFilters(new InputFilter[]{
                 new InputFilter.LengthFilter(3)
         });
 
@@ -121,29 +102,30 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // empty
             }
         });
 
-        edittext_value.addTextChangedListener(new TextWatcher() {
+        editTextValue.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // empty
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                // empty
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 try {
                     if (button1.isChecked()) {
-                        Integer add_balance = Integer.parseInt(edittext_value.getText().toString());
-                        addBalance(add_balance);
+                        Integer addBalance = Integer.parseInt(editTextValue.getText().toString());
+                        addBalance(addBalance);
                     }
                 } catch (Exception e) {
-                    Log.i(TAG, "Empty value");
+                    Log.i(tag, "Empty value");
                     calculateBalance.resetBalance(true);
                 }
             }
@@ -160,6 +142,36 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    private void setupToolbar(String title) {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(title);
+
+        payment = (TextView) findViewById(R.id.toolbar_topup);
+        payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postBalance("https://mysql-test-p4.herokuapp.com/topup");
+            }
+        });
+    }
+
+    private void setupDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_top_up);
+        View headerView = navigationView.getHeaderView(0);
+        accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -169,18 +181,13 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.i(TAG, item.toString() + " clicked.");
+        Log.i(tag, item.toString() + " clicked.");
 
         int id = item.getItemId();
 
@@ -197,43 +204,43 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         // Check which radio button was clicked
         switch (view.getId()) {
             case R.id.topup_radiobutton1:
-                if (checked)
+                if (checked) {
                     button2.setChecked(false);
+                }
                 button3.setChecked(false);
                 calculateBalance.resetBalance(true);
-                edittext_value.setEnabled(true);
-
+                editTextValue.setEnabled(true);
                 break;
             case R.id.topup_radiobutton2:
-                if (checked)
+                if (checked) {
                     button1.setChecked(false);
+                }
                 button3.setChecked(false);
                 calculateBalance.resetBalance(false);
-                edittext_value.setText("");
-                edittext_value.setEnabled(false);
+                editTextValue.setText("");
+                editTextValue.setEnabled(false);
                 spinner.setFocusable(true);
-
                 String balance = spinner.getSelectedItem().toString();
                 Integer add_balance = Integer.parseInt(balance);
                 addBalance(add_balance);
-
                 break;
             case R.id.topup_radiobutton3:
-                if (checked)
+                if (checked) {
                     button1.setChecked(false);
+                }
                 button2.setChecked(false);
                 calculateBalance.resetBalance(false);
-                edittext_value.setText("");
-                edittext_value.setEnabled(false);
-
-                addBalance(calculateBalance.maxBalance(current_balance));
-
+                editTextValue.setText("");
+                editTextValue.setEnabled(false);
+                addBalance(calculateBalance.maxBalance(currentBalance));
+                break;
+            default:
                 break;
         }
     }
 
     public void getBalance(String apiUrl) {
-        String[] urls = new String[]{apiUrl, jwt.toString()};
+        String[] urls = new String[]{apiUrl, jwt};
 
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
@@ -245,40 +252,40 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         calculateBalance.checkPayment();
 
-        if (current_balance <= 150) {
-            textview_newbalance.setText("€ " + formatter.format(newBalance));
+        if (currentBalance <= 150) {
+            textViewNewBalance.setText("€ " + formatter.format(newBalance));
         }
     }
 
     @Override
     public void onResetBalance(double balance) {
-        textview_newbalance.setText("");
-        payment.setTextColor(getResources().getColor(R.color.backgroundcategoryheaders));
+        textViewNewBalance.setText("");
+        payment.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.backgroundcategoryheaders));
         payment.setEnabled(false);
     }
 
-    public void addBalance(double added_balance) {
-        calculateBalance.newBalance(current_balance, added_balance);
+    public void addBalance(double addedBalance) {
+        calculateBalance.newBalance(currentBalance, addedBalance);
     }
 
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        current_balance = bal.getBalance();
-        textview_currentbalance.setText("Balance: €" + formatter.format(current_balance));
-        account_email.setText(bal.getEmail());
+        currentBalance = bal.getBalance();
+        textViewCurrentBalance.setText("Balance: €" + formatter.format(currentBalance));
+        accountEmail.setText(bal.getEmail());
     }
 
-    public void postBalance(String ApiUrl) {
+    public void postBalance(String apiUrl) {
         BalancePostTask task = new BalancePostTask(this);
-        String[] urls = new String[]{ApiUrl, jwt.toString(), Double.toString(calculateBalance.getAddedBalance()), "topup", user + ""};
+        String[] urls = new String[]{apiUrl, jwt, Double.toString(calculateBalance.getAddedBalance()), "topup", Integer.toString(user)};
         task.execute(urls);
     }
 
-    public void SuccessfulTopUp() {
+    public void successfulTopUp() {
         calculateBalance.resetBalance(true);
-        edittext_value.setText("");
-        edittext_value.setEnabled(true);
+        editTextValue.setText("");
+        editTextValue.setEnabled(true);
         button1.setChecked(true);
         button2.setChecked(false);
         button3.setChecked(false);
@@ -287,10 +294,10 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void successful(Boolean successful) {
-        Log.i(TAG, successful.toString());
+        Log.i(tag, successful.toString());
         if (successful) {
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
-            SuccessfulTopUp();
+            successfulTopUp();
             getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         } else {
             Toast.makeText(this, "Top up failed", Toast.LENGTH_SHORT).show();
@@ -299,8 +306,8 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onCheckPayment(String check) {
-        if (check.equals("succes")) {
-            payment.setTextColor(getResources().getColor(R.color.colorWhite));
+        if (check.equals("success")) {
+            payment.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorWhite));
             payment.setEnabled(true);
         } else if (check.equals("zero")) {
             payment.setEnabled(false);

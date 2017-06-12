@@ -27,10 +27,8 @@ public class CalculateBalance {
         listener.onBalanceChanged(newBalance);
     }
 
-    public double maxBalance(double current_balance){
-        double newBalance = (150 - current_balance);
-
-        return newBalance;
+    public double maxBalance(double currentBalance){
+        return (150 - currentBalance);
     }
 
     public void checkPayment(){

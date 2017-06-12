@@ -9,10 +9,8 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.marni.orderapp.dataaccess.deviceInfo.DevicePutTask;
+import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
 import com.example.marni.orderapp.dataaccess.account.AccountGetTask;
 import com.example.marni.orderapp.dataaccess.orders.OrdersGetTask;
 import com.example.marni.orderapp.domain.Account;
@@ -35,8 +33,10 @@ import com.example.marni.orderapp.cardemulation.AccountStorage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.MyOrderActivity.setupDrawer;
+import static com.example.marni.orderapp.presentation.activities.MyOrderActivity.setupToolbar;
 
 
 public class OrderHistoryActivity extends AppCompatActivity implements
@@ -44,7 +44,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         OrdersGetTask.OnOrderAvailable, DevicePutTask.SuccessListener,
         AccountGetTask.OnBalanceAvailable {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     public static final String ORDER = "ORDER";
 
@@ -52,9 +52,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     private int user;
 
     private BaseAdapter ordersAdapter;
-    private double current_balance;
-    private TextView textview_balance;
-    private TextView account_email;
+    private TextView textViewBalance;
+    private TextView accountEmail;
 
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -62,42 +61,21 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
+
+        setupToolbar(this, "Order History");
+        setupDrawer(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        jwt =  prefs.getString(JWT_STR, "");
+        jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
 
         AccountStorage.resetAccount(this);
 
-        // hide title
-        getSupportActionBar().setTitle("Order History");
-        toolbar.findViewById(R.id.toolbar_balance).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
-                startActivity(intent);
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        // set current menu item checked
         navigationView.setCheckedItem(R.id.nav_order_history);
-
-        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
-        account_email = (TextView) headerView.findViewById(R.id.nav_email);
+        textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
+        accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
 
         ListView listView = (ListView) findViewById(R.id.listViewOrders);
 
@@ -115,8 +93,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
                 } else {
                     intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
                 }
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
                 intent.putExtra(ORDER, orders.get(position));
                 startActivity(intent);
             }
@@ -145,23 +121,13 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.i(TAG, item.toString() + " clicked.");
+        Log.i(tag, item.toString() + " clicked.");
 
         int id = item.getItemId();
 
-        Log.i(TAG, "user: " + user);
+        Log.i(tag, "user: " + user);
 
         new DrawerMenu(getApplicationContext(), id, jwt, user);
 
@@ -170,17 +136,17 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         return true;
     }
 
-    public void getOrders(String ApiUrl) {
+    public void getOrders(String apiUrl) {
 
         OrdersGetTask task = new OrdersGetTask(this);
-        String[] urls = new String[]{ApiUrl, jwt};
+        String[] urls = new String[]{apiUrl, jwt};
         task.execute(urls);
     }
 
     @Override
     public void onOrderAvailable(Order order) {
 
-        Log.i(TAG, "OrderId returned: " + order.getOrderId());
+        Log.i(tag, "OrderId returned: " + order.getOrderId());
 
         orders.add(order);
 
@@ -197,15 +163,27 @@ public class OrderHistoryActivity extends AppCompatActivity implements
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
-        account_email.setText(bal.getEmail());
+        double currentBalance = bal.getBalance();
+        textViewBalance.setText("€ " + formatter.format(currentBalance));
+        accountEmail.setText(bal.getEmail());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     public void putDeviceInfo(String apiUrl) {
 
-        String hardware, type, model, brand, device, manufacturer, user, serial, host, id, bootloader, board, display;
+        String hardware;
+        String type;
+        String model;
+        String brand;
+        String device;
+        String manufacturer;
+        String buildUser;
+        String serial;
+        String host;
+        String id;
+        String bootloader;
+        String board;
+        String display;
 
         hardware = Build.HARDWARE;
         type = Build.TYPE;
@@ -213,7 +191,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         brand = Build.BRAND;
         device = Build.DEVICE;
         manufacturer = Build.MANUFACTURER;
-        user = Build.USER;
+        buildUser = Build.USER;
         serial = Build.SERIAL;
         host = Build.HOST;
         id = Build.ID;
@@ -225,14 +203,14 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         String[] urls = new String[]{
                 apiUrl,
                 jwt,
-                this.user + "",
+                Integer.toString(this.user),
                 hardware,
                 type,
                 model,
                 brand,
                 device,
                 manufacturer,
-                user,
+                buildUser,
                 serial,
                 host,
                 id,
@@ -245,6 +223,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
 
     @Override
     public void successfulPut(Boolean successful) {
-
+        // empty
     }
 }

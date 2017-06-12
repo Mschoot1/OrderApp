@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/OrderAppTheme">
         <activity
-            android:name=".presentation.activities.LogInActivity"
+            android:name=".presentation.activities.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".presentation.activities.LogInActivity" />
+                android:value=".presentation.activities.LoginActivity" />
         </activity>
         <activity
             android:name=".presentation.activities.OrderHistoryActivity"

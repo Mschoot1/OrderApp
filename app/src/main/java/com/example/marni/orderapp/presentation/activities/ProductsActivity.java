@@ -43,8 +43,8 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
 import static com.example.marni.orderapp.presentation.activities.MyOrderActivity.setAnimation;
 import static com.example.marni.orderapp.presentation.activities.OrderHistoryActivity.ORDER;
 
@@ -55,14 +55,14 @@ public class ProductsActivity extends AppCompatActivity implements
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener, ProductsGetTask.OnEmptyList,
         CategoryFragment.OnItemSelected {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private ArrayList<Product> products = new ArrayList<>();
     private ProductsListViewAdapter mAdapter;
     private StickyListHeadersListView stickyList;
 
-    private TextView textview_balance;
-    private TextView account_email;
+    private TextView textViewBalance;
+    private TextView accountEmail;
 
     private Order order = null;
 
@@ -91,8 +91,6 @@ public class ProductsActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TopUpActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
                 startActivity(intent);
             }
         });
@@ -100,15 +98,15 @@ public class ProductsActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
-        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
-        account_email = (TextView) headerView.findViewById(R.id.nav_email);
+        textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
+        accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
@@ -138,8 +136,6 @@ public class ProductsActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
-                intent.putExtra(JWT_STR, jwt);
-                intent.putExtra(USER, user);
                 intent.putExtra(ORDER, order);
                 startActivity(intent);
             }
@@ -170,7 +166,7 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.i(TAG, item.toString() + " clicked.");
+        Log.i(tag, item.toString() + " clicked.");
 
         int id = item.getItemId();
 
@@ -190,7 +186,7 @@ public class ProductsActivity extends AppCompatActivity implements
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
 
         String t = "€" + formatter.format(priceTotal);
-        String q = quantity + "";
+        String q = Integer.toString(quantity);
         textViewTotal.setText(t);
         textViewQuantity.setText(q);
 
@@ -200,15 +196,15 @@ public class ProductsActivity extends AppCompatActivity implements
         this.quantity = quantity;
     }
 
-    public void getProducts(String ApiUrl) {
-        String[] urls = new String[]{ApiUrl, jwt};
+    public void getProducts(String apiUrl) {
+        String[] urls = new String[]{apiUrl, jwt};
         ProductsGetTask task = new ProductsGetTask(this, "assortment");
         task.execute(urls);
     }
 
     @Override
     public void onProductAvailable(Product product) {
-        Log.i(TAG, "product.getProductId(): " + product.getProductId());
+        Log.i(tag, "product.getProductId(): " + product.getProductId());
         products.add(product);
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
         mAdapter.notifyDataSetChanged();
@@ -223,10 +219,10 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
-        double current_balance = bal.getBalance();
-        String balance = "€" + formatter.format(current_balance);
-        textview_balance.setText(balance);
-        account_email.setText(bal.getEmail());
+        double currentBalance = bal.getBalance();
+        String balance = "€" + formatter.format(currentBalance);
+        textViewBalance.setText(balance);
+        accountEmail.setText(bal.getEmail());
     }
 
     private void getCurrentOrder(String apiUrl) {
@@ -251,13 +247,13 @@ public class ProductsActivity extends AppCompatActivity implements
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user), Integer.toString(p.getQuantity())};
         ProductsPutTask task = new ProductsPutTask(this);
         task.execute(urls);
     }
 
     private void postProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user), Integer.toString(p.getQuantity())};
         ProductsPostTask task = new ProductsPostTask(this);
         task.execute(urls);
     }
@@ -265,7 +261,7 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void successful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Product amount changed");
+            Log.i(tag, "Product amount changed");
         } else {
             Toast.makeText(this, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
         }
@@ -274,20 +270,20 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Totalprice succesfully edited");
+            Log.i(tag, "Totalprice succesfully edited");
         } else {
-            Log.i(TAG, "Error while updating totalprice");
+            Log.i(tag, "Error while updating totalprice");
         }
     }
 
     @Override
     public void isEmpty(Boolean b) {
-
+        // empty
     }
 
     @Override
     public void onItemSelected(int i) {
-        Log.i(TAG, "i: " + i);
+        Log.i(tag, "i: " + i);
         int j = 0;
         for (Product p : products) {
 

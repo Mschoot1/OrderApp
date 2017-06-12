@@ -27,22 +27,19 @@ import java.util.ArrayList;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.USER;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
 import static com.example.marni.orderapp.presentation.activities.OrderHistoryActivity.ORDER;
 
 public class OrderDetailActivity extends AppCompatActivity implements TotalFromAssortment.OnTotalChanged,
         ProductsGetTask.OnProductAvailable, AccountGetTask.OnBalanceAvailable, OrdersGetTask.OnOrderAvailable, ProductsGetTask.OnEmptyList {
-
-    private final String TAG = getClass().getSimpleName();
 
     private StickyListHeadersListView stickyList;
 
     private ArrayList<Product> products = new ArrayList<>();
     private OrderDetailListViewAdapter mAdapter;
 
-    private double current_balance;
-    private TextView textview_balance;
+    private TextView textViewBalance;
 
     private String jwt;
     private int user;
@@ -82,7 +79,7 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
 
-        textview_balance = (TextView) findViewById(R.id.toolbar_balance);
+        textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
 
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
@@ -105,9 +102,9 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         mAdapter.notifyDataSetChanged();
     }
 
-    public void getBalance(String ApiUrl) {
+    public void getBalance(String apiUrl) {
 
-        String[] urls = new String[]{ApiUrl, jwt};
+        String[] urls = new String[]{apiUrl, jwt};
         AccountGetTask getBalance = new AccountGetTask(this);
         getBalance.execute(urls);
     }
@@ -115,15 +112,15 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
     public void onBalanceAvailable(Account bal) {
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
-        current_balance = bal.getBalance();
-        textview_balance.setText("€ " + formatter.format(current_balance));
+        double currentBalance = bal.getBalance();
+        textViewBalance.setText("€ " + formatter.format(currentBalance));
     }
 
-    public void getProducts(String ApiUrl) {
+    public void getProducts(String apiUrl) {
 
-        ProductsGetTask task = new ProductsGetTask(this, "myorder");
-        String[] urls = new String[]{ApiUrl, jwt};
-        task.execute(urls);
+//        ProductsGetTask task = new ProductsGetTask(this, "myorder");
+//        String[] urls = new String[]{apiUrl, jwt};
+//        task.execute(urls);
     }
 
     @Override
@@ -140,11 +137,11 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         textViewTotal.setText("€ " + formatter.format(priceTotal));
-        textViewQuantity.setText(quantity + "");
+        textViewQuantity.setText(Integer.toString(quantity));
     }
 
     @Override
     public void isEmpty(Boolean b) {
-
+        // empty
     }
 }

@@ -27,7 +27,7 @@ import com.example.marni.orderapp.dataaccess.orders.PendingPutTask;
 
 import java.util.Arrays;
 
-import static com.example.marni.orderapp.presentation.activities.LogInActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
 
 /**
  * This is a sample APDU Service which demonstrates how to interface with the card emulation support

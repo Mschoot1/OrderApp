@@ -14,15 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+
+import static com.example.marni.orderapp.dataaccess.account.AccountGetTask.getStringFromInputStream;
 
 public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
@@ -32,7 +32,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
     private ProgressBar progressBar;
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     public ProductsGetTask(Activity activity, String myorder) {
         this.opa = (OnProductAvailable) activity;
@@ -48,60 +48,51 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
-        InputStream inputStream = null;
-        int responsCode = -1;
-        // De URL die we via de .execute() meegeleverd krijgen
-        String productsUrl = params[0];
-        // Het resultaat dat we gaan retourneren
+        InputStream inputStream;
+        int responseCode;
+        String balanceUrl = params[0];
         String response = "";
 
-        Log.i(TAG, "doInBackground - " + productsUrl);
         try {
-            // Maak een URL object
-            URL url = new URL(productsUrl);
-            // Open een connection op de URL
+            URL url = new URL(balanceUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
                 return null;
             }
 
-            // Initialiseer een HTTP connectie
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
             httpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
-            // Voer het request uit via de HTTP connectie op de URL
             httpConnection.connect();
 
-            // Kijk of het gelukt is door de response code te checken
-            responsCode = httpConnection.getResponseCode();
-            if (responsCode == HttpURLConnection.HTTP_OK) {
+            responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
-                // Log.i(TAG, "doInBackground response = " + response);
             } else {
-                Log.e(TAG, "Error, invalid response");
+                Log.e("", "Error, invalid response");
             }
         } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            Log.e("", "doInBackground MalformedURLEx " + e.getLocalizedMessage());
             return null;
         } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
+            Log.e("", "doInBackground IOException " + e.getLocalizedMessage());
             return null;
         }
 
         return response;
     }
 
+    @Override
     protected void onPostExecute(String response) {
         progressBar.setVisibility(View.INVISIBLE);
-        Log.i(TAG, "onPostExecute " + response);
+        Log.i(tag, "onPostExecute " + response);
 
         if (response == null || response == "") {
-            Log.e(TAG, "onPostExecute kreeg een lege response!");
+            Log.e(tag, "onPostExecute kreeg een lege response!");
             return;
         }
 
@@ -111,7 +102,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
             jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
 
-            Log.i(TAG, "results.length(): " + jsonArray.length());
+            Log.i(tag, "results.length(): " + jsonArray.length());
 
             for (int idx = 0; idx < jsonArray.length(); idx++) {
                 JSONObject product = jsonArray.getJSONObject(idx);
@@ -128,7 +119,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
 
                 JSONArray allergies = product.getJSONArray("allergies");
 
-                Log.i(TAG, "allergies.length(): " + allergies.length());
+                Log.i(tag, "allergies.length(): " + allergies.length());
 
                 ArrayList<Allergy> as = new ArrayList<>();
                 for (int j = 0; j < allergies.length(); j++) {
@@ -155,7 +146,7 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 p.setName(name);
                 p.setPrice(price);
                 p.setSize(size);
-                p.setAlcohol_percentage(alcohol);
+                p.setAlcoholPercentage(alcohol);
                 p.setCategoryId(categoryId);
                 p.setQuantity(quantity);
                 p.setCategoryName(categoryName);
@@ -168,36 +159,8 @@ public class ProductsGetTask extends AsyncTask<String, Void, String> {
                 oel.isEmpty(true);
             }
         } catch (JSONException ex) {
-            Log.e(TAG, "onPostExecute JSONException " + ex.getLocalizedMessage());
+            Log.e(tag, "onPostExecute JSONException " + ex.getLocalizedMessage());
         }
-    }
-
-    private static String getStringFromInputStream(InputStream is) {
-
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(is));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            Log.e("", "getStringFromInputStream " + e.getLocalizedMessage());
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    Log.e("", "getStringFromInputStream " + e.getLocalizedMessage());
-                }
-            }
-        }
-
-        return sb.toString();
     }
 
     public interface OnProductAvailable {

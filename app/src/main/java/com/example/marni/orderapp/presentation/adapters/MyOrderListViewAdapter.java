@@ -3,7 +3,9 @@ package com.example.marni.orderapp.presentation.adapters;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,17 +32,21 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.USER;
+
 public class MyOrderListViewAdapter extends BaseAdapter implements
         StickyListHeadersAdapter,
-        View.OnClickListener,
         ProductsDeleteTask.SuccessListener,
         ProductsPutTask.SuccessListener,
         OrdersPutTask.PutSuccessListener {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
+
     private final String jwt;
     private final int user;
 
@@ -54,16 +60,18 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     private ProductsGetTask.OnEmptyList oel;
     private Activity activity;
 
-    public MyOrderListViewAdapter(Activity activity, Context context, LayoutInflater layoutInflater, ArrayList<Product> products, Order order, String jwt, int user, MyOrderActivity listener) {
+    public MyOrderListViewAdapter(Activity activity, Context context, LayoutInflater layoutInflater, List<Product> products, Order order, MyOrderActivity listener) {
         this.activity = activity;
         this.context = context;
         this.layoutInflater = layoutInflater;
-        this.products = products;
+        this.products = (ArrayList<Product>) products;
         this.order = order;
-        this.jwt = jwt;
-        this.user = user;
         this.otc = listener;
         this.oel = listener;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.jwt = prefs.getString(JWT_STR, "");
+        this.user = prefs.getInt(USER, 0);
     }
 
     @Override
@@ -84,32 +92,33 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View getView(final int position, View convertView, ViewGroup parent) {
 
+        View view = convertView;
         final ViewHolder viewHolder;
 
         final Product p = products.get(position);
 
-        if (convertView == null) {
+        if (view == null) {
 
-            Log.i(TAG, "ViewHolder maken. Position: " + position);
+            Log.i(tag, "ViewHolder maken. Position: " + position);
 
             viewHolder = new ViewHolder();
 
-            convertView = layoutInflater.inflate(R.layout.listview_item_product, null);
+            view = layoutInflater.inflate(R.layout.listview_item_product, null);
 
-            viewHolder.textViewName = (TextView) convertView.findViewById(R.id.listViewProducts_productname);
-            viewHolder.textViewPrice = (TextView) convertView.findViewById(R.id.listViewProducts_productprice);
-            viewHolder.textViewSize = (TextView) convertView.findViewById(R.id.listViewProducts_productsize);
-            viewHolder.textViewAlcohol = (TextView) convertView.findViewById(R.id.listViewProducts_product_alcoholpercentage);
-            viewHolder.textViewAmount = (TextView) convertView.findViewById(R.id.listViewProducts_amount);
-            viewHolder.imageViewRemove = (ImageView) convertView.findViewById(R.id.listViewProduct_remove);
-            viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.iconHolder);
+            viewHolder.textViewName = (TextView) view.findViewById(R.id.listViewProducts_productname);
+            viewHolder.textViewPrice = (TextView) view.findViewById(R.id.listViewProducts_productprice);
+            viewHolder.textViewSize = (TextView) view.findViewById(R.id.listViewProducts_productsize);
+            viewHolder.textViewAlcohol = (TextView) view.findViewById(R.id.listViewProducts_product_alcoholpercentage);
+            viewHolder.textViewAmount = (TextView) view.findViewById(R.id.listViewProducts_amount);
+            viewHolder.imageViewRemove = (ImageView) view.findViewById(R.id.listViewProduct_remove);
+            viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.iconHolder);
 
-            convertView.setTag(viewHolder);
+            view.setTag(viewHolder);
         } else {
 
-            Log.i(TAG, "ViewHolder meegekregen. Position: " + position);
+            Log.i(tag, "ViewHolder meegekregen. Position: " + position);
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) view.getTag();
         }
 
         DecimalFormat formatter = new DecimalFormat("#0.00");
@@ -118,13 +127,13 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
         String price = "€" + formatter.format(p.getPrice());
         String size = p.getSize() + " ml";
         String alcohol = "";
-        if(Double.compare(p.getAlcohol_percentage(), 0.0) == 0) {
-            alcohol = p.getAlcohol_percentage() + "% Alc.";
+        if(Double.compare(p.getAlcoholPercentage(), 0.0) == 0) {
+            alcohol = p.getAlcoholPercentage() + "% Alc.";
         }
-        String amount = p.getQuantity() + "";
+        String amount = Integer.toString(p.getQuantity());
 
         Product product = products.get(position);
-        Picasso.with(context).load(product.getImagesrc()).into((ImageView) convertView.findViewById(R.id.imageView_productimage));
+        Picasso.with(context).load(product.getImagesrc()).into((ImageView) view.findViewById(R.id.imageView_productimage));
 
         viewHolder.textViewName.setText(name);
         viewHolder.textViewPrice.setText(price);
@@ -147,13 +156,13 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
                     products.remove(position);
                     notifyDataSetChanged();
                     deleteProduct("https://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
-                    if(products.size() == 0) {
+                    if(products.isEmpty()) {
                         oel.isEmpty(true);
                     }
                 } else {
                     p.setQuantity(decrease(p.getQuantity()));
                     putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
-                    String amount = p.getQuantity() + "";
+                    String amount = Integer.toString(p.getQuantity());
                     viewHolder.textViewAmount.setText(amount);
                 }
 
@@ -162,29 +171,28 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
             }
         });
 
-        viewHolder.linearLayout.setOnClickListener(this);
         viewHolder.linearLayout.removeAllViews();
         for (Allergy allergy : p.getAllergies()) {
             viewHolder.linearLayout.addView(getImageView(allergy));
         }
 
-        return convertView;
+        return view;
     }
 
     private void putOrderPrice(String apiUrl, double priceTotal) {
-        String[] urls = new String[]{apiUrl, jwt, priceTotal + "", Integer.toString(order.getOrderId())};
+        String[] urls = new String[]{apiUrl, jwt, Double.toString(priceTotal), Integer.toString(order.getOrderId())};
         OrdersPutTask task = new OrdersPutTask(this);
         task.execute(urls);
     }
 
     private void deleteProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user)};
         ProductsDeleteTask task = new ProductsDeleteTask(this);
         task.execute(urls);
     }
 
     private void putProduct(String apiUrl, Product p) {
-        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), p.getProductId() + "", user + "", p.getQuantity() + ""};
+        String[] urls = new String[]{apiUrl, jwt, Integer.toString(order.getOrderId()), Integer.toString(p.getProductId()), Integer.toString(user), Integer.toString(p.getQuantity())};
         ProductsPutTask task = new ProductsPutTask(this);
         task.execute(urls);
     }
@@ -200,23 +208,17 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
         lp.setMargins(5, 0, 0, 0);
         imageView.setLayoutParams(lp);
 
-        int id = context.getResources().getIdentifier(allergy.getImage_url(), "mipmap", context.getPackageName());
-        Log.i(TAG, "id: " + id);
+        int id = context.getResources().getIdentifier(allergy.getImageUrl(), "mipmap", context.getPackageName());
+        Log.i(tag, "id: " + id);
         imageView.setImageResource(id);
 
         return imageView;
     }
 
     @Override
-    public void onClick(View v) {
-//        Intent intent = new Intent(context, AllergiesActivity.class);
-//        context.startActivity(intent);
-    }
-
-    @Override
     public void successfulDeleted(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Product removed");
+            Log.i(tag, "Product removed");
         } else {
             Toast.makeText(context, "Product couldn't be removed", Toast.LENGTH_SHORT).show();
         }
@@ -225,7 +227,7 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     @Override
     public void successful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Product amount changed");
+            Log.i(tag, "Product amount changed");
         } else {
             Toast.makeText(context, "Product amount couldn't be changed", Toast.LENGTH_SHORT).show();
         }
@@ -234,9 +236,9 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
     @Override
     public void putSuccessful(Boolean successful) {
         if (successful) {
-            Log.i(TAG, "Totalprice succesfully edited");
+            Log.i(tag, "Totalprice succesfully edited");
         } else {
-            Log.i(TAG, "Error while updating totalprice");
+            Log.i(tag, "Error while updating totalprice");
         }
     }
 
@@ -254,15 +256,16 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
         HeaderViewHolder holder;
-        if (convertView == null) {
+        if (view == null) {
             holder = new HeaderViewHolder();
-            convertView = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
-            holder.textViewCategoryTitle = (TextView) convertView.findViewById(R.id.listViewOrders_categoryname);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imageView_filter);
-            convertView.setTag(holder);
+            view = layoutInflater.inflate(R.layout.listview_sectionheader_products, parent, false);
+            holder.textViewCategoryTitle = (TextView) view.findViewById(R.id.listViewOrders_categoryname);
+            holder.imageView = (ImageView) view.findViewById(R.id.imageView_filter);
+            view.setTag(holder);
         } else {
-            holder = (HeaderViewHolder) convertView.getTag();
+            holder = (HeaderViewHolder) view.getTag();
         }
         Product product = products.get(position);
         holder.textViewCategoryTitle.setText(product.getCategoryName());
@@ -273,7 +276,7 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
             }
         });
 
-        return convertView;
+        return view;
     }
 
     private class HeaderViewHolder {

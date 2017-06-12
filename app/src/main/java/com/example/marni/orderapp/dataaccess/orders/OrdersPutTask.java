@@ -15,7 +15,7 @@ import java.net.URLConnection;
 
 public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
 
-    private final String TAG = getClass().getSimpleName();
+    private final String tag = getClass().getSimpleName();
 
     private PutSuccessListener listener;
 
@@ -31,13 +31,13 @@ public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
 
         Boolean response = null;
 
-        Log.i(TAG, "doInBackground - " + balanceUrl);
+        Log.i(tag, "doInBackground - " + balanceUrl);
         try {
             URL url = new URL(balanceUrl);
             URLConnection urlConnection = url.openConnection();
 
             if (!(urlConnection instanceof HttpURLConnection)) {
-                return null;
+                return false;
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
@@ -50,7 +50,7 @@ public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
             jsonParam.put("price_total", params[2]);
             jsonParam.put("order_id", params[3]);
 
-            Log.i(TAG, String.valueOf(jsonParam));
+            Log.i(tag, String.valueOf(jsonParam));
 
             DataOutputStream localDataOutputStream = new DataOutputStream(httpConnection.getOutputStream());
             localDataOutputStream.writeBytes(jsonParam.toString());
@@ -61,18 +61,19 @@ public class OrdersPutTask extends AsyncTask<String, Void, Boolean> {
             responseCode = httpConnection.getResponseCode();
             response = (responseCode == HttpURLConnection.HTTP_OK);
         } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground MalformedURLEx " + e.getLocalizedMessage());
+            return false;
         } catch (IOException e) {
-            Log.e(TAG, "doInBackground IOException " + e.getLocalizedMessage());
-            return null;
+            Log.e(tag, "doInBackground IOException " + e.getLocalizedMessage());
+            return false;
         } catch (JSONException e) {
-            Log.e(TAG, "doInBackground JSONException " + e.getLocalizedMessage());
+            Log.e(tag, "doInBackground JSONException " + e.getLocalizedMessage());
         }
 
         return response;
     }
 
+    @Override
     protected void onPostExecute(Boolean response) {
         listener.putSuccessful(response);
     }
