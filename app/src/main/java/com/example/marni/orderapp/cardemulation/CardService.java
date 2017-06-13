@@ -17,6 +17,7 @@
 package com.example.marni.orderapp.cardemulation;
 
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -115,7 +116,6 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                 byte[] accountBytes;
                 switch (pending) {
                     case PENDING_NUMBER_OPEN:
-                        Toast.makeText(this, "Order is read", Toast.LENGTH_LONG).show();
                         accountBytes = account.getBytes();
                         Log.i(TAG, "Sending account number: " + account);
                         putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
@@ -130,6 +130,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                 }
             } else {
                 Toast.makeText(this, "Your balance is too low", Toast.LENGTH_LONG).show();
+                Log.i(TAG, account);
                 return UNKNOWN_CMD_SW;
             }
         } else {
