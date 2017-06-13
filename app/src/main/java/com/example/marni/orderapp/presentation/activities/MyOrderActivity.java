@@ -104,6 +104,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
+        Log.i(tag, "user: " + user);
 
         prefs.registerOnSharedPreferenceChangeListener(this);
         prefs.unregisterOnSharedPreferenceChangeListener(this);

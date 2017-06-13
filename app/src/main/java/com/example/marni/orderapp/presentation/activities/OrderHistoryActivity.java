@@ -20,7 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
+import com.example.marni.orderapp.dataaccess.deviceInfo.DevicePutTask;
 import com.example.marni.orderapp.dataaccess.account.AccountGetTask;
 import com.example.marni.orderapp.dataaccess.orders.OrdersGetTask;
 import com.example.marni.orderapp.domain.Account;

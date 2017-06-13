@@ -2,6 +2,7 @@ package com.example.marni.orderapp.dataaccess;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -54,9 +55,10 @@ public class MyOrderActivityRequests {
 
     public void handleGetCurrentOrder() {
         Log.i(tag, "handleGetProducts");
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         final String jwt = sharedPref.getString(JWT_STR, "");
         final int user = sharedPref.getInt(USER, 0);
+        Log.i(tag, "user: " + user);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET,
@@ -97,7 +99,7 @@ public class MyOrderActivityRequests {
 
     public void handlePutOrder(double priceTotal, int orderId) {
         Log.i(tag, "handlePutOrder");
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         final String jwt = sharedPref.getString(JWT_STR, "");
 
         String body = "{\"price_total\":\"" + priceTotal + "\",\"order_id\":\"" + orderId + "\"}";
@@ -141,7 +143,7 @@ public class MyOrderActivityRequests {
 
     public void handleGetProducts(int orderId) {
         Log.i(tag, "handleGetProducts");
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         final String jwt = sharedPref.getString(JWT_STR, "");
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
