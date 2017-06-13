@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.dataaccess.LoginActivityRequests;
-import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
+import com.example.marni.orderapp.dataaccess.deviceInfo.DevicePutTask;
 import com.example.marni.orderapp.R;
 
 public class LoginActivity extends AppCompatActivity implements

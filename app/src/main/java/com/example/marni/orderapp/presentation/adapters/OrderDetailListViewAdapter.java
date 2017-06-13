@@ -93,7 +93,7 @@ public class OrderDetailListViewAdapter extends BaseAdapter implements
         DecimalFormat formatter = new DecimalFormat("#0.00");
 
         String name = p.getName();
-        String price = "€" + formatter.format(p.getPrice());
+        String price = "€ " + formatter.format(p.getPrice());
         String size = p.getSize() + " ml";
         String alcohol = "";
         if(Double.compare(p.getAlcoholPercentage(), 0.0) == 0) {
