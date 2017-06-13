@@ -1,4 +1,4 @@
-package com.example.marni.orderapp.dataaccess.deviceInfo;
+package com.example.marni.orderapp.dataaccess.deviceinfo;
 
 import android.os.AsyncTask;
 import android.os.Build;

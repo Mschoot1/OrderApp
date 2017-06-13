@@ -17,8 +17,6 @@ plugins {
     id "org.sonarqube" version "2.2"
 }
 
-apply plugin: 'jacoco'
-
 allprojects {
     repositories {
         jcenter()
@@ -27,11 +25,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "OrderApp"
-        property "sonar.projectKey", "com.example.marni.orderapp"
-    }
 }

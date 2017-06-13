@@ -127,7 +127,7 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
         String price = "€ " + formatter.format(p.getPrice());
         String size = p.getSize() + " ml";
         String alcohol = "";
-        if(Double.compare(p.getAlcoholPercentage(), 0.0) == 0) {
+        if(Double.compare(p.getAlcoholPercentage(), 0.0) == 1) {
             alcohol = p.getAlcoholPercentage() + "% Alc.";
         }
         String amount = Integer.toString(p.getQuantity());
