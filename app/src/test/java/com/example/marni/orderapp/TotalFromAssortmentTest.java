@@ -28,13 +28,13 @@ public class TotalFromAssortmentTest {
 
     @Test
     public void totalFromAssortment_correctPriceTotal_isCorrect() throws Exception {
-        assertThat(price, instanceOf(Double.class));
+        assertThat(TotalFromAssortment.getPriceTotal(products), instanceOf(Double.class));
         assertEquals(TotalFromAssortment.getPriceTotal(products), price, 0.01);
     }
 
     @Test
     public void totalFromAssortment_correctQuantity_isCorrect() throws Exception {
-        assertThat(quantity, instanceOf(Integer.class));
+        assertThat(TotalFromAssortment.getQuanitity(products), instanceOf(Integer.class));
         assertEquals(TotalFromAssortment.getQuanitity(products), quantity);
     }
 }

@@ -9,20 +9,12 @@ import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
-/**
- * Created by marcu on 6/14/2017.
- */
-
 public class CalculateBalanceTest implements CalculateBalance.OnBalanceChanged, CalculateBalance.OnCheckPayment, CalculateBalance.OnResetBalance{
-    CalculateBalance calculateBalance;
-    Double addedbalance;
+
+    private CalculateBalance calculateBalance;
 
     public CalculateBalanceTest(){
         calculateBalance = new CalculateBalance(this, this, this);
-        calculateBalance.setAddedBalance(0);
-        calculateBalance.setBalance(160);
-
-        addedbalance = calculateBalance.getAddedBalance();
     }
 
     @Test
@@ -71,6 +63,7 @@ public class CalculateBalanceTest implements CalculateBalance.OnBalanceChanged, 
         calculateBalance.setAddedBalance(12);
         calculateBalance.setBalance(130);
         assertEquals(0, calculateBalance.resetBalance(true), 0.01);
+        assertEquals(0, calculateBalance.getAddedBalance(), 0.01);
     }
 
     @Test
