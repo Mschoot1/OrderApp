@@ -71,6 +71,13 @@ public class CalculateBalanceTest implements CalculateBalance.OnBalanceChanged, 
         calculateBalance.setAddedBalance(12);
         calculateBalance.setBalance(130);
         assertNotEquals(5, calculateBalance.resetBalance(true), 0.01);
+        assertNotEquals(5, calculateBalance.getAddedBalance(), 0.01);
+    }
+
+    @Test
+    public void calculateBalance_resetBalance_isCorrect2() throws Exception{
+        calculateBalance.setBalance(120);
+        assertEquals(0, calculateBalance.resetBalance(false), 0.01);
     }
 
     @Override

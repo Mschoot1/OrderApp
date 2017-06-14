@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements
         Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
 
         Log.i(tag, "user.asInt(): " + user.asInt());
-        editor.putString(JWT_STR, jwt.toString());
+        editor.putString(JWT_STR, jwt.toString().replace("\"", ""));
         editor.putInt(USER, user.asInt());
         editor.apply();
 
