@@ -1,10 +1,7 @@
 package com.example.marni.orderapp.businesslogic;
 
-import android.util.Log;
-
 public class CalculateBalance {
 
-    private final String tag = getClass().getSimpleName();
     private OnBalanceChanged listener;
     private OnResetBalance listener2;
     private OnCheckPayment listener3;
@@ -18,35 +15,35 @@ public class CalculateBalance {
         this.listener3 = listener3;
     }
 
-    public void newBalance(double currentBalance, double addedBalance){
+    public Double newBalance(double currentBalance, double addedBalance){
         double newBalance = currentBalance + addedBalance;
 
         setBalance(newBalance);
         setAddedBalance(addedBalance);
 
         listener.onBalanceChanged(newBalance);
+        return newBalance;
     }
 
     public double maxBalance(double currentBalance){
-        return (150 - currentBalance);
+        double maxBalance = (150 - currentBalance);
+
+        return maxBalance;
     }
 
-    public void checkPayment(){
+    public String checkPayment(){
         String check;
 
         if(Double.compare(getAddedBalance(), 0.0) == 0) {
-            Log.i(tag, "Check false, added balance " + getAddedBalance());
             check = "zero";
         } else if(getBalance() > 150){
-            Log.i(tag, "Check false, new balance " + getBalance());
             check = "max";
         } else {
-            Log.i(tag, "Check True, added balance " + getAddedBalance());
-            Log.i(tag, "Check True, new balance " + getBalance());
             check = "succes";
         }
 
         listener3.onCheckPayment(check);
+        return check;
     }
 
     public interface OnBalanceChanged {
@@ -61,7 +58,7 @@ public class CalculateBalance {
         void onCheckPayment(String check);
     }
 
-    public void resetBalance(boolean reset){
+    public double resetBalance(boolean reset){
         if(reset) {
             setBalance(0);
             setAddedBalance(0);
@@ -70,6 +67,7 @@ public class CalculateBalance {
         }
 
         listener2.onResetBalance(balance);
+        return balance;
     }
 
     public double getBalance() {
