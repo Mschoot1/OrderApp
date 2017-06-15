@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,11 +15,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.dataaccess.LoginActivityRequests;
+import com.example.marni.orderapp.dataaccess.MyOrderActivityRequests;
+import com.example.marni.orderapp.service.Config;
 import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
 import com.example.marni.orderapp.R;
+import com.example.marni.orderapp.service.VolleyRequestQueue;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements
         DevicePutTask.SuccessListener,
@@ -51,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();
 
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
