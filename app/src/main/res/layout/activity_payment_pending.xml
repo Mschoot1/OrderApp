@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.marni.orderapp.presentation.activities.PaymentPendingActivity">
+
+    <TextView
+        android:id="@+id/payment_pending_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We are preparing your order,\n please wait..."
+        android:textAlignment="center"
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:layout_marginTop="166dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/payment_pending_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="144dp" />
+</RelativeLayout>

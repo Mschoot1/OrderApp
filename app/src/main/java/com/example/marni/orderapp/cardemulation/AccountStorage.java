@@ -19,38 +19,53 @@ package com.example.marni.orderapp.cardemulation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * Utility class for persisting account numbers to disk.
- *
+ * <p>
  * <p>The default SharedPreferences instance is used as the backing storage. Values are cached
  * in memory for performance.
- *
+ * <p>
  * <p>This class is thread-safe.
  */
 public class AccountStorage {
     private static final String PREF_ACCOUNT_NUMBER = "account_number";
     private static final String DEFAULT_ACCOUNT_NUMBER = "00000000";
-    private static final String TAG = "AccountStorage";
+    private static final String ERROR_CODE = "0000";
     private static String sAccount = null;
     private static final Object sAccountLock = new Object();
 
-    public static void SetAccount(Context c, String s) {
-        synchronized(sAccountLock) {
-            Log.i(TAG, "Setting account number: " + s);
+    private AccountStorage() {
+
+    }
+
+    public static void setAccount(Context c, String s, double balance, double orderPriceTotal) {
+        synchronized (sAccountLock) {
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-            prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).commit();
-            sAccount = s;
+            if (balance >= orderPriceTotal) {
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).apply();
+                sAccount = s;
+            } else {
+                prefs.edit().putString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER).apply();
+                sAccount = DEFAULT_ACCOUNT_NUMBER;
+            }
         }
     }
 
-    public static String GetAccount(Context c) {
+    public static void resetAccount(Context c) {
+        synchronized (sAccountLock) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+            prefs.edit().putString(PREF_ACCOUNT_NUMBER, ERROR_CODE).apply();
+            sAccount = ERROR_CODE;
+        }
+    }
+
+    public static String getAccount(Context c) {
         synchronized (sAccountLock) {
             if (sAccount == null) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
-                String account = prefs.getString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER);
-                sAccount = account;
+                sAccount = prefs.getString(PREF_ACCOUNT_NUMBER, DEFAULT_ACCOUNT_NUMBER);
             }
             return sAccount;
         }

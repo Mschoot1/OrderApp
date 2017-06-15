@@ -10,18 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:theme="@style/ActionBarThemeOverlay"
+        app:popupTheme="@style/ActionBarPopupThemeOverlay">
 
         <TextView
             android:id="@+id/toolbar_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
             android:layout_gravity="center|end"
-            android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"
-            android:textColor="#000"/>
+            android:layout_marginRight="25dp"
+            android:textColor="#FFF"
+            android:textSize="20sp" />
 
     </android.support.v7.widget.Toolbar>
 

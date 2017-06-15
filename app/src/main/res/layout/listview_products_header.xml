@@ -11,7 +11,8 @@
         android:layout_marginStart="13dp"
         android:padding="@dimen/paddingProduct"
         android:text="11"
-        android:textSize="@dimen/textsizeProduct" />
+        android:textSize="@dimen/textsizeProduct"
+        android:textColor="@color/black_text"/>
 
     <TextView
         android:id="@+id/textViewDateTime"
@@ -24,6 +25,7 @@
         android:textSize="@dimen/textsizeProduct"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/black_text"/>
 
 </RelativeLayout>

@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.marni.orderapp.Presentation.Activities.LogInActivity">
+    android:fitsSystemWindows="true"
+    tools:context="com.example.marni.orderapp.presentation.activities.LoginActivity">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/textViewEmailaddress"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="66dp"
+        android:layout_marginBottom="63dp"
         android:contentDescription="@string/company_image"
+        android:minHeight="150dp"
+        android:minWidth="150dp"
         android:src="@mipmap/rsz_3logo" />
-
-    <TextView
-        android:id="@+id/textViewSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:paddingBottom="25dp"
-        android:text="@string/sign_in"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/textViewEmailaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_above="@+id/login_editTextEmailaddress"
         android:layout_alignStart="@+id/login_editTextEmailaddress"
-        android:layout_below="@+id/textViewSignIn"
         android:text="@string/emailaddress"
         android:textColor="#000"
         android:textSize="@dimen/textsize" />
@@ -43,7 +37,7 @@
         android:id="@+id/login_editTextEmailaddress"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewEmailaddress"
+        android:layout_above="@+id/textViewPassword"
         android:layout_centerHorizontal="true"
         android:inputType="textEmailAddress"
         android:textSize="@dimen/textsize" />
@@ -52,9 +46,8 @@
         android:id="@+id/textViewPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_editTextEmailaddress"
+        android:layout_above="@+id/login_editTextPassword"
         android:layout_alignStart="@+id/login_editTextEmailaddress"
-        android:layout_below="@+id/login_editTextEmailaddress"
         android:text="@string/password"
         android:textColor="#000"
         android:textSize="@dimen/textsize" />
@@ -63,20 +56,26 @@
         android:id="@+id/login_editTextPassword"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewPassword"
+        android:layout_above="@+id/checkBox_login"
         android:layout_alignStart="@+id/textViewPassword"
-        android:layout_below="@+id/textViewPassword"
         android:inputType="textPassword"
         android:textSize="@dimen/textsize" />
+
+    <CheckBox
+        android:id="@+id/checkBox_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonSignIn"
+        android:layout_alignStart="@+id/login_editTextPassword"
+        android:layout_marginBottom="37.5dp"
+        android:text="@string/remember_credentials" />
 
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewSignIn"
-        android:layout_alignStart="@+id/textViewSignIn"
-        android:layout_below="@+id/login_editTextPassword"
-        android:layout_marginTop="12dp"
+        android:layout_above="@+id/textViewNoAccountYet"
+        android:layout_centerHorizontal="true"
         android:text="@string/sign_in" />
 
     <TextView

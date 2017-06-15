@@ -2,6 +2,7 @@
     <string name="app_name">OrderApp</string>
     <string name="company_image">Company Image</string>
     <string name="sign_in">Sign In</string>
+    <string name="remember_credentials">Remember email</string>
     <string name="emailaddress">Email address</string>
     <string name="password">Password</string>
     <string name="no_account_yet_register_here">No account yet? Register here</string>
@@ -26,9 +27,9 @@
     <string name="confirm_password">Confirm password</string>
     <string name="information_allergy_symbol">Information allergy symbol</string>
     <string name="description">description</string>
-    <string name="total">Total</string>
+    <string name="total">€0,00</string>
     <string name="menu">menu</string>
-    <string name="order_history">Home</string>
+    <string name="order_history">Order history</string>
     <string name="top_up">Top Up</string>
     <string name="my_order">My Order</string>
     <string name="Assortment">Assortment</string>
@@ -59,22 +60,34 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_logout">Logout</string>
     <string name="allergy_information">Allergy Information</string>
     <string name="information_allergies">Information Allergies</string>
     <string name="scanorder">Scan order</string>
 
+    <!--JWT-->
+    <string name="jwt">JWT</string>
 
     <!--Top up -->
-
-    <string name="topup_name">Add balance</string>
+    <string name="topup_name">Balance: </string>
     <string name="topup_newbalance">New balance</string>
     <string name="topup_concurrency">€</string>
     <string name="topup_hint_value">value</string>
     <string name="topup_topayment">Checkout</string>
+
     <string name="view_chart">VIEW ORDER</string>
 
     <string name="service_name">CardEmulation Sample</string>
     <string name="card_title">Sample Loyalty Card</string>
     <string name="account_number">Account Number</string>
+    <string name="_2_00">$2.00</string>
+    <string name="_5_alc">5% Alc.</string>
+    <string name="beer">Beer</string>
+    <string name="_330ml">330ml</string>
+    <string name="_0">0</string>
+    <string name="click_on_the_add_items_icon_to_start_adding_items">Your order is empty. Click below to add items!</string>
+    <string name="category">category</string>
+    <string name="categories">Categories</string>
+    <string name="user">USER</string>
 
 </resources>

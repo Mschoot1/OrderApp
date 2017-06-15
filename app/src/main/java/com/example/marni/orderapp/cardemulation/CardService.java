@@ -16,29 +16,38 @@
 
 package com.example.marni.orderapp.cardemulation;
 
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.marni.orderapp.dataaccess.orders.PendingPutTask;
 
 import java.util.Arrays;
+
+import static com.example.marni.orderapp.presentation.activities.LoginActivity.JWT_STR;
 
 /**
  * This is a sample APDU Service which demonstrates how to interface with the card emulation support
  * added in Android 4.4, KitKat.
- *
+ * <p>
  * <p>This sample replies to any requests sent with the string "Hello World". In real-world
  * situations, you would need to modify this code to implement your desired communication
  * protocol.
- *
+ * <p>
  * <p>This sample will be invoked for any terminals selecting AIDs of 0xF11111111, 0xF22222222, or
  * 0xF33333333. See src/main/res/xml/aid_list.xml for more details.
- *
+ * <p>
  * <p class="note">Note: This is a low-level interface. Unlike the NdefMessage many developers
  * are familiar with for implementing Android Beam in apps, card emulation only provides a
  * byte-array based communication channel. It is left to developers to implement higher level
  * protocol support as needed.
  */
-public class CardService extends HostApduService {
+public class CardService extends HostApduService implements PendingPutTask.PutSuccessListener {
+
     private static final String TAG = "CardService";
     // AID for our loyalty card service.
     private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
@@ -46,10 +55,15 @@ public class CardService extends HostApduService {
     // Format: [Class | Instruction | Parameter 1 | Parameter 2]
     private static final String SELECT_APDU_HEADER = "00A40400";
     // "OK" status word sent in response to SELECT AID command (0x9000)
-    private static final byte[] SELECT_OK_SW = HexStringToByteArray("9000");
+    private static final byte[] SELECT_OK_SW = hexStringToByteArray("9000");
     // "UNKNOWN" status word sent in response to invalid APDU command (0x0000)
-    private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
-    private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
+    private static final byte[] UNKNOWN_CMD_SW = hexStringToByteArray("0000");
+    private static final byte[] SELECT_APDU = buildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
+
+    public static final String PREF_PENDING_NUMBER = "pending_number";
+    public static final String PENDING_NUMBER_OPEN = "0";
+    public static final String PENDING_NUMBER_PENDING = "1";
+    public static final String PENDING_NUMBER_CANCELED = "2";
 
     /**
      * Called if the connection to the NFC card is lost, in order to let the application know the
@@ -59,38 +73,66 @@ public class CardService extends HostApduService {
      * @param reason Either DEACTIVATION_LINK_LOSS or DEACTIVATION_DESELECTED
      */
     @Override
-    public void onDeactivated(int reason) { }
+    public void onDeactivated(int reason) {
+        // Do nothing
+    }
 
     /**
      * This method will be called when a command APDU has been received from a remote device. A
      * response APDU can be provided directly by returning a byte-array in this method. In general
      * response APDUs must be sent as quickly as possible, given the fact that the user is likely
      * holding his device over an NFC reader when this method is called.
-     *
+     * <p>
      * <p class="note">If there are multiple services that have registered for the same AIDs in
      * their meta-data entry, you will only get called if the user has explicitly selected your
      * service, either as a default or just for the next tap.
-     *
+     * <p>
      * <p class="note">This method is running on the main thread of your application. If you
      * cannot return a response APDU immediately, return null and use the {@link
      * #sendResponseApdu(byte[])} method later.
      *
      * @param commandApdu The APDU that received from the remote device
-     * @param extras A bundle containing extra data. May be null.
+     * @param extras      A bundle containing extra data. May be null.
      * @return a byte-array containing the response APDU, or null if no response APDU can be sent
      * at this point.
      */
     // BEGIN_INCLUDE(processCommandApdu)
     @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {
-        Log.i(TAG, "Received APDU: " + ByteArrayToHexString(commandApdu));
+        Log.i(TAG, "Received APDU: " + byteArrayToHexString(commandApdu));
+
         // If the APDU matches the SELECT AID command for this service,
         // send the loyalty card account number, followed by a SELECT_OK status trailer (0x9000).
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
-            String account = AccountStorage.GetAccount(this);
-            byte[] accountBytes = account.getBytes();
-            Log.i(TAG, "Sending account number: " + account);
-            return ConcatArrays(accountBytes, SELECT_OK_SW);
+            String account = AccountStorage.getAccount(this);
+
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String pending = prefs.getString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN);
+
+            if (account.equals("0000")) {
+                Toast.makeText(this, "NFC connecting not allowed", Toast.LENGTH_LONG).show();
+                return UNKNOWN_CMD_SW;
+            } else if (!account.equals("00000000")) {
+                byte[] accountBytes;
+                switch (pending) {
+                    case PENDING_NUMBER_OPEN:
+                        accountBytes = account.getBytes();
+                        Log.i(TAG, "Sending account number: " + account);
+                        putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
+                        prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
+                        return concatArrays(accountBytes, SELECT_OK_SW);
+                    case PENDING_NUMBER_PENDING:
+                        prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
+                        accountBytes = account.getBytes();
+                        return concatArrays(accountBytes, SELECT_OK_SW);
+                    default:
+                        return UNKNOWN_CMD_SW;
+                }
+            } else {
+                Toast.makeText(this, "Your balance is too low", Toast.LENGTH_LONG).show();
+                Log.i(TAG, account);
+                return UNKNOWN_CMD_SW;
+            }
         } else {
             return UNKNOWN_CMD_SW;
         }
@@ -104,9 +146,9 @@ public class CardService extends HostApduService {
      * @param aid Application ID (AID) to select
      * @return APDU for SELECT AID command
      */
-    public static byte[] BuildSelectApdu(String aid) {
+    public static byte[] buildSelectApdu(String aid) {
         // Format: [CLASS | INSTRUCTION | PARAMETER 1 | PARAMETER 2 | LENGTH | DATA]
-        return HexStringToByteArray(SELECT_APDU_HEADER + String.format("%02X",
+        return hexStringToByteArray(SELECT_APDU_HEADER + String.format("%02X",
                 aid.length() / 2) + aid);
     }
 
@@ -116,8 +158,8 @@ public class CardService extends HostApduService {
      * @param bytes Bytes to convert
      * @return String, containing hexadecimal representation.
      */
-    public static String ByteArrayToHexString(byte[] bytes) {
-        final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+    public static String byteArrayToHexString(byte[] bytes) {
+        final char[] hexArray = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         char[] hexChars = new char[bytes.length * 2]; // Each byte has two hex characters (nibbles)
         int v;
         for (int j = 0; j < bytes.length; j++) {
@@ -130,14 +172,14 @@ public class CardService extends HostApduService {
 
     /**
      * Utility method to convert a hexadecimal string to a byte string.
-     *
+     * <p>
      * <p>Behavior with input strings containing non-hexadecimal characters is undefined.
      *
      * @param s String containing hexadecimal characters to convert
      * @return Byte array generated from input
      * @throws IllegalArgumentException if input length is incorrect
      */
-    public static byte[] HexStringToByteArray(String s) throws IllegalArgumentException {
+    public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         if (len % 2 == 1) {
             throw new IllegalArgumentException("Hex string must have even number of characters");
@@ -146,18 +188,19 @@ public class CardService extends HostApduService {
         for (int i = 0; i < len; i += 2) {
             // Convert each character into a integer (base-16), then bit-shift into place
             data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+                    + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
     }
 
     /**
      * Utility method to concatenate two byte arrays.
+     *
      * @param first First array
-     * @param rest Any remaining arrays
+     * @param rest  Any remaining arrays
      * @return Concatenated copy of input arrays
      */
-    public static byte[] ConcatArrays(byte[] first, byte[]... rest) {
+    public static byte[] concatArrays(byte[] first, byte[]... rest) {
         int totalLength = first.length;
         for (byte[] array : rest) {
             totalLength += array.length;
@@ -169,5 +212,21 @@ public class CardService extends HostApduService {
             offset += array.length;
         }
         return result;
+    }
+
+    public void putOrderPending(String apiUrl, String pending, String orderId) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String[] urls = new String[]{apiUrl, prefs.getString(JWT_STR, ""), pending, orderId};
+        PendingPutTask task = new PendingPutTask(this);
+        task.execute(urls);
+    }
+
+    @Override
+    public void putSuccessful(Boolean successful) {
+        if (successful) {
+            Log.i(TAG, "pending status succesfully edited");
+        } else {
+            Log.i(TAG, "Error while updating pending status");
+        }
     }
 }

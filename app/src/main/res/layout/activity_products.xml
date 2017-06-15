@@ -5,12 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.marni.orderapp.Presentation.Activities.ProductsActivity"
+    tools:context="com.example.marni.orderapp.presentation.activities.ProductsActivity"
     tools:openDrawer="start">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
 
         <include
             android:id="@+id/toolbar_include"
@@ -38,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#555">
+            android:background="@color/colorGrey">
 
             <TextView
                 android:id="@+id/textViewTotal"
@@ -48,33 +55,39 @@
                 android:text="@string/total"
                 android:textColor="#FFF"
                 android:textSize="@dimen/textsizeProduct"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:id="@+id/text_view_view_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:padding="15dp"
                 android:text="@string/view_chart"
                 android:textColor="#FFF"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textViewTotalQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="15dp"
+                android:layout_centerVertical="true"
                 android:gravity="center"
                 android:text="0"
                 android:textColor="#FFF"
                 android:textSize="@dimen/textsizeProduct"
-                android:layout_alignTop="@+id/text_view_view_order"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"/>
+
+            <ImageView
+                android:id="@+id/imageView_products_cart"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_shopping_cart_white_24dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/textViewTotalQuantity" />
 
         </RelativeLayout>
 
