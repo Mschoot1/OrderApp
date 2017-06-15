@@ -58,8 +58,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
 
-        getAllergies("http://mysql-test-p4.herokuapp.com/product/allergies");
-        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
+        getAllergies("https://mysql-test-p4.herokuapp.com/product/allergies");
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);

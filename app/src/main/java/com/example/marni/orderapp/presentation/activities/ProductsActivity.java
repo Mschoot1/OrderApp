@@ -108,8 +108,8 @@ public class ProductsActivity extends AppCompatActivity implements
         textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
         accountEmail = (TextView) headerView.findViewById(R.id.nav_email);
 
-        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("http://mysql-test-p4.herokuapp.com/order/current/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
@@ -119,15 +119,15 @@ public class ProductsActivity extends AppCompatActivity implements
                 Product p = products.get(position);
                 if (p.getQuantity() == 0) {
                     p.setQuantity(increase(p.getQuantity()));
-                    postProduct("http://mysql-test-p4.herokuapp.com/product/quantity/add", p);
+                    postProduct("https://mysql-test-p4.herokuapp.com/product/quantity/add", p);
                 } else {
                     p.setQuantity(increase(p.getQuantity()));
-                    putProduct("http://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                 }
                 mAdapter.notifyDataSetChanged();
 
                 onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("http://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 
@@ -237,7 +237,7 @@ public class ProductsActivity extends AppCompatActivity implements
         mAdapter = new ProductsListViewAdapter(this, getLayoutInflater(), products, order, jwt, user, this);
         stickyList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-        getProducts("http://mysql-test-p4.herokuapp.com/products/" + user);
+        getProducts("https://mysql-test-p4.herokuapp.com/products/" + user);
     }
 
     public void putOrderPrice(String apiUrl, Double priceTotal) {

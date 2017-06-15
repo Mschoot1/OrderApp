@@ -155,19 +155,19 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
                     viewHolder.imageViewRemove.setVisibility(View.INVISIBLE);
                     products.remove(position);
                     notifyDataSetChanged();
-                    deleteProduct("http://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
+                    deleteProduct("https://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
                     if(products.isEmpty()) {
                         oel.isEmpty(true);
                     }
                 } else {
                     p.setQuantity(decrease(p.getQuantity()));
-                    putProduct("http://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                     String amount = Integer.toString(p.getQuantity());
                     viewHolder.textViewAmount.setText(amount);
                 }
 
                 otc.onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("http://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
+                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 

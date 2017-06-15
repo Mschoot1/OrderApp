@@ -35,7 +35,7 @@ public class DrawerMenu implements OrdersGetCurrentTask.OnCurrentOrderAvailable 
             case R.id.nav_my_order:
                 intent = new Intent(context, MyOrderActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getCurrent("http://mysql-test-p4.herokuapp.com/order/current/" + user);
+                getCurrent("https://mysql-test-p4.herokuapp.com/order/current/" + user);
                 break;
             case R.id.nav_order_history:
                 intent = new Intent(context, OrderHistoryActivity.class);

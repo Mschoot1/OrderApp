@@ -146,7 +146,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
         getCurrentOrder();
-        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
+        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
     }
 
     private void getCurrentOrder() {
@@ -370,7 +370,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         Product p = products.get(position);
         p.setQuantity(increase(p.getQuantity()));
 
-        putProduct("http://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+        putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
 
         mAdapter.notifyDataSetChanged();
         onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
