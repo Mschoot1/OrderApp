@@ -74,7 +74,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
 
         AccountStorage.resetAccount(this);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
 
         calculateBalance = new CalculateBalance(this, this, this);
 
@@ -152,7 +152,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postBalance("https://mysql-test-p4.herokuapp.com/topup");
+                postBalance("http://mysql-test-p4.herokuapp.com/topup");
             }
         });
     }
@@ -293,7 +293,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         if (successful) {
             Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_SHORT).show();
             successfulTopUp();
-            getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+            getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
         } else {
             Toast.makeText(this, "Top up failed", Toast.LENGTH_SHORT).show();
         }

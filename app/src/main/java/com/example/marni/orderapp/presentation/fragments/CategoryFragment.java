@@ -53,7 +53,7 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        getCategories("https://mysql-test-p4.herokuapp.com/product/categories", getArguments().getString(JWT_STR));
+        getCategories("http://mysql-test-p4.herokuapp.com/product/categories", getArguments().getString(JWT_STR));
         Activity activity = getActivity();
         final OnItemSelected listener = (OnItemSelected) activity;
         ListView listView = (ListView) view.findViewById(R.id.dialog_list_view);

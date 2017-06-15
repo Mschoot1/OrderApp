@@ -49,7 +49,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Order canceled", Toast.LENGTH_LONG).show();
                 prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_OPEN).apply();
-                putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_OPEN, account);
+                putOrderPending("http://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_OPEN, account);
                 Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
                 startActivity(intent);
             }
@@ -76,7 +76,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(PREF_PENDING_NUMBER)) {
-            getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + prefs.getInt(USER, 0));
+            getCurrentOrder("http://mysql-test-p4.herokuapp.com/order/current/" + prefs.getInt(USER, 0));
             Log.i(tag, "prefs.getString(PREF_PENDING_NUMBER, \"pendingNumber\"): " + prefs.getString(PREF_PENDING_NUMBER, "pendingNumber"));
         }
     }
@@ -103,7 +103,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
         Intent intent;
         switch (Integer.toString(order.getPending())) {
             case PENDING_NUMBER_OPEN:
-                confirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
+                confirmAsyncTask("http://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
                 intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
                 startActivity(intent);
                 break;

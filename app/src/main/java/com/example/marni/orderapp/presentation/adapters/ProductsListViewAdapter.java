@@ -145,16 +145,16 @@ public class ProductsListViewAdapter extends BaseAdapter implements
                 if (p.getQuantity() == 1) {
                     p.setQuantity(decrease(p.getQuantity()));
                     viewHolder.imageViewRemove.setVisibility(View.INVISIBLE);
-                    deleteProduct("https://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
+                    deleteProduct("http://mysql-test-p4.herokuapp.com/product/quantity/delete", p);
                 } else {
                     p.setQuantity(decrease(p.getQuantity()));
-                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+                    putProduct("http://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
                 }
                 String amount = Integer.toString(p.getQuantity());
                 viewHolder.textViewAmount.setText(amount);
 
                 otc.onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
+                putOrderPrice("http://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
             }
         });
 

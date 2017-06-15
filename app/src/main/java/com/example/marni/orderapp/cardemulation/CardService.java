@@ -118,7 +118,7 @@ public class CardService extends HostApduService implements PendingPutTask.PutSu
                     case PENDING_NUMBER_OPEN:
                         accountBytes = account.getBytes();
                         Log.i(TAG, "Sending account number: " + account);
-                        putOrderPending("https://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
+                        putOrderPending("http://mysql-test-p4.herokuapp.com/order/pending", PENDING_NUMBER_PENDING + "", account);
                         prefs.edit().putString(PREF_PENDING_NUMBER, PENDING_NUMBER_PENDING).apply();
                         return concatArrays(accountBytes, SELECT_OK_SW);
                     case PENDING_NUMBER_PENDING:

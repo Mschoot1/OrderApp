@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements
                     if (editTextPasswordOne.getText().toString().isEmpty()) {
                         Toast.makeText(RegisterActivity.this, "Please fill in a password.", Toast.LENGTH_SHORT).show();
                     } else if (editTextPasswordOne.getText().toString().equals(editTextPasswordTwo.getText().toString())){
-                        register("https://mysql-test-p4.herokuapp.com/register");
+                        register("http://mysql-test-p4.herokuapp.com/register");
                     } else {
                         Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
                     }

@@ -81,9 +81,9 @@ public class OrderDetailActivity extends AppCompatActivity implements TotalFromA
 
         textViewBalance = (TextView) findViewById(R.id.toolbar_balance);
 
-        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getCurrentOrder("https://mysql-test-p4.herokuapp.com/order/current/" + user);
-        getProducts("https://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
+        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
+        getCurrentOrder("http://mysql-test-p4.herokuapp.com/order/current/" + user);
+        getProducts("http://mysql-test-p4.herokuapp.com/products/order/" + order.getOrderId());
     }
 
     private void getCurrentOrder(String apiUrl) {

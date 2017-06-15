@@ -98,9 +98,9 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             }
         });
 
-        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
-        getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
-        getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
+        putDeviceInfo("http://mysql-test-p4.herokuapp.com/customer/device");
+        getBalance("http://mysql-test-p4.herokuapp.com/account/" + user);
+        getOrders("http://mysql-test-p4.herokuapp.com/orders/" + user);
     }
 
     @Override
