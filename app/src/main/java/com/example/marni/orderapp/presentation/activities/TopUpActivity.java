@@ -1,6 +1,8 @@
 package com.example.marni.orderapp.presentation.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -130,6 +132,16 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
                 }
             }
         });
+
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
+            if(uri.getQueryParameter("successful").equals("true")){
+                Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Top up failed", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
@@ -152,7 +164,10 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postBalance("https://mysql-test-p4.herokuapp.com/topup");
+                Intent myWebLink = new Intent(android.content.Intent.ACTION_VIEW);
+                String url = "http://nubisonline.nl/orderapp/pay?amount=" + calculateBalance.getAddedBalance() + "&order=" + System.currentTimeMillis() + "&customer_id=" + Integer.toString(user);
+                myWebLink.setData(Uri.parse(url));
+                startActivity(myWebLink);
             }
         });
     }
@@ -269,12 +284,6 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         currentBalance = bal.getBalance();
         textViewCurrentBalance.setText("Balance: €" + formatter.format(currentBalance));
         accountEmail.setText(bal.getEmail());
-    }
-
-    public void postBalance(String apiUrl) {
-        BalancePostTask task = new BalancePostTask(this);
-        String[] urls = new String[]{apiUrl, jwt, Double.toString(calculateBalance.getAddedBalance()), "topup", Integer.toString(user)};
-        task.execute(urls);
     }
 
     public void successfulTopUp() {

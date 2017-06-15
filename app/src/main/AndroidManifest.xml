@@ -45,7 +45,16 @@
         </activity>
         <activity
             android:name=".presentation.activities.TopUpActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="avans.orderapp" />
+            </intent-filter>
+        </activity>
         <activity android:name=".presentation.activities.ProductsActivity" />
         <activity android:name=".presentation.activities.MyOrderActivity" />
         <activity android:name=".presentation.activities.PaymentSuccessfulActivity" />
@@ -73,7 +82,7 @@
         </service>
         <!-- END_INCLUDE(CardEmulationManifest) -->
 
-        <activity android:name=".presentation.activities.PaymentPendingActivity"></activity>
+        <activity android:name=".presentation.activities.PaymentPendingActivity" />
     </application>
 
 </manifest>

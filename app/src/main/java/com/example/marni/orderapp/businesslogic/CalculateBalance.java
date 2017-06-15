@@ -39,7 +39,7 @@ public class CalculateBalance {
         } else if(getBalance() > 150){
             check = "max";
         } else {
-            check = "succes";
+            check = "success";
         }
 
         listener3.onCheckPayment(check);
