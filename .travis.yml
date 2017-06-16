@@ -17,6 +17,9 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - addon-google_apis-google-$ANDROID_API_LEVEL
+before_script:
+    - mkdir -p "C:/Program Files/Android/Android Studio/license"
+    - cp ./google-licenses/* "C:/Program Files/Android/Android Studio/license/"
 licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
