@@ -55,7 +55,7 @@ public class CalculateBalanceTest implements CalculateBalance.OnBalanceChanged, 
     public void calculateBalance_checkPayment_isCorrect3() throws Exception{
         calculateBalance.setAddedBalance(14);
         calculateBalance.setBalance(149);
-        assertEquals("succes", calculateBalance.checkPayment());
+        assertEquals("success", calculateBalance.checkPayment());
     }
 
     @Test
