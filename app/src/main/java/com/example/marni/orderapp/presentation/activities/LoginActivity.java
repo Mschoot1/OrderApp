@@ -157,6 +157,8 @@ public class LoginActivity extends AppCompatActivity implements
         editor.putInt(USER, user.asInt());
         editor.apply();
 
+        Log.i(tag, "prefs.getString(JWT_STR, \"\"): " + prefs.getString(JWT_STR, ""));
+
         startActivity(intent);
         finish();
     }

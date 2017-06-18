@@ -2,7 +2,6 @@ package com.example.marni.orderapp.dataaccess;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -35,6 +34,11 @@ public class MyOrderActivityRequests {
     private Context context;
     public final String tag = this.getClass().getSimpleName();
 
+    private SharedPreferences prefs;
+
+    private String jwt;
+    private int user;
+
     public static final String AUTHORIZATION = "Authorization";
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String APPLICATION_JSON = "application/json";
@@ -45,21 +49,19 @@ public class MyOrderActivityRequests {
     /**
      * Constructor
      *
-     * @param context a description
+     * @param context  a description
      * @param listener a description
      */
     public MyOrderActivityRequests(Context context, MyOrderActivity listener) {
         this.context = context;
         this.listener = listener;
+        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        jwt = prefs.getString(JWT_STR, "");
+        user = prefs.getInt(USER, 0);
     }
 
     public void handleGetCurrentOrder() {
         Log.i(tag, "handleGetProducts");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        final String jwt = sharedPref.getString(JWT_STR, "");
-        final int user = sharedPref.getInt(USER, 0);
-        Log.i(tag, "user: " + user);
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET,
                         Config.URL_CURRENT_ORDER + user,
@@ -99,11 +101,7 @@ public class MyOrderActivityRequests {
 
     public void handlePutOrder(double priceTotal, int orderId) {
         Log.i(tag, "handlePutOrder");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        final String jwt = sharedPref.getString(JWT_STR, "");
-
         String body = "{\"price_total\":\"" + priceTotal + "\",\"order_id\":\"" + orderId + "\"}";
-
         try {
             JSONObject jsonBody = new JSONObject(body);
             Log.i(tag, "handlePutOrder - body = " + jsonBody);
@@ -143,9 +141,6 @@ public class MyOrderActivityRequests {
 
     public void handleGetProducts(int orderId) {
         Log.i(tag, "handleGetProducts");
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        final String jwt = sharedPref.getString(JWT_STR, "");
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, Config.URL_PRODUCTS + orderId, null, new Response.Listener<JSONObject>() {
 
@@ -183,8 +178,11 @@ public class MyOrderActivityRequests {
 
     public interface MyOrderActivityListener {
         void onCurrentOrderAvailable(Order order);
+
         void onOrderPutPriceSuccess();
+
         void onProductsAvailable(List<Product> products);
+
         void onError(String message);
     }
 }
