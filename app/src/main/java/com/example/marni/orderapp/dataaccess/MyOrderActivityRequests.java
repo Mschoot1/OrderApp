@@ -2,6 +2,7 @@ package com.example.marni.orderapp.dataaccess;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -55,7 +56,7 @@ public class MyOrderActivityRequests {
     public MyOrderActivityRequests(Context context, MyOrderActivity listener) {
         this.context = context;
         this.listener = listener;
-        prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
         jwt = prefs.getString(JWT_STR, "");
         user = prefs.getInt(USER, 0);
     }

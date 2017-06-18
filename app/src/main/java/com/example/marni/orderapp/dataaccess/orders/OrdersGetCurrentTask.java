@@ -53,6 +53,7 @@ public class OrdersGetCurrentTask extends AsyncTask<String, Void, String> {
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Authorization", "Bearer " + params[1]);
 
+
             httpConnection.connect();
 
             responsCode = httpConnection.getResponseCode();

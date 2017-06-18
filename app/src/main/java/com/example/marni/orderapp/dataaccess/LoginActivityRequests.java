@@ -35,7 +35,6 @@ public class LoginActivityRequests {
     public void handleLogin(String email, String password) {
         final String body = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
         Log.i(tag, "handleLogin - body = " + body);
-
         try {
             final JSONObject jsonBody = new JSONObject(body);
             StringRequest jsObjRequest = new StringRequest
