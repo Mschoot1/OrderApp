@@ -97,7 +97,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
         setupToolbar(this, "Home");
         setupDrawer(this);
-        isEmpty(false);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);

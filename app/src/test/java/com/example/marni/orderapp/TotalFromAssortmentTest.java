@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
-public class TotalFromAssortmentTest {
+public class TotalFromAssortmentTest implements TotalFromAssortment.OnTotalChanged {
 
     private ArrayList<Product> products = new ArrayList<>();
-    private double price;
+    private double priceTotal;
     private int quantity;
 
     public TotalFromAssortmentTest() {
@@ -21,20 +21,23 @@ public class TotalFromAssortmentTest {
         p.setPrice(1.0);
         p.setQuantity(1);
         products.add(p);
-
-        price = 1;
-        quantity = 1;
     }
 
     @Test
-    public void totalFromAssortment_correctPriceTotal_isCorrect() throws Exception {
-        assertThat(TotalFromAssortment.getPriceTotal(products), instanceOf(Double.class));
-        assertEquals(TotalFromAssortment.getPriceTotal(products), price, 0.01);
+    public void totalFromAssortment_correctGetTotals_isCorrect() throws Exception {
+
+        TotalFromAssortment tfa = new TotalFromAssortment(this);
+        tfa.getTotals(products);
+
+        assertThat(priceTotal, instanceOf(Double.class));
+        assertThat(quantity, instanceOf(Integer.class));
+        assertEquals(priceTotal, 1.0, 0.01);
+        assertEquals(quantity, 1);
     }
 
-    @Test
-    public void totalFromAssortment_correctQuantity_isCorrect() throws Exception {
-        assertThat(TotalFromAssortment.getQuantity(products), instanceOf(Integer.class));
-        assertEquals(TotalFromAssortment.getQuantity(products), quantity);
+    @Override
+    public void onTotalChanged(Double priceTotal, int quantity) {
+        this.priceTotal = priceTotal;
+        this.quantity = quantity;
     }
 }

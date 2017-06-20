@@ -13,10 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by MarcdenUil on 11-5-2017.
- */
-
 public class ProductsPostTask extends AsyncTask<String, Void, Boolean> {
 
     private final String tag = getClass().getSimpleName();
