@@ -165,9 +165,8 @@ public class MyOrderListViewAdapter extends BaseAdapter implements
                     String amount = Integer.toString(p.getQuantity());
                     viewHolder.textViewAmount.setText(amount);
                 }
-
-                otc.onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
+                TotalFromAssortment tfa = new TotalFromAssortment(otc);
+                tfa.getTotals(products);
             }
         });
 

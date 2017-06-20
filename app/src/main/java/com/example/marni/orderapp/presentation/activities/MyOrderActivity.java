@@ -84,12 +84,16 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     private SharedPreferences prefs;
 
     private ProgressBar progressBar;
+    private Double priceTotal;
+
+    private TotalFromAssortment tfa;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_order);
+        tfa = new TotalFromAssortment(this);
 
         setupToolbar(this, "Home");
         setupDrawer(this);
@@ -225,6 +229,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
             setAnimation(getApplicationContext(), (ImageView) findViewById(R.id.imageView_orderdetail_cart));
         }
         this.quantity = quantity;
+        this.priceTotal = priceTotal;
     }
 
     public static void setAnimation(Context context, ImageView imageView) {
@@ -306,7 +311,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
     @Override
     public void onItemSelected(int i) {
         int j = 0;
-
         for (Product p : products) {
             j++;
             Log.i(tag, "j: " + j);
@@ -359,7 +363,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         mAdapter = new MyOrderListViewAdapter(this, getApplicationContext(), getLayoutInflater(), products, mOrder, this);
         stickyList.setAdapter(mAdapter);
 
-        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+        tfa.getTotals(products);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -373,9 +377,9 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
 
         mAdapter.notifyDataSetChanged();
-        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+        tfa.getTotals(products);
 
         MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
-        request.handlePutOrder(TotalFromAssortment.getPriceTotal(products), mOrder.getOrderId());
+        request.handlePutOrder(priceTotal, mOrder.getOrderId());
     }
 }

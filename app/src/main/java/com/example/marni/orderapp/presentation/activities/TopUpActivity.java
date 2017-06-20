@@ -136,7 +136,7 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
         Intent intent = getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri uri = intent.getData();
-            if(uri.getQueryParameter("successful").equals("true")){
+            if (uri.getQueryParameter("successful").equals("true")) {
                 Toast.makeText(this, "Balance succesfully added", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Top up failed", Toast.LENGTH_LONG).show();

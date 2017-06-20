@@ -34,7 +34,7 @@ public class TotalFromAssortmentTest {
 
     @Test
     public void totalFromAssortment_correctQuantity_isCorrect() throws Exception {
-        assertThat(TotalFromAssortment.getQuanitity(products), instanceOf(Integer.class));
-        assertEquals(TotalFromAssortment.getQuanitity(products), quantity);
+        assertThat(TotalFromAssortment.getQuantity(products), instanceOf(Integer.class));
+        assertEquals(TotalFromAssortment.getQuantity(products), quantity);
     }
 }

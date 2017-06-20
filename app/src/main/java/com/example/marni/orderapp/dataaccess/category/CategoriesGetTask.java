@@ -81,7 +81,7 @@ public class CategoriesGetTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String response) {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         Log.i(tag, "onPostExecute " + response);
 
         if (response == null || response == "") {

@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.marni.orderapp.cardemulation.AccountStorage;
 import com.example.marni.orderapp.dataaccess.account.AccountGetTask;
 import com.example.marni.orderapp.domain.Account;
 import com.example.marni.orderapp.domain.Allergy;
@@ -50,6 +51,8 @@ public class AllergiesActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allergies);
+
+        AccountStorage.resetAccount(this);
 
         setupToolbar(this, "Allergies");
         setupDrawer(this);

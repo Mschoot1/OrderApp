@@ -58,7 +58,7 @@ public class CategoryFragment extends DialogFragment implements CategoriesGetTas
         final OnItemSelected listener = (OnItemSelected) activity;
         ListView listView = (ListView) view.findViewById(R.id.dialog_list_view);
 
-        ImageView iv = (ImageView) view.findViewById(R.id.imageView_cancelbuttoncategories);
+        ImageView iv = (ImageView) view.findViewById(R.id.imageView_cancel_button_categories);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

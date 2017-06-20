@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginEnd="19dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp">
+        tools:ignore="UselessParent">
 
         <ImageView
+            android:id="@+id/imageView_productimage"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignBottom="@+id/listViewProducts_productsize"
             android:layout_alignTop="@+id/listViewProducts_amount"
-            android:id="@+id/imageView_productimage" />
+            android:contentDescription="@string/description" />
 
         <TextView
             android:id="@+id/listViewProducts_productname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/imageView_productimage"
             android:text="@string/beer"
             android:textColor="@color/productName"
-            android:textSize="@dimen/textsizeProduct"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/imageView_productimage"
-            android:layout_marginStart="6dp" />
+            android:textSize="@dimen/textsizeProduct" />
 
         <TextView
             android:id="@+id/listViewProducts_productsize"
@@ -55,23 +58,23 @@
             android:id="@+id/listViewProducts_productprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="14dp"
+            android:layout_toStartOf="@+id/listViewProducts_amount"
             android:text="@string/_2_00"
             android:textColor="@color/productName"
-            android:textSize="@dimen/textsizeProduct"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/listViewProducts_amount"
-            android:layout_marginEnd="14dp" />
+            android:textSize="@dimen/textsizeProduct" />
 
         <TextView
             android:id="@+id/listViewProducts_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@+id/listViewProduct_remove"
             android:text="@string/_0"
             android:textColor="@color/black_text"
-            android:textSize="@dimen/textsizeProduct"
-            android:layout_marginEnd="6dp"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/listViewProduct_remove" />
+            android:textSize="@dimen/textsizeProduct" />
 
         <ImageView
             android:id="@+id/listViewProduct_remove"
@@ -80,6 +83,7 @@
             android:layout_alignBottom="@+id/listViewProducts_product_alcoholpercentage"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/listViewProducts_amount"
+            android:contentDescription="@string/description"
             android:src="@drawable/ic_indeterminate_check_box_black_24dp"
             android:tint="@color/colorAccent" />
 

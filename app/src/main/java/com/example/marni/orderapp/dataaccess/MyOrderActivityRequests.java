@@ -143,8 +143,10 @@ public class MyOrderActivityRequests {
     public void handleGetProducts(int orderId) {
         Log.i(tag, "handleGetProducts");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, Config.URL_PRODUCTS + orderId, null, new Response.Listener<JSONObject>() {
-
+                (Request.Method.GET,
+                        Config.URL_PRODUCTS + orderId,
+                        null,
+                        new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(tag, response.toString());

@@ -53,7 +53,7 @@ public class ProductsActivity extends AppCompatActivity implements
         TotalFromAssortment.OnTotalChanged, ProductsGetTask.OnProductAvailable,
         AccountGetTask.OnBalanceAvailable, OrdersGetCurrentTask.OnCurrentOrderAvailable,
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener, OrdersPutTask.PutSuccessListener, ProductsGetTask.OnEmptyList,
-        CategoryFragment.OnItemSelected {
+        CategoryFragment.OnItemSelected, AdapterView.OnItemClickListener {
 
     private final String tag = getClass().getSimpleName();
 
@@ -70,6 +70,9 @@ public class ProductsActivity extends AppCompatActivity implements
     private int user;
 
     private int quantity;
+    private Double priceTotal;
+
+    private TotalFromAssortment tfa;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -78,6 +81,8 @@ public class ProductsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_products);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
+
+        tfa = new TotalFromAssortment(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         jwt = prefs.getString(JWT_STR, "");
@@ -113,23 +118,7 @@ public class ProductsActivity extends AppCompatActivity implements
 
         stickyList = (StickyListHeadersListView) findViewById(R.id.listViewProducts);
         stickyList.setAreHeadersSticky(true);
-        stickyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product p = products.get(position);
-                if (p.getQuantity() == 0) {
-                    p.setQuantity(increase(p.getQuantity()));
-                    postProduct("https://mysql-test-p4.herokuapp.com/product/quantity/add", p);
-                } else {
-                    p.setQuantity(increase(p.getQuantity()));
-                    putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
-                }
-                mAdapter.notifyDataSetChanged();
-
-                onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
-                putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", TotalFromAssortment.getPriceTotal(products));
-            }
-        });
+        stickyList.setOnItemClickListener(this);
 
         TextView textView = (TextView) findViewById(R.id.text_view_view_order);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +183,7 @@ public class ProductsActivity extends AppCompatActivity implements
             setAnimation(getApplicationContext(), (ImageView) findViewById(R.id.imageView_products_cart));
         }
         this.quantity = quantity;
+        this.priceTotal = priceTotal;
     }
 
     public void getProducts(String apiUrl) {
@@ -206,7 +196,7 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onProductAvailable(Product product) {
         Log.i(tag, "product.getProductId(): " + product.getProductId());
         products.add(product);
-        onTotalChanged(TotalFromAssortment.getPriceTotal(products), TotalFromAssortment.getQuanitity(products));
+        tfa.getTotals(products);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -294,6 +284,21 @@ public class ProductsActivity extends AppCompatActivity implements
             }
             j++;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Product p = products.get(position);
+        if (p.getQuantity() == 0) {
+            p.setQuantity(increase(p.getQuantity()));
+            postProduct("https://mysql-test-p4.herokuapp.com/product/quantity/add", p);
+        } else {
+            p.setQuantity(increase(p.getQuantity()));
+            putProduct("https://mysql-test-p4.herokuapp.com/product/quantity/edit", p);
+        }
+        mAdapter.notifyDataSetChanged();
+        tfa.getTotals(products);
+        putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", priceTotal);
     }
 }
 

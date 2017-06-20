@@ -8,40 +8,57 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_centerHorizontal="true">
 
-    <TextView
-        android:id="@+id/textview_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginLeft="12dp"
-        android:text="Categories"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp" />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/imageView_cancelbuttoncategories"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="11dp"
-        android:src="@mipmap/ic_keyboard_arrow_down_black_24dp"
-        android:layout_alignTop="@+id/textview_category"
-        android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/imageView_cancel_button_categories">
+
+            <TextView
+                android:id="@+id/text_view_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginStart="12dp"
+                android:text="@string/categories"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView_cancel_button_categories"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="11dp"
+            android:contentDescription="@string/description"
+            android:src="@drawable/ic_close_black_24dp" />
+
     </RelativeLayout>
 
     <ListView
         android:id="@+id/dialog_list_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>
