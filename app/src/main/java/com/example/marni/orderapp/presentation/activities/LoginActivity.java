@@ -16,24 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.example.marni.orderapp.dataaccess.LoginActivityRequests;
-import com.example.marni.orderapp.dataaccess.MyOrderActivityRequests;
-import com.example.marni.orderapp.service.Config;
 import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
 import com.example.marni.orderapp.R;
-import com.example.marni.orderapp.service.VolleyRequestQueue;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements
         DevicePutTask.SuccessListener,

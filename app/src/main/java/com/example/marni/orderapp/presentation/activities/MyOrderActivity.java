@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.marni.orderapp.dataaccess.MyOrderActivityRequests;
+import com.example.marni.orderapp.dataaccess.deviceinfo.DevicePutTask;
 import com.example.marni.orderapp.dataaccess.product.ProductsGetTask;
 import com.example.marni.orderapp.presentation.DrawerMenu;
 import com.example.marni.orderapp.businesslogic.TotalFromAssortment;
@@ -61,7 +62,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         ProductsPutTask.SuccessListener, ProductsPostTask.SuccessListener,
         OrdersPutTask.PutSuccessListener, NavigationView.OnNavigationItemSelectedListener,
         SharedPreferences.OnSharedPreferenceChangeListener, ProductsGetTask.OnEmptyList, AdapterView.OnItemClickListener,
-        MyOrderActivityRequests.MyOrderActivityListener {
+        MyOrderActivityRequests.MyOrderActivityListener, DevicePutTask.SuccessListener {
 
     private final String tag = getClass().getSimpleName();
 
@@ -150,6 +151,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
         getCurrentOrder();
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
+        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
     }
 
     private void getCurrentOrder() {
@@ -380,5 +382,63 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
         MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
         request.handlePutOrder(priceTotal, mOrder.getOrderId());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    public void putDeviceInfo(String apiUrl) {
+
+        String hardware;
+        String type;
+        String model;
+        String brand;
+        String device;
+        String manufacturer;
+        String buildUser;
+        String serial;
+        String host;
+        String id;
+        String bootloader;
+        String board;
+        String display;
+
+        hardware = Build.HARDWARE;
+        type = Build.TYPE;
+        model = Build.MODEL;
+        brand = Build.BRAND;
+        device = Build.DEVICE;
+        manufacturer = Build.MANUFACTURER;
+        buildUser = Build.USER;
+        serial = Build.SERIAL;
+        host = Build.HOST;
+        id = Build.ID;
+        bootloader = Build.BOOTLOADER;
+        board = Build.BOARD;
+        display = Build.DISPLAY;
+
+        DevicePutTask task = new DevicePutTask(this);
+        String[] urls = new String[]{
+                apiUrl,
+                jwt,
+                Integer.toString(this.user),
+                hardware,
+                type,
+                model,
+                brand,
+                device,
+                manufacturer,
+                buildUser,
+                serial,
+                host,
+                id,
+                bootloader,
+                board,
+                display
+        };
+        task.execute(urls);
+    }
+
+    @Override
+    public void successfulPut(Boolean successful) {
+        throw new UnsupportedOperationException();
     }
 }

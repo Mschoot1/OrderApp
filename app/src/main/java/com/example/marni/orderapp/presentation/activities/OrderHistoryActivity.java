@@ -41,8 +41,7 @@ import static com.example.marni.orderapp.presentation.activities.MyOrderActivity
 
 public class OrderHistoryActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        OrdersGetTask.OnOrderAvailable, DevicePutTask.SuccessListener,
-        AccountGetTask.OnBalanceAvailable {
+        OrdersGetTask.OnOrderAvailable, AccountGetTask.OnBalanceAvailable {
 
     private final String tag = getClass().getSimpleName();
 
@@ -98,7 +97,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements
             }
         });
 
-        putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         getOrders("https://mysql-test-p4.herokuapp.com/orders/" + user);
     }
@@ -166,63 +164,5 @@ public class OrderHistoryActivity extends AppCompatActivity implements
         double currentBalance = bal.getBalance();
         textViewBalance.setText("€ " + formatter.format(currentBalance));
         accountEmail.setText(bal.getEmail());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    public void putDeviceInfo(String apiUrl) {
-
-        String hardware;
-        String type;
-        String model;
-        String brand;
-        String device;
-        String manufacturer;
-        String buildUser;
-        String serial;
-        String host;
-        String id;
-        String bootloader;
-        String board;
-        String display;
-
-        hardware = Build.HARDWARE;
-        type = Build.TYPE;
-        model = Build.MODEL;
-        brand = Build.BRAND;
-        device = Build.DEVICE;
-        manufacturer = Build.MANUFACTURER;
-        buildUser = Build.USER;
-        serial = Build.SERIAL;
-        host = Build.HOST;
-        id = Build.ID;
-        bootloader = Build.BOOTLOADER;
-        board = Build.BOARD;
-        display = Build.DISPLAY;
-
-        DevicePutTask task = new DevicePutTask(this);
-        String[] urls = new String[]{
-                apiUrl,
-                jwt,
-                Integer.toString(this.user),
-                hardware,
-                type,
-                model,
-                brand,
-                device,
-                manufacturer,
-                buildUser,
-                serial,
-                host,
-                id,
-                bootloader,
-                board,
-                display
-        };
-        task.execute(urls);
-    }
-
-    @Override
-    public void successfulPut(Boolean successful) {
-        // empty
     }
 }
