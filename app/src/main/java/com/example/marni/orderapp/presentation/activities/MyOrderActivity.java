@@ -231,6 +231,8 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
         }
         this.quantity = quantity;
         this.priceTotal = priceTotal;
+        MyOrderActivityRequests request = new MyOrderActivityRequests(getApplicationContext(), this);
+        request.handlePutOrder(priceTotal, mOrder.getOrderId());
     }
 
     public static void setAnimation(Context context, ImageView imageView) {
@@ -439,6 +441,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void successfulPut(Boolean successful) {
-        throw new UnsupportedOperationException();
+        // do nothing
     }
 }

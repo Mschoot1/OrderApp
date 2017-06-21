@@ -1,7 +1,6 @@
 package com.example.marni.orderapp.presentation.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -42,8 +41,6 @@ public class LoginActivity extends AppCompatActivity implements
     public static final String PREF_NAME = "prefs";
     private static final String KEY_REMEMBER = "remember";
     private static final String KEY_EMAIL = "email";
-
-    public static final String UNAUTHORIZED = "Unauthorized";
 
     private ProgressDialog dialog;
 
@@ -144,8 +141,6 @@ public class LoginActivity extends AppCompatActivity implements
         editor.putString(JWT_STR, jwt.toString().replace("\"", ""));
         editor.putInt(USER, user.asInt());
         editor.apply();
-
-        Log.i(tag, "prefs.getString(JWT_STR, \"\"): " + prefs.getString(JWT_STR, ""));
 
         startActivity(intent);
         finish();
