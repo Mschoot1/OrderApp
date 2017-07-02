@@ -149,7 +149,6 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        getCurrentOrder();
         getBalance("https://mysql-test-p4.herokuapp.com/account/" + user);
         putDeviceInfo("https://mysql-test-p4.herokuapp.com/customer/device");
     }
@@ -194,6 +193,8 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onBalanceAvailable(Account bal) {
+        getCurrentOrder();
+
         DecimalFormat formatter = new DecimalFormat("#0.00");
         currentBalance = bal.getBalance();
         String s = "€" + formatter.format(currentBalance);
@@ -203,9 +204,7 @@ public class MyOrderActivity extends AppCompatActivity implements CategoryFragme
 
     @Override
     public void onTotalChanged(Double priceTotal, int quantity) {
-
         DecimalFormat formatter = new DecimalFormat("#0.00");
-
         TextView textViewTotal = (TextView) findViewById(R.id.textViewTotal);
         TextView textViewQuantity = (TextView) findViewById(R.id.textViewTotalQuantity);
         String sPriceTotal;

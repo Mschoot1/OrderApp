@@ -154,6 +154,7 @@ public class ProductsListViewAdapter extends BaseAdapter implements
                 viewHolder.textViewAmount.setText(amount);
                 TotalFromAssortment tfa = new TotalFromAssortment(otc);
                 tfa.getTotals(products);
+
             }
         });
 

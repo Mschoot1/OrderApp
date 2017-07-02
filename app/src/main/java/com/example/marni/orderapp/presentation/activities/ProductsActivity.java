@@ -184,6 +184,7 @@ public class ProductsActivity extends AppCompatActivity implements
         }
         this.quantity = quantity;
         this.priceTotal = priceTotal;
+        putOrderPrice("https://mysql-test-p4.herokuapp.com/order/price/edit", priceTotal);
     }
 
     public void getProducts(String apiUrl) {

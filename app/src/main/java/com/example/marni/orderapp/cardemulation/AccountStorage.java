@@ -19,6 +19,7 @@ package com.example.marni.orderapp.cardemulation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Utility class for persisting account numbers to disk.
@@ -42,6 +43,7 @@ public class AccountStorage {
     public static void setAccount(Context c, String s, double balance, double orderPriceTotal) {
         synchronized (sAccountLock) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+            Log.i("accountstorage", "balance: " + balance + ", orderPriceTotal: " + orderPriceTotal);
             if (balance >= orderPriceTotal) {
                 prefs.edit().putString(PREF_ACCOUNT_NUMBER, s).apply();
                 sAccount = s;

@@ -51,6 +51,11 @@ public class LoginActivity extends AppCompatActivity implements
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit();
 
+        if (!(prefs.getString(JWT_STR, "").equals(""))){
+            Intent intent = new Intent(getApplicationContext(), MyOrderActivity.class);
+            startActivity(intent);
+        }
+
         Button buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
 
         checkBox = (CheckBox) findViewById(R.id.checkBox_login);

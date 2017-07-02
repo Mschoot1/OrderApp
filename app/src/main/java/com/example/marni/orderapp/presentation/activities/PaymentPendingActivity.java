@@ -64,13 +64,13 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
 
     public void confirmAsyncTask(String apiUrl, String status, int orderId, int userId) {
         ConfirmAsync confirmAsync = new ConfirmAsync(this);
-        String[] urls = new String[]{apiUrl, status, Integer.toString(orderId), Integer.toString(userId)};
+        String[] urls = new String[]{apiUrl, prefs.getString(JWT_STR, ""), status, Integer.toString(orderId), Integer.toString(userId)};
         confirmAsync.execute(urls);
     }
 
     @Override
     public void successful(Boolean successful) {
-        // empty
+        Log.i(tag, "status successfully edited");
     }
 
     @Override
@@ -103,7 +103,7 @@ public class PaymentPendingActivity extends AppCompatActivity implements Confirm
         Intent intent;
         switch (Integer.toString(order.getPending())) {
             case PENDING_NUMBER_OPEN:
-                confirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "0", order.getOrderId(), prefs.getInt(USER, 0));
+                confirmAsyncTask("https://mysql-test-p4.herokuapp.com/order/edit/", "1", order.getOrderId(), prefs.getInt(USER, 0));
                 intent = new Intent(getApplicationContext(), PaymentSuccessfulActivity.class);
                 startActivity(intent);
                 break;
