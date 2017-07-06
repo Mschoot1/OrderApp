@@ -315,9 +315,11 @@ public class TopUpActivity extends AppCompatActivity implements NavigationView.O
             payment.setEnabled(true);
         } else if (check.equals("zero")) {
             payment.setEnabled(false);
+            calculateBalance.resetBalance(true);
         } else {
             Toast.makeText(this, "Max account balance is 150", Toast.LENGTH_SHORT).show();
             payment.setEnabled(false);
+            calculateBalance.resetBalance(true);
         }
     }
 }
